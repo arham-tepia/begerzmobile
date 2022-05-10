@@ -10,4 +10,11 @@ export const FONTS = {
   P_MEDIUM: 'Poppins-Medium',
   P_SEMIBOLD: 'Poppins-SemiBold',
   P_Light: 'Poppins-Light',
+  //Montserrat
+  Montserrat_REGULAR: 'Montserrat-Regular',
+  Montserrat_BOLD: 'Montserrat-Bold',
+  Montserrat_MEDIUM: 'Montserrat-Medium',
+  Montserrat_SEMIBOLD: 'Montserrat-SemiBold',
+  Montserrat_Light: 'Montserrat-Light',
+  //
 };

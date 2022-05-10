@@ -20,6 +20,11 @@ export const CreateBeg = ({navigation}: any) => {
     'A 4% processing fee is collected by Begerz.com for using their platform.';
   var n2 =
     '5% of the 4% transaction fee (what was collected) will be donated to 1 of 4 charities (pre-determined by Begerz.com).';
+
+  async function onContinuePress() {
+    navigation.navigate('tellYourStory');
+  }
+
   return (
     <View style={[commonStyles.main]}>
       <ScrollView style={{width: '100%'}}>
@@ -70,11 +75,13 @@ export const CreateBeg = ({navigation}: any) => {
             leftComponent={<LinkIcon />}
           />
           <Divider style={{marginVertical: 12}} />
-          <UploadPhoto />
+          {/* <UploadPhoto /> */}
           <View style={{marginBottom: 32}} />
           <MyButton
             title="Continue"
             textStyles={{fontFamily: FONTS.P_SEMIBOLD, letterSpacing: 0}}
+            style={{height: 48, borderRadius: 24}}
+            onPress={onContinuePress}
           />
           <View style={{marginBottom: 24}} />
           <Text style={styles.noteText}>{n1}</Text>

@@ -15,14 +15,20 @@ interface Props extends TouchableOpacityProps {
   title?: string;
   textStyles?: StyleProp<TextStyle>;
   leftComponent?: any;
+  inverse?: boolean;
 }
 
 export const MyButton = (props: Props) => {
-  const {loading, title, textStyles, style, leftComponent, ...rest} = props;
+  const {loading, title, textStyles, style, leftComponent, inverse, ...rest} =
+    props;
   return (
-    <TouchableOpacity {...rest} style={[styles.main, style]}>
+    <TouchableOpacity
+      {...rest}
+      style={[styles.main, inverse && styles.inverse, style]}>
       {leftComponent && leftComponent}
-      <Text style={[styles.title, textStyles]}>{title}</Text>
+      <Text style={[styles.title, inverse && styles.inverseText, textStyles]}>
+        {title}
+      </Text>
       {loading && (
         <ActivityIndicator
           size="small"
@@ -47,10 +53,18 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'System',
     fontSize: 14,
-    fontWeight: '500',
-    lineHeight: 16,
+    // fontWeight: '500',
+    // lineHeight: 16,
     letterSpacing: 1.25,
     textAlign: 'center',
     color: 'white',
+  },
+  inverse: {
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+  },
+  inverseText: {
+    color: COLORS.primary,
   },
 });

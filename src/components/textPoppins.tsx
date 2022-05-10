@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, TextProps} from 'react-native';
-import {FONTS} from '../../../../constants/fonts';
+import {FONTS} from '../constants/fonts';
 
 interface Props extends TextProps {}
 
-export const BegHeadings = (props: Props) => {
+export const MyTextPoppins = (props: Props) => {
   const {style, children, ...rest} = props;
   return (
     <Text {...rest} style={[styles.main, style]}>
@@ -15,10 +15,7 @@ export const BegHeadings = (props: Props) => {
 
 const styles = StyleSheet.create({
   main: {
-    color: '#3B3E44',
-    fontSize: 20,
-    lineHeight: 28,
-    fontFamily: FONTS.M_SEMIBOLD,
-    // fontWeight: '600',
+    fontFamily: FONTS.P_REGULAR,
+    color: '#000000',
   },
 });

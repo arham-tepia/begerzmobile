@@ -18,6 +18,7 @@ interface Props extends TextInputProps {
   label?: string;
   focused?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
+  rightComponentStyles?: StyleProp<ViewStyle>;
 }
 
 export const MyTextInput = (props: Props) => {
@@ -66,7 +67,7 @@ export const MyTextInput = (props: Props) => {
         {...rest}
       />
       {(rightComponent || secureTextEntry) && (
-        <View style={styles.iconContainer}>
+        <View style={[styles.iconContainer, props.rightComponentStyles]}>
           {rightComponent}
           {secureTextEntry && (
             <TouchableOpacity onPress={() => setSecure(!secure)}>
