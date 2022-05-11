@@ -42,7 +42,7 @@ export const Signin = ({navigation}: any) => {
               <View style={{marginTop: 38}} />
               <MyButton
                 title="SIGN IN"
-                onPress={() => navigation.navigate('postBeg')}
+                onPress={() => navigation.replace('mainBottomNavigation')}
               />
               <View style={{marginTop: 38}} />
               <Text
