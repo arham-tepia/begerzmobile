@@ -19,12 +19,26 @@ interface Props extends TouchableOpacityProps {
 }
 
 export const MyButton = (props: Props) => {
-  const {loading, title, textStyles, style, leftComponent, inverse, ...rest} =
-    props;
+  const {
+    loading,
+    title,
+    textStyles,
+    style,
+    leftComponent,
+    inverse,
+    disabled,
+    ...rest
+  } = props;
   return (
     <TouchableOpacity
       {...rest}
-      style={[styles.main, inverse && styles.inverse, style]}>
+      disabled={disabled}
+      style={[
+        styles.main,
+        inverse && styles.inverse,
+        disabled && {backgroundColor: '#a1a1a1'},
+        style,
+      ]}>
       {leftComponent && leftComponent}
       <Text style={[styles.title, inverse && styles.inverseText, textStyles]}>
         {title}
