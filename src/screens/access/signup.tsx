@@ -18,8 +18,6 @@ import {AccessHeading} from './components/heading';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {ConvertDateToObject} from '../../helpers/simplifyDateObject';
 import {createNewAccount} from '../../api/accounts';
-import {post} from '../../api/requestStructure';
-import {SERVER_URL} from '../../api/url';
 
 export const Signup = ({navigation}: any) => {
   const [datePicker, setDatePicker]: any = useState(false);

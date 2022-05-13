@@ -6,9 +6,9 @@ export const post = async (endpoint: string, data: object) => {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(data)
     })
       // .then(response => console.log(response, 'Status of the request'))
       .then(response => response.json())
@@ -26,9 +26,8 @@ export const get = async (endpoint: string) => {
       method: 'GET',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      //body: JSON.stringify(data),
+        'Content-Type': 'application/json'
+      }
     })
       //.then(response => console.log(response.status, 'Status of the request'))
       .then(response => response.json())
@@ -45,9 +44,8 @@ export const del = async (endpoint: string, data?: any) => {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    //body: JSON.stringify(data),
+      'Content-Type': 'application/json'
+    }
   })
     .then(response => response.json())
     .then(json => {
@@ -62,9 +60,9 @@ export const patch = async (endpoint: string, data: any) => {
     method: 'PATCH',
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(data)
   })
     .then(response => response.json())
     .then(json => {

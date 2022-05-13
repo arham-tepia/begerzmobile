@@ -4,7 +4,6 @@ import {CreateBeg} from '../screens/beg/post/createBeg';
 import {ArrowBackBlack} from '../components/icons/arowBackBlack';
 import {FONTS} from '../constants/fonts';
 import {BulbIcon} from '../components/icons/bulb';
-import {View} from 'react-native';
 import {TellYourStory} from '../screens/beg/post/begStory';
 import {BegIsReady} from '../screens/beg/post/begReady';
 import {ShareBegWithFollowers} from '../screens/beg/post/shareWithFollowers';
@@ -19,9 +18,9 @@ export const PostBegStack = () => {
         headerStyle: {backgroundColor: 'white'},
         headerTitleStyle: {
           fontFamily: FONTS.P_SEMIBOLD,
-          fontSize: 20,
+          fontSize: 20
         },
-        headerShadowVisible: true,
+        headerShadowVisible: true
       }}>
       <Stack.Screen
         name="createBeg"
@@ -29,7 +28,7 @@ export const PostBegStack = () => {
         options={{
           headerLeft: () => <ArrowBackBlack />,
           headerTitle: 'Create Beg',
-          headerRight: () => <BulbIcon />,
+          headerRight: () => <BulbIcon />
         }}
       />
       <Stack.Screen
@@ -38,7 +37,7 @@ export const PostBegStack = () => {
         options={{
           headerLeft: () => <ArrowBackBlack />,
           headerTitle: 'Create Beg',
-          headerRight: () => <BulbIcon />,
+          headerRight: () => <BulbIcon />
         }}
       />
       <Stack.Screen
@@ -47,7 +46,7 @@ export const PostBegStack = () => {
         options={{
           headerLeft: () => <ArrowBackBlack />,
           headerTitle: 'Create Beg',
-          headerRight: () => <BulbIcon />,
+          headerRight: () => <BulbIcon />
         }}
       />
       <Stack.Screen
@@ -56,7 +55,7 @@ export const PostBegStack = () => {
         options={{
           headerLeft: () => <ArrowBackBlack />,
           headerTitle: 'Create Beg',
-          headerRight: () => <BulbIcon />,
+          headerRight: () => <BulbIcon />
         }}
       />
       <Stack.Screen
@@ -65,7 +64,7 @@ export const PostBegStack = () => {
         options={{
           headerLeft: () => <ArrowBackBlack />,
           headerTitle: 'Create Beg',
-          headerRight: () => <BulbIcon />,
+          headerRight: () => <BulbIcon />
         }}
       />
     </Stack.Navigator>
