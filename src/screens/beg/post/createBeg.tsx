@@ -16,6 +16,7 @@ import {putFile} from '../../../api/uploadFIle';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {ConvertDateToObject} from '../../../helpers/simplifyDateObject';
 import {MEDIA_URL} from '../../../api/url';
+import Toast from 'react-native-toast-message';
 
 // import {UploadPhoto} from './components/uploadPhoto';
 
@@ -41,6 +42,16 @@ export const CreateBeg = ({navigation}: any) => {
     '5% of the 4% transaction fee (what was collected) will be donated to 1 of 4 charities (pre-determined by Begerz.com).';
 
   async function onContinuePress() {
+    const bAmount = parseInt(begAmount);
+    if (bAmount < 50) {
+      Toast.show({
+        type: 'error',
+        text1: 'Beg amount',
+        text2: 'Minimum beg amount should be atleast $50'
+      });
+      return;
+    }
+
     const video = {
       video: signedUrl.uuid ? MEDIA_URL + signedUrl.uuid + '.mp4' : '',
       thumbnail: signedUrl.uuid ? MEDIA_URL + signedUrl.uuid + '-00001.png' : ''
@@ -73,7 +84,14 @@ export const CreateBeg = ({navigation}: any) => {
     setLoader(true);
     const res = await getSignedURL();
     setSignedUrl(res);
-    await putFile(res, fileObj).finally(() => setLoader(false));
+    await putFile(res, fileObj).finally(() => {
+      setLoader(false);
+      Toast.show({
+        type: 'success',
+        text1: 'Upload successful',
+        text2: 'Your video has been uploaded successfully'
+      });
+    });
   }
 
   const handleDate = (date: Date) => {
@@ -93,7 +111,10 @@ export const CreateBeg = ({navigation}: any) => {
             <BegAmountInput
               value={begAmount}
               viewStyle={{marginTop: 12}}
-              onChangeText={setBegAmount}
+              onChangeText={(text: string) => {
+                setBegAmount(text.replace(/[^0-9]/g, ''));
+              }}
+              keyboardType="numeric"
             />
             <Text style={styles.minGoalText}>{minGoal}</Text>
             <View style={{marginBottom: 48}} />
@@ -168,6 +189,7 @@ export const CreateBeg = ({navigation}: any) => {
         onConfirm={handleDate}
         onCancel={() => setDatePicker(false)}
       />
+      <Toast position="bottom" />
     </>
   );
 };

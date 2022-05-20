@@ -9,12 +9,12 @@ import {
   View
 } from 'react-native';
 import {loginUser} from '../../api/authentication';
-import {post} from '../../api/requestStructure';
 import {MyButton} from '../../components/myButton';
 import {MyTextInput} from '../../components/myTextinput';
 import {COLORS} from '../../constants/colors';
 import {commonStyles} from '../../styles/styles';
 import {AccessHeading} from './components/heading';
+import Toast from 'react-native-toast-message';
 
 export const Signin = ({navigation}: any) => {
   const [email, setEmail]: any = useState('');
@@ -30,71 +30,80 @@ export const Signin = ({navigation}: any) => {
       password: password.trim(),
       role: 'customer'
     };
-    console.log(data, 'data');
-
-    // const authurl = 'auth/v1/';
-    // const endpoint = authurl + 'login';
     const res = await loginUser(data).finally(() => setLoader(false));
     console.log(res, 'response');
     if (res._id !== undefined) {
       navigation.replace('mainBottomNavigation');
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Auth',
+        text2: res.message
+      });
     }
   }
   function disabled() {
     return email.length < 8 || password.length < 8;
   }
   return (
-    <SafeAreaView style={[commonStyles.main]}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'position' : 'height'}
-        style={{marginTop: 21}}>
-        <ScrollView style={{width: '100%'}}>
-          <View
-            style={{width: '100%', alignItems: 'center', alignSelf: 'center'}}>
-            <View style={{width: '95%'}}>
-              <AccessHeading>Sign In</AccessHeading>
-              <Text style={styles.subtext}>{subtext}</Text>
-              <View style={{marginTop: 38}} />
-              <MyTextInput
-                label="Email Address"
-                placeholder="Enter Email Address"
-                onChangeText={setEmail}
-                value={email}
-              />
-              <View style={{marginTop: 38}} />
-              <MyTextInput
-                label="Password"
-                secureTextEntry
-                placeholder="Enter Password"
-                onChangeText={setPassword}
-                value={password}
-              />
-              <View style={{marginTop: 38}} />
-              <MyButton
-                title="SIGN IN"
-                onPress={onLogin}
-                loading={loader}
-                disabled={loader || disabled()}
-              />
-              <View style={{marginTop: 38}} />
-              <Text
-                onPress={() => navigation.navigate('forgotPassword')}
-                style={styles.forgot}>
-                Forgot Password?
-              </Text>
+    <>
+      <SafeAreaView style={[commonStyles.main]}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+          style={{marginTop: 21}}>
+          <ScrollView style={{width: '100%'}}>
+            <View
+              style={{
+                width: '100%',
+                alignItems: 'center',
+                alignSelf: 'center'
+              }}>
+              <View style={{width: '95%'}}>
+                <AccessHeading>Sign In</AccessHeading>
+                <Text style={styles.subtext}>{subtext}</Text>
+                <View style={{marginTop: 38}} />
+                <MyTextInput
+                  label="Email Address"
+                  placeholder="Enter Email Address"
+                  onChangeText={setEmail}
+                  value={email}
+                />
+                <View style={{marginTop: 38}} />
+                <MyTextInput
+                  label="Password"
+                  secureTextEntry
+                  placeholder="Enter Password"
+                  onChangeText={setPassword}
+                  value={password}
+                />
+                <View style={{marginTop: 38}} />
+                <MyButton
+                  title="SIGN IN"
+                  onPress={onLogin}
+                  loading={loader}
+                  disabled={loader || disabled()}
+                />
+                <View style={{marginTop: 38}} />
+                <Text
+                  onPress={() => navigation.navigate('forgotPassword')}
+                  style={styles.forgot}>
+                  Forgot Password?
+                </Text>
+              </View>
             </View>
-          </View>
-        </ScrollView>
-        <Text style={styles.bottomText}>
-          {"Don't have an account? "}{' '}
-          <Text
-            onPress={() => navigation.navigate('signup')}
-            style={{color: COLORS.primary}}>
-            Sign Up
+          </ScrollView>
+          <Text style={styles.bottomText}>
+            {"Don't have an account? "}{' '}
+            <Text
+              onPress={() => navigation.navigate('signup')}
+              style={{color: COLORS.primary}}>
+              Sign Up
+            </Text>
           </Text>
-        </Text>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+      <Toast position="bottom" />
+    </>
   );
 };
 

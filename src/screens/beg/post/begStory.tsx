@@ -11,6 +11,7 @@ import {FONTS} from '../../../constants/fonts';
 import {commonStyles} from '../../../styles/styles';
 import {BegHeadings} from './components/begHeadings';
 import {GreyCard} from './components/greyCard';
+import Toast from 'react-native-toast-message';
 
 export const TellYourStory = ({navigation, route}: any) => {
   // const [saveMode, setSavemode]: any = useState(false);
@@ -84,13 +85,23 @@ export const TellYourStory = ({navigation, route}: any) => {
       goalDate: r.begDate,
       status: 'active'
     };
-    const res = await postBeg(data).finally(() => setLoader(false));
+    const res = await postBeg(data)
+      .finally(() => setLoader(false))
+      .catch((err: any) => {
+        console.log(err, 'errosss');
+      });
     console.log(res, 'Post beg response');
 
     if (res._id !== undefined) {
       navigation.replace('begIsReady');
     } else {
-      Alert.alert('unable to post beg!\n', res.message);
+      if (res.errors) {
+        Toast.show({
+          type: 'error',
+          text1: res.errors[0].param,
+          text2: res.errors[0].msg
+        });
+      }
     }
   }
 
@@ -99,109 +110,112 @@ export const TellYourStory = ({navigation, route}: any) => {
   }
 
   return (
-    <View style={commonStyles.main}>
-      <ScrollView style={{width: '100%'}}>
-        <View style={{width: '90%', marginTop: 20, alignSelf: 'center'}}>
-          <BegHeadings style={{color: '#000000', marginBottom: 4}}>
-            Tell your story
-          </BegHeadings>
-          <MyTextPoppins style={styles.subheading}>{subtext}</MyTextPoppins>
-          <MyTextInput
-            containerStyle={styles.tiContainer}
-            style={styles.ti}
-            multiline
-            blurOnSubmit
-            onChangeText={setStory}
-            value={story}
-          />
-          <GreyCard>
-            <View style={{width: '90%', marginTop: 10}}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between'
-                }}>
-                <View
-                  style={{
-                    width: '10%',
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                    height: '100%'
-                  }}>
-                  <Radio active />
-                </View>
-                <View style={{width: '88%'}}>
-                  <MyTextMontserrat style={styles.cardHeading}>
-                    Save or publish
-                  </MyTextMontserrat>
-                  <MyTextMontserrat
-                    style={[styles.cardHeading, {color: '#E5E5E5'}]}>
-                    Make your video public, unlisted, or private
-                  </MyTextMontserrat>
-                </View>
-              </View>
-              <View
-                style={{
-                  width: '88%',
-                  alignSelf: 'flex-end',
-                  marginTop: 10
-                }}>
-                {allStoryTypes.map((item: any) => {
-                  return <StoryType item={item} />;
-                })}
+    <>
+      <View style={commonStyles.main}>
+        <ScrollView style={{width: '100%'}}>
+          <View style={{width: '90%', marginTop: 20, alignSelf: 'center'}}>
+            <BegHeadings style={{color: '#000000', marginBottom: 4}}>
+              Tell your story
+            </BegHeadings>
+            <MyTextPoppins style={styles.subheading}>{subtext}</MyTextPoppins>
+            <MyTextInput
+              containerStyle={styles.tiContainer}
+              style={styles.ti}
+              multiline
+              blurOnSubmit
+              onChangeText={setStory}
+              value={story}
+            />
+            <GreyCard>
+              <View style={{width: '90%', marginTop: 10}}>
                 <View
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
-                    marginVertical: 10
+                    justifyContent: 'space-between'
                   }}>
                   <View
                     style={{
                       width: '10%',
                       alignItems: 'center',
-                      justifyContent: 'center'
+                      justifyContent: 'flex-start',
+                      height: '100%'
                     }}>
-                    <Checkbox />
+                    <Radio active />
                   </View>
                   <View style={{width: '88%'}}>
-                    <MyTextPoppins style={styles.cardHeading}>
-                      Set as instant premiere?
-                    </MyTextPoppins>
+                    <MyTextMontserrat style={styles.cardHeading}>
+                      Save or publish
+                    </MyTextMontserrat>
+                    <MyTextMontserrat
+                      style={[styles.cardHeading, {color: '#E5E5E5'}]}>
+                      Make your video public, unlisted, or private
+                    </MyTextMontserrat>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    width: '88%',
+                    alignSelf: 'flex-end',
+                    marginTop: 10
+                  }}>
+                  {allStoryTypes.map((item: any) => {
+                    return <StoryType item={item} />;
+                  })}
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginVertical: 10
+                    }}>
+                    <View
+                      style={{
+                        width: '10%',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                      <Checkbox />
+                    </View>
+                    <View style={{width: '88%'}}>
+                      <MyTextPoppins style={styles.cardHeading}>
+                        Set as instant premiere?
+                      </MyTextPoppins>
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
-          </GreyCard>
-          <View style={{marginBottom: 28}}></View>
-          <MyButton
-            title="Complete your beg"
-            textStyles={{fontFamily: FONTS.P_REGULAR, letterSpacing: 0}}
-            onPress={onCompleteBeg}
-            disabled={disabled() || loader}
-            loading={loader}
-          />
-          <View style={{marginBottom: 10}} />
-          <MyButton
-            title="Preview"
-            textStyles={{fontFamily: FONTS.P_BOLD, letterSpacing: 0}}
-            inverse
-          />
-          <View style={{marginBottom: 20}} />
-          <MyTextMontserrat style={styles.noteText}>
-            A 4% processing fee is collected by Begerz.com foe using their
-            platform.
-          </MyTextMontserrat>
-          <View style={{marginBottom: 20}} />
-          <MyTextMontserrat style={styles.noteText}>
-            5% of the 4% transaction fee (what was collected) will be donated to
-            1 of 4 charities (pre-determined by Begerz.com).
-          </MyTextMontserrat>
-          <View style={{marginBottom: 30}} />
-        </View>
-      </ScrollView>
-    </View>
+            </GreyCard>
+            <View style={{marginBottom: 28}}></View>
+            <MyButton
+              title="Complete your beg"
+              textStyles={{fontFamily: FONTS.P_REGULAR, letterSpacing: 0}}
+              onPress={onCompleteBeg}
+              disabled={disabled() || loader}
+              loading={loader}
+            />
+            <View style={{marginBottom: 10}} />
+            <MyButton
+              title="Preview"
+              textStyles={{fontFamily: FONTS.P_BOLD, letterSpacing: 0}}
+              inverse
+            />
+            <View style={{marginBottom: 20}} />
+            <MyTextMontserrat style={styles.noteText}>
+              A 4% processing fee is collected by Begerz.com foe using their
+              platform.
+            </MyTextMontserrat>
+            <View style={{marginBottom: 20}} />
+            <MyTextMontserrat style={styles.noteText}>
+              5% of the 4% transaction fee (what was collected) will be donated
+              to 1 of 4 charities (pre-determined by Begerz.com).
+            </MyTextMontserrat>
+            <View style={{marginBottom: 30}} />
+          </View>
+        </ScrollView>
+      </View>
+      <Toast position="bottom" />
+    </>
   );
 };
 
