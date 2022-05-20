@@ -1,4 +1,5 @@
 import {post} from './requestStructure';
+import {AUTH_BASE_URL} from './url';
 
 interface AddAccount {
   username: string;
@@ -12,7 +13,7 @@ interface AddAccount {
   status: string;
 }
 
-const authurl = 'auth/v1/';
+const authurl = AUTH_BASE_URL + 'auth/v1/';
 
 export async function createNewAccount(data: AddAccount) {
   const endpoint = authurl + 'accounts';

@@ -1,12 +1,13 @@
-import {SERVER_URL} from './url';
+import {TOKEN} from './token';
 
 export const post = async (endpoint: string, data: object) => {
   return (
-    fetch(SERVER_URL + endpoint, {
+    fetch(endpoint, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + TOKEN
       },
       body: JSON.stringify(data)
     })
@@ -22,11 +23,12 @@ export const post = async (endpoint: string, data: object) => {
 };
 export const get = async (endpoint: string) => {
   return (
-    fetch(SERVER_URL + endpoint, {
+    fetch(endpoint, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + TOKEN
       }
     })
       //.then(response => console.log(response.status, 'Status of the request'))
@@ -40,7 +42,7 @@ export const get = async (endpoint: string) => {
   );
 };
 export const del = async (endpoint: string, data?: any) => {
-  return fetch(SERVER_URL + endpoint, {
+  return fetch(endpoint, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
@@ -56,7 +58,7 @@ export const del = async (endpoint: string, data?: any) => {
     });
 };
 export const patch = async (endpoint: string, data: any) => {
-  return fetch(SERVER_URL + endpoint, {
+  return fetch(endpoint, {
     method: 'PATCH',
     headers: {
       Accept: 'application/json',

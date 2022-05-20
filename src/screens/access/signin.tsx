@@ -32,9 +32,9 @@ export const Signin = ({navigation}: any) => {
     };
     console.log(data, 'data');
 
-    const authurl = 'auth/v1/';
-    const endpoint = authurl + 'login';
-    const res = await post(endpoint, data).finally(() => setLoader(false));
+    // const authurl = 'auth/v1/';
+    // const endpoint = authurl + 'login';
+    const res = await loginUser(data).finally(() => setLoader(false));
     console.log(res, 'response');
     if (res._id !== undefined) {
       navigation.replace('mainBottomNavigation');

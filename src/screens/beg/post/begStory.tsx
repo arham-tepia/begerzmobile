@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {Alert, ScrollView, StyleSheet, View} from 'react-native';
+import {postBeg} from '../../../api/beg';
 import {Checkbox} from '../../../components/checkbox';
 import {MyButton} from '../../../components/myButton';
 import {MyTextInput} from '../../../components/myTextinput';
@@ -11,25 +12,27 @@ import {commonStyles} from '../../../styles/styles';
 import {BegHeadings} from './components/begHeadings';
 import {GreyCard} from './components/greyCard';
 
-export const TellYourStory = ({navigation}: any) => {
-  const [saveMode, setSavemode]: any = useState(false);
+export const TellYourStory = ({navigation, route}: any) => {
+  // const [saveMode, setSavemode]: any = useState(false);
   const [saveType, setSaveType]: any = useState('');
+  const [story, setStory]: any = useState('');
+  const [loader, setLoader]: any = useState(false);
 
   var subtext = 'Explain who you are and why you are creating this beg.';
 
   const allStoryTypes = [
     {
       name: 'Private',
-      desc: 'Only you and people you choose can watch your video',
+      desc: 'Only you and people you choose can watch your video'
     },
     {
       name: 'Unlisted',
-      desc: 'Anyone with the video link can watch your video',
+      desc: 'Anyone with the video link can watch your video'
     },
     {
       name: 'Public',
-      desc: 'Everyone can watch your video',
-    },
+      desc: 'Everyone can watch your video'
+    }
   ];
 
   function StoryType(props: any) {
@@ -43,13 +46,13 @@ export const TellYourStory = ({navigation}: any) => {
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '100%',
-          marginVertical: 5,
+          marginVertical: 5
         }}>
         <View
           style={{
             width: '10%',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'center'
             //height: '100%',
           }}>
           <Radio
@@ -67,8 +70,32 @@ export const TellYourStory = ({navigation}: any) => {
     );
   }
 
-  function onCompleteBeg() {
-    navigation.navigate('begIsReady');
+  async function onCompleteBeg() {
+    const r = route.params;
+    setLoader(true);
+    const data = {
+      publishType: saveType.toLowerCase(),
+      userId: '627d929fee9add11e100038e',
+      title: r.title,
+      textDescription: story,
+      thumbLink: r.media.thumbnail,
+      videoLink: r.media.video,
+      goalAmount: parseInt(r.begAmount),
+      goalDate: r.begDate,
+      status: 'active'
+    };
+    const res = await postBeg(data).finally(() => setLoader(false));
+    console.log(res, 'Post beg response');
+
+    if (res._id !== undefined) {
+      navigation.replace('begIsReady');
+    } else {
+      Alert.alert('unable to post beg!\n', res.message);
+    }
+  }
+
+  function disabled() {
+    return story.length < 8 || saveType.length < 2;
   }
 
   return (
@@ -84,6 +111,8 @@ export const TellYourStory = ({navigation}: any) => {
             style={styles.ti}
             multiline
             blurOnSubmit
+            onChangeText={setStory}
+            value={story}
           />
           <GreyCard>
             <View style={{width: '90%', marginTop: 10}}>
@@ -91,14 +120,14 @@ export const TellYourStory = ({navigation}: any) => {
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
-                  justifyContent: 'space-between',
+                  justifyContent: 'space-between'
                 }}>
                 <View
                   style={{
                     width: '10%',
                     alignItems: 'center',
                     justifyContent: 'flex-start',
-                    height: '100%',
+                    height: '100%'
                   }}>
                   <Radio active />
                 </View>
@@ -116,7 +145,7 @@ export const TellYourStory = ({navigation}: any) => {
                 style={{
                   width: '88%',
                   alignSelf: 'flex-end',
-                  marginTop: 10,
+                  marginTop: 10
                 }}>
                 {allStoryTypes.map((item: any) => {
                   return <StoryType item={item} />;
@@ -126,13 +155,13 @@ export const TellYourStory = ({navigation}: any) => {
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    marginVertical: 10,
+                    marginVertical: 10
                   }}>
                   <View
                     style={{
                       width: '10%',
                       alignItems: 'center',
-                      justifyContent: 'center',
+                      justifyContent: 'center'
                     }}>
                     <Checkbox />
                   </View>
@@ -150,6 +179,8 @@ export const TellYourStory = ({navigation}: any) => {
             title="Complete your beg"
             textStyles={{fontFamily: FONTS.P_REGULAR, letterSpacing: 0}}
             onPress={onCompleteBeg}
+            disabled={disabled() || loader}
+            loading={loader}
           />
           <View style={{marginBottom: 10}} />
           <MyButton
@@ -179,28 +210,28 @@ const styles = StyleSheet.create({
     color: '#28383ECC',
     fontSize: 12,
     lineHeight: 18,
-    width: '90%',
+    width: '90%'
   },
   tiContainer: {
     height: 180,
     borderRadius: 4,
     borderWidth: 1.25,
-    borderColor: '#28383ECC',
+    borderColor: '#28383ECC'
   },
   ti: {
     fontFamily: FONTS.M_REGULAR,
     fontSize: 10,
-    height: 170,
+    height: 170
   },
   cardHeading: {
     fontSize: 14,
     color: '#FFFFFF',
     fontWeight: '500',
-    lineHeight: 22,
+    lineHeight: 22
   },
   noteText: {
     color: 'rgba(40, 56, 62, 0.8)',
     fontSize: 12,
-    lineHeight: 18,
-  },
+    lineHeight: 18
+  }
 });

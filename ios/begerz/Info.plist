@@ -112,5 +112,7 @@
 		<string>Montserrat-ThinItalic.ttf</string>
 		<string>Montserrat-VariableFont_wght.ttf</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library Access</string>
 </dict>
 </plist>
