@@ -74,7 +74,7 @@ export const CreateBeg = ({navigation}: any) => {
 
   async function onVideoPick() {
     ImagePicker.openPicker({
-      mediaType: 'video'
+      mediaType: 'video',compressVideoPreset:'MediumQuality'
     }).then(video => {
       processVideo(video);
     });
