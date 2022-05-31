@@ -1,5 +1,12 @@
 import React from 'react';
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  StyleProp,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  ViewStyle
+} from 'react-native';
 import {ICONS} from '../constants/icons';
 
 interface Props {
@@ -9,6 +16,7 @@ interface Props {
   source?: any;
   onPress?(): void;
   pressable?: boolean;
+  style?: StyleProp<ViewStyle>;
 }
 
 export const Avatar = (props: Props) => {
@@ -21,12 +29,13 @@ export const Avatar = (props: Props) => {
         styles.main,
         styles.ratio,
         customSize && {height: size, width: size, borderRadius: size},
+        props.style
       ]}>
       {props.source !== undefined ? (
         <Image
           style={[
             styles.ratio,
-            customSize && {height: size, width: size, borderRadius: size},
+            customSize && {height: size, width: size, borderRadius: size}
           ]}
           source={source ?? ICONS.user}
         />
@@ -34,7 +43,7 @@ export const Avatar = (props: Props) => {
         <Image
           style={[
             styles.ratio,
-            customSize && {height: size, width: size, borderRadius: size},
+            customSize && {height: size, width: size, borderRadius: size}
           ]}
           source={ICONS.user}
         />
@@ -55,25 +64,25 @@ const styles = StyleSheet.create({
   ratio: {
     height: 50,
     width: 50,
-    borderRadius: 50,
+    borderRadius: 50
   },
   main: {
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   uploadIcon: {
     width: 25,
-    height: 25,
+    height: 25
   },
   verifiedIcon: {
     width: 18,
-    height: 18,
+    height: 18
   },
   sideIconContainer: {
     height: '100%',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    marginLeft: '-30%',
-  },
+    marginLeft: '-30%'
+  }
 });

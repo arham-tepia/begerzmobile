@@ -8,6 +8,7 @@ import {PersonSVG} from '../components/svgs/person';
 import {COLORS} from '../constants/colors';
 import {TabbarButton} from '../components/tabbarButton';
 import {PostBegStack} from './postBeg';
+import {HomeStack} from './homeRoutes';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -26,15 +27,15 @@ export const MainBottomNavigation = () => {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarActiveTintColor: COLORS.primary,
-        tabBarInactiveTintColor: 'black',
+        tabBarInactiveTintColor: 'black'
       }}>
       <BottomTabs.Screen
         name="bn-home"
-        component={Test}
+        component={HomeStack}
         options={{
           tabBarIcon: ({color, focused}) => (
             <HomeSVG color={color} focused={focused} />
-          ),
+          )
         }}
       />
       <BottomTabs.Screen
@@ -43,14 +44,14 @@ export const MainBottomNavigation = () => {
         options={{
           tabBarIcon: ({color, focused}) => (
             <SearchSVG color={color} focused={focused} />
-          ),
+          )
         }}
       />
       <BottomTabs.Screen
         name="bn-postBeg"
         component={PostBegStack}
         options={navigation => ({
-          tabBarButton: props => <TabbarButton navigation={navigation} />,
+          tabBarButton: props => <TabbarButton navigation={navigation} />
         })}
       />
       <BottomTabs.Screen
@@ -59,7 +60,7 @@ export const MainBottomNavigation = () => {
         options={{
           tabBarIcon: ({color, focused}) => (
             <HeartSVG color={color} focused={focused} />
-          ),
+          )
         }}
       />
       <BottomTabs.Screen
@@ -68,7 +69,7 @@ export const MainBottomNavigation = () => {
         options={{
           tabBarIcon: ({color, focused}) => (
             <PersonSVG color={color} focused={focused} />
-          ),
+          )
         }}
       />
     </BottomTabs.Navigator>

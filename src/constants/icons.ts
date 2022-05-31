@@ -18,9 +18,37 @@ const insta = require('../assets/images/icons/insta-outline.png');
 const twitter = require('../assets/images/icons/twitter-outline.png');
 const sharing = require('../assets/images/icons/sharing-outline.png');
 const mail = require('../assets/images/icons/mail-outline.png');
+const search = require('../assets/images/icons/search.png');
+const explore = require('../assets/images/icons/explore.png');
+const successText = require('../assets/images/icons/successText.png');
+const moneybagFull = require('../assets/images/icons/moneybagFull.png');
+const moneybaghd = require('../assets/images/icons/moneybaghd.png');
+const noimage = require('../assets/images/icons/no-image.png');
+const videocam = require('../assets/images/icons/videocam.png');
+const more = require('../assets/images/icons/more.png');
+const eyeWhite = require('../assets/images/icons/eyeWhite.png');
+const emojiAdmirable = require('../assets/images/emojis/admirable.png');
+const emojiBrilliant = require('../assets/images/emojis/brilliant.png');
+const emojiHilarious = require('../assets/images/emojis/hilarious.png');
+const emojiInformative = require('../assets/images/emojis/informative.png');
+const emojiInspiring = require('../assets/images/emojis/inspiring.png');
 
 const ICONS = {
   fullLogo,
+  moneybaghd,
+  videocam,
+  more,
+  eyeWhite,
+  emojiAdmirable,
+  emojiBrilliant,
+  emojiHilarious,
+  emojiInformative,
+  emojiInspiring,
+  noimage,
+  moneybagFull,
+  successText,
+  search,
+  explore,
   twitter,
   sharing,
   mail,
@@ -39,6 +67,6 @@ const ICONS = {
   eyeOpen,
   eyeClose,
   arrowBackPink,
-  logoWhite,
+  logoWhite
 };
 export {ICONS};

@@ -7,13 +7,14 @@ import {ArrowBack} from '../components/icons/arrowBack';
 import {ForgotPassword} from '../screens/access/forgot';
 import {ResetPassword} from '../screens/access/reset';
 import {Splash} from '../screens/access/splash';
+import {NavigationHeader} from '../components/navigationHeader';
 
 const Stack = createNativeStackNavigator();
 
 export const AccessStack = () => {
   const options = {
     headerLeft: () => <ArrowBack />,
-    headerTitle: () => <BrandingMain />,
+    headerTitle: () => <BrandingMain />
   };
 
   return (
@@ -26,7 +27,16 @@ export const AccessStack = () => {
       <Stack.Screen
         name="signin"
         component={Signin}
-        options={{headerLeft: () => <BrandingMain />, headerTitle: ''}}
+        //options={{headerLeft: () => <BrandingMain />, headerTitle: ''}}
+        options={{
+          header: () => (
+            <NavigationHeader
+              rightComponent={() => {
+                return null;
+              }}
+            />
+          )
+        }}
       />
       <Stack.Screen name="signup" component={Signup} options={options} />
       <Stack.Screen
