@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import {MyButton} from '../../components/myButton';
 import {MyTextInput} from '../../components/myTextinput';
@@ -57,7 +57,7 @@ export const Signup = ({navigation}: any) => {
       birthdate: '2005-04-21', //hardcoded
       role: 'customer',
       rights: ['full'],
-      status: 'active',
+      status: 'active'
     };
     const res = await createNewAccount(data).finally(() => setLoader(false));
     navigation.navigate('signin');
@@ -70,18 +70,21 @@ export const Signup = ({navigation}: any) => {
       lname.length < 2
     );
   }
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : 0;
+
   return (
     <>
       <View style={[commonStyles.main]}>
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+          keyboardVerticalOffset={keyboardVerticalOffset}
+          behavior="padding"
           style={{marginTop: 21}}>
           <ScrollView style={{width: '100%'}}>
             <View
               style={{
                 width: '100%',
                 alignItems: 'center',
-                alignSelf: 'center',
+                alignSelf: 'center'
               }}>
               <View style={{width: '95%'}}>
                 <AccessHeading>Sign Up</AccessHeading>
@@ -160,7 +163,7 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     letterSpacing: 0.4,
     color: '#7B7B7B',
-    marginTop: 8,
+    marginTop: 8
   },
   forgot: {
     fontSize: 14,
@@ -169,7 +172,7 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     textAlign: 'center',
     textDecorationLine: 'underline',
-    textDecorationColor: COLORS.primary,
+    textDecorationColor: COLORS.primary
   },
   bottomText: {
     fontSize: 14,
@@ -177,6 +180,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     textAlign: 'center',
     color: '#7B7B7B',
-    marginBottom: 20,
-  },
+    marginBottom: 20
+  }
 });

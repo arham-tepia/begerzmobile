@@ -32,9 +32,11 @@ const emojiBrilliant = require('../assets/images/emojis/brilliant.png');
 const emojiHilarious = require('../assets/images/emojis/hilarious.png');
 const emojiInformative = require('../assets/images/emojis/informative.png');
 const emojiInspiring = require('../assets/images/emojis/inspiring.png');
+const noData = require('../assets/images/icons/noData.png');
 
 const ICONS = {
   fullLogo,
+  noData,
   moneybaghd,
   videocam,
   more,

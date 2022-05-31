@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View, TextInput} from 'react-native';
+import {StyleSheet, View, TextInput, Image} from 'react-native';
 import {FONTS} from '../../constants/fonts';
+import {ICONS} from '../../constants/icons';
 import {commonStyles} from '../../styles/styles';
 import {SearchHeader} from './components/header';
 
@@ -22,6 +23,8 @@ export const SearchHomePage = () => {
           />
         }
       />
+
+      <Image source={ICONS.noData} style={{height: '90%', width: '90%'}} />
     </View>
   );
 };

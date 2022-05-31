@@ -40,10 +40,10 @@ export const NavigationHeader = (props: Props) => {
 
 const styles = StyleSheet.create({
   main: {
-    borderColor: 'red',
     height: 106,
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    backgroundColor: 'white'
   }
 });

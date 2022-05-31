@@ -9,13 +9,21 @@ import {COLORS} from '../constants/colors';
 import {TabbarButton} from '../components/tabbarButton';
 import {PostBegStack} from './postBeg';
 import {HomeStack} from './homeRoutes';
+import {Image} from 'react-native';
+import {ICONS} from '../constants/icons';
 
 const BottomTabs = createBottomTabNavigator();
 
 const Test = () => {
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <></>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white'
+      }}>
+      <Image source={ICONS.noData} style={{height: '90%', width: '90%'}} />
     </SafeAreaView>
   );
 };

@@ -1,13 +1,15 @@
+import {getToken} from '../helpers/tokenManagement';
 import {TOKEN} from './token';
 
 export const post = async (endpoint: string, data: object) => {
+  const token = await getToken();
   return (
     fetch(endpoint, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + TOKEN
+        Authorization: 'Bearer ' + token
       },
       body: JSON.stringify(data)
     })
@@ -22,13 +24,16 @@ export const post = async (endpoint: string, data: object) => {
   );
 };
 export const get = async (endpoint: string) => {
+  const token = await getToken();
+  console.log(token, 'Token');
+
   return (
     fetch(endpoint, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + TOKEN
+        Authorization: 'Bearer ' + token
       }
     })
       //.then(response => console.log(response.status, 'Status of the request'))

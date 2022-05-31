@@ -15,11 +15,15 @@ import {COLORS} from '../../constants/colors';
 import {commonStyles} from '../../styles/styles';
 import {AccessHeading} from './components/heading';
 import Toast from 'react-native-toast-message';
+import {useStore} from 'react-redux';
+import rememberMeAction from '../../redux/action/rememberMeAction';
+import {storeToken} from '../../helpers/tokenManagement';
 
 export const Signin = ({navigation}: any) => {
   const [email, setEmail]: any = useState('');
   const [password, setPassword]: any = useState('');
   const [loader, setLoader]: any = useState(false);
+  const store = useStore();
   var subtext =
     'Welcome to Begerz, Please put your credentials below to start using the app.';
 
@@ -33,6 +37,14 @@ export const Signin = ({navigation}: any) => {
     const res = await loginUser(data).finally(() => setLoader(false));
     console.log(res, 'response');
     if (res._id !== undefined) {
+      store.dispatch(
+        rememberMeAction({
+          email: email,
+          password: password,
+          rememberMe: true
+        })
+      );
+      storeToken(res.accessToken);
       navigation.replace('mainBottomNavigation');
     } else {
       Toast.show({
@@ -45,11 +57,14 @@ export const Signin = ({navigation}: any) => {
   function disabled() {
     return email.length < 8 || password.length < 8;
   }
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : 0;
+
   return (
     <>
       <SafeAreaView style={[commonStyles.main]}>
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+          behavior="padding"
+          keyboardVerticalOffset={keyboardVerticalOffset}
           style={{marginTop: 21}}>
           <ScrollView style={{width: '100%'}}>
             <View
@@ -129,6 +144,9 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     letterSpacing: 0.25,
     textAlign: 'center',
-    color: '#7B7B7B'
+    color: '#7B7B7B',
+    position: 'absolute',
+    bottom: 10,
+    alignSelf: 'center'
   }
 });

@@ -8,6 +8,7 @@ import {ForgotPassword} from '../screens/access/forgot';
 import {ResetPassword} from '../screens/access/reset';
 import {Splash} from '../screens/access/splash';
 import {NavigationHeader} from '../components/navigationHeader';
+import {View} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,16 +19,11 @@ export const AccessStack = () => {
   };
 
   return (
-    <Stack.Navigator screenOptions={{headerStyle: {backgroundColor: 'white'}}}>
-      <Stack.Screen
-        name="splash"
-        component={Splash}
-        options={{headerShown: false}}
-      />
+    <Stack.Navigator screenOptions={{headerShown: true}}>
       <Stack.Screen
         name="signin"
         component={Signin}
-        //options={{headerLeft: () => <BrandingMain />, headerTitle: ''}}
+        // options={{headerLeft: () => <BrandingMain />, headerTitle: ''}}
         options={{
           header: () => (
             <NavigationHeader
@@ -38,7 +34,19 @@ export const AccessStack = () => {
           )
         }}
       />
-      <Stack.Screen name="signup" component={Signup} options={options} />
+      <Stack.Screen
+        name="signup"
+        component={Signup}
+        options={{
+          header: () => (
+            <NavigationHeader
+              leftComponent={<ArrowBack />}
+              centerComponent={<BrandingMain />}
+              rightComponent={<View style={{width: '10%'}} />}
+            />
+          )
+        }}
+      />
       <Stack.Screen
         name="forgotPassword"
         component={ForgotPassword}

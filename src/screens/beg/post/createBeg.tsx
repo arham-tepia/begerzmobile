@@ -17,6 +17,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {ConvertDateToObject} from '../../../helpers/simplifyDateObject';
 import {MEDIA_URL} from '../../../api/url';
 import Toast from 'react-native-toast-message';
+import Video from 'react-native-video';
 
 // import {UploadPhoto} from './components/uploadPhoto';
 
@@ -29,6 +30,7 @@ export const CreateBeg = ({navigation}: any) => {
 
   const [begAmount, setBegAmount]: any = useState(0);
   const [datePicker, setDatePicker]: any = useState(false);
+  const [fileObj, setFileObj]: any = useState(false);
   const [date, setDate] = useState(new Date());
   const dateObj = ConvertDateToObject(date);
 
@@ -48,6 +50,14 @@ export const CreateBeg = ({navigation}: any) => {
         type: 'error',
         text1: 'Beg amount',
         text2: 'Minimum beg amount should be atleast $50'
+      });
+      return;
+    }
+    if (!signedUrl.uuid) {
+      Toast.show({
+        type: 'error',
+        text1: 'Video',
+        text2: 'Please select a video to continue'
       });
       return;
     }
@@ -74,8 +84,10 @@ export const CreateBeg = ({navigation}: any) => {
 
   async function onVideoPick() {
     ImagePicker.openPicker({
-      mediaType: 'video',compressVideoPreset:'MediumQuality'
+      mediaType: 'video',
+      compressVideoPreset: 'MediumQuality'
     }).then(video => {
+      setFileObj(video);
       processVideo(video);
     });
   }
@@ -158,6 +170,23 @@ export const CreateBeg = ({navigation}: any) => {
             <BegHeadings>Add a video or photo</BegHeadings>
             <Text style={styles.addSubtext}>{addSubtext}</Text>
             <View style={{marginBottom: 24}} />
+
+            {fileObj && (
+              <Video
+                source={{
+                  uri: fileObj.path
+                }}
+                controls
+                style={{
+                  width: '100%',
+                  height: 150,
+                  borderWidth: 1,
+                  borderRadius: 16,
+                  marginBottom: 10
+                }}
+              />
+            )}
+
             <MyButton
               title="Add video"
               textStyles={{fontFamily: FONTS.P_SEMIBOLD, letterSpacing: 0}}
