@@ -35,9 +35,13 @@ const emojiInspiring = require('../assets/images/emojis/inspiring.png');
 const noData = require('../assets/images/icons/noData.png');
 const payment = require('../assets/images/icons/payment.png');
 const chat = require('../assets/images/icons/chat.png');
+const send = require('../assets/images/icons/send.png');
+const heart = require('../assets/images/icons/heart.png');
 
 const ICONS = {
   fullLogo,
+  heart,
+  send,
   chat,
   payment,
   noData,

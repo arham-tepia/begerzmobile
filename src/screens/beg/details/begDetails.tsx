@@ -13,7 +13,7 @@ import {ChatIcon} from '../../../components/icons/chat';
 import {ConvertDateToObject} from '../../../helpers/simplifyDateObject';
 import {begDetailsStyles as styles} from './styles/begDetailsStyles';
 
-export const BegDetails = ({route}: any) => {
+export const BegDetails = ({route, navigation}: any) => {
   const begDetails = route.params.params.beg;
   const acheivements: {
     inspiring?: string;
@@ -158,7 +158,9 @@ export const BegDetails = ({route}: any) => {
               </View>
             </View>
             <View style={styles.cardBottomRow}>
-              <TouchableOpacity style={styles.cardBottomItem}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('begComments')}
+                style={styles.cardBottomItem}>
                 <ChatIcon />
                 <MyTextMulish
                   style={[styles.cardBottomItemText, {marginLeft: 13}]}>
