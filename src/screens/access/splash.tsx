@@ -24,11 +24,11 @@ export const Splash = ({navigation}: any) => {
       if (res._id !== undefined) {
         storeToken(res.accessToken);
         navigation.replace('mainBottomNavigation');
-      } else {
-        wait(1000).then(() => {
-          navigation.navigate('accessStack');
-        });
       }
+    } else {
+      wait(1000).then(() => {
+        navigation.navigate('accessStack');
+      });
     }
   }
 

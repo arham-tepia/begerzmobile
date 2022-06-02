@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, ImageBackground, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {Avatar} from '../../../components/avatar';
 import {WhiteEyeIcon} from '../../../components/icons/eyeWhite';
@@ -15,6 +15,7 @@ interface Props {
     thumbLink?: string;
     goalAmount?: string;
   };
+  onPress?(): void;
 }
 
 export const HomeBeg = (props: Props) => {
@@ -23,7 +24,7 @@ export const HomeBeg = (props: Props) => {
   const {data} = props;
   return (
     <View style={styles.main}>
-      <View style={styles.topRow}>
+      <TouchableOpacity onPress={props.onPress} style={styles.topRow}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Avatar customSize size={42} style={{borderRadius: 16}} />
           <View
@@ -43,7 +44,7 @@ export const HomeBeg = (props: Props) => {
         <View style={{minHeight: 42}}>
           <MoreIcon />
         </View>
-      </View>
+      </TouchableOpacity>
       <LinearGradient
         colors={['#676DFF', '#ED6C79']}
         start={{x: 0.0, y: 1.0}}

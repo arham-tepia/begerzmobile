@@ -4,7 +4,7 @@ import {getAllBegs} from '../../api/beg';
 import {HomeBeg} from './components/homeBeg';
 import {SuccessStories} from './components/successStories';
 
-export const Home = () => {
+export const Home = ({navigation}: any) => {
   const [begs, setBegs]: any = useState([]);
   const [loader, setLoader]: any = useState(false);
   async function GetData() {
@@ -18,7 +18,12 @@ export const Home = () => {
     GetData();
   }, []);
   function renderBegs({item}: any) {
-    return <HomeBeg data={item} />;
+    return (
+      <HomeBeg
+        onPress={() => navigation.navigate('home-begDetailsStack', {beg: item})}
+        data={item}
+      />
+    );
   }
   return (
     <View style={styles.main}>

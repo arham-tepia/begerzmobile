@@ -82,6 +82,7 @@ export const TellYourStory = ({navigation, route}: any) => {
       thumbLink: r.media.thumbnail,
       videoLink: r.media.video,
       goalAmount: parseInt(r.begAmount),
+      //goalDate: '2022-',
       goalDate: r.begDate,
       status: 'active'
     };
