@@ -114,7 +114,8 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     backgroundColor: 'white',
-    marginTop: 21
+    marginTop: 21,
+    paddingTop: 10
   },
   topRow: {
     flexDirection: 'row',

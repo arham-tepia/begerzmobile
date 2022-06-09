@@ -76,7 +76,12 @@ export const BegDetails = ({route, navigation}: any) => {
               </View>
             </View>
             <View style={styles.avatarRow}>
-              <Avatar customSize size={24} />
+              <Avatar
+                customSize
+                size={24}
+                pressable
+                onPress={() => navigation.navigate('details-begerProfile')}
+              />
               <MyTextMulish style={[styles.createdBytext, {marginLeft: 8}]}>
                 {begDetails._id} Created this beg
               </MyTextMulish>

@@ -7,6 +7,9 @@ import {ArrowBackBlack} from '../components/icons/arowBackBlack';
 import {SendIcon} from '../components/icons/sendIcon';
 import {MyTextMulish} from '../components/textMulish';
 import {ChipinStack} from './chipinRoutes';
+import {BegerProfile} from '../screens/beg/details/begerProfile';
+import {View} from 'react-native';
+import {MoreIcon} from '../components/icons/moreIcon';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +43,24 @@ export const BegDetailsStack = ({route}: any) => {
               }
             />
           )
+        })}
+      />
+      <Stack.Screen
+        name="details-begerProfile"
+        component={BegerProfile}
+        options={(navigation: any) => ({
+          // header: () => (
+          //   <NavigationHeader
+          //     leftComponent={<ArrowBackBlack />}
+          //     rightComponent={<MoreIcon styles={{marginRight: 16}} />}
+          //     centerComponent={
+          //       <MyTextMulish style={{fontSize: 20, fontWeight: '700'}}>
+          //         User
+          //       </MyTextMulish>
+          //     }
+          //   />
+          //)
+          headerShown: false
         })}
       />
       <Stack.Screen
