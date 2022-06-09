@@ -139,6 +139,9 @@ export const BegDetails = ({route, navigation}: any) => {
               <MyButton
                 title="Chip in"
                 style={styles.button}
+                onPress={() =>
+                  navigation.navigate('details-chipin', {beg: begDetails})
+                }
                 inverse
                 textStyles={styles.buttonText}
               />

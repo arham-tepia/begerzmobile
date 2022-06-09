@@ -40,9 +40,11 @@ const heart = require('../assets/images/icons/heart.png');
 const filter = require('../assets/images/icons/filter.png');
 const hashtag = require('../assets/images/icons/hashtag.png');
 const arrowRight = require('../assets/images/icons/arrowRight.png');
+const starColored = require('../assets/images/icons/starColored.png');
 
 const ICONS = {
   fullLogo,
+  starColored,
   arrowRight,
   hashtag,
   filter,

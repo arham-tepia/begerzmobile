@@ -6,9 +6,10 @@ import {
   Text,
   TextStyle,
   TouchableOpacity,
-  TouchableOpacityProps,
+  TouchableOpacityProps
 } from 'react-native';
 import {COLORS} from '../constants/colors';
+import {FONTS} from '../constants/fonts';
 
 interface Props extends TouchableOpacityProps {
   loading?: boolean;
@@ -37,7 +38,7 @@ export const MyButton = (props: Props) => {
         styles.main,
         inverse && styles.inverse,
         disabled && {backgroundColor: '#a1a1a1'},
-        style,
+        style
       ]}>
       {leftComponent && leftComponent}
       <Text style={[styles.title, inverse && styles.inverseText, textStyles]}>
@@ -62,23 +63,23 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     backgroundColor: COLORS.primary,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   title: {
-    fontFamily: 'System',
+    fontFamily: FONTS.Montserrat_REGULAR,
     fontSize: 14,
     // fontWeight: '500',
     // lineHeight: 16,
-    letterSpacing: 1.25,
+    //letterSpacing: 1.25,
     textAlign: 'center',
-    color: 'white',
+    color: 'white'
   },
   inverse: {
     backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: COLORS.primary,
+    borderColor: COLORS.primary
   },
   inverseText: {
-    color: COLORS.primary,
-  },
+    color: COLORS.primary
+  }
 });

@@ -6,6 +6,7 @@ import {BegComments} from '../screens/beg/details/comments';
 import {ArrowBackBlack} from '../components/icons/arowBackBlack';
 import {SendIcon} from '../components/icons/sendIcon';
 import {MyTextMulish} from '../components/textMulish';
+import {ChipinStack} from './chipinRoutes';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,13 @@ export const BegDetailsStack = ({route}: any) => {
               }
             />
           )
+        })}
+      />
+      <Stack.Screen
+        name="details-chipin"
+        component={ChipinStack}
+        options={(navigation: any) => ({
+          headerShown: false
         })}
       />
     </Stack.Navigator>

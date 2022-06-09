@@ -4,7 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native';
 
 interface Props {
@@ -32,12 +32,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 24,
     borderWidth: 2,
-    borderColor: '#DADADA',
+    borderColor: '#DADADA'
   },
   inner: {
     height: 10,
     width: 10,
     borderRadius: 10,
-    backgroundColor: '#DADADA',
-  },
+    backgroundColor: '#DADADA'
+  }
 });
