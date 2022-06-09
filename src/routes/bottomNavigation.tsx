@@ -11,6 +11,7 @@ import {PostBegStack} from './postBeg';
 import {HomeStack} from './homeRoutes';
 import {Image} from 'react-native';
 import {ICONS} from '../constants/icons';
+import {DiscoverStack} from './discoverRoutes';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -48,7 +49,7 @@ export const MainBottomNavigation = () => {
       />
       <BottomTabs.Screen
         name="bn-search"
-        component={Test}
+        component={DiscoverStack}
         options={{
           tabBarIcon: ({color, focused}) => (
             <SearchSVG color={color} focused={focused} />

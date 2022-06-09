@@ -37,9 +37,15 @@ const payment = require('../assets/images/icons/payment.png');
 const chat = require('../assets/images/icons/chat.png');
 const send = require('../assets/images/icons/send.png');
 const heart = require('../assets/images/icons/heart.png');
+const filter = require('../assets/images/icons/filter.png');
+const hashtag = require('../assets/images/icons/hashtag.png');
+const arrowRight = require('../assets/images/icons/arrowRight.png');
 
 const ICONS = {
   fullLogo,
+  arrowRight,
+  hashtag,
+  filter,
   heart,
   send,
   chat,
