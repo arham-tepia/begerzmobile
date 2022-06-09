@@ -41,9 +41,19 @@ const filter = require('../assets/images/icons/filter.png');
 const hashtag = require('../assets/images/icons/hashtag.png');
 const arrowRight = require('../assets/images/icons/arrowRight.png');
 const starColored = require('../assets/images/icons/starColored.png');
+const upload = require('../assets/images/icons/upload.png');
+const instagramFull = require('../assets/images/icons/instagramFull.png');
+const twitterFull = require('../assets/images/icons/twitterFull.png');
+const facebookFull = require('../assets/images/icons/facebookFull.png');
+const binFull = require('../assets/images/icons/binFull.png');
 
 const ICONS = {
   fullLogo,
+  binFull,
+  instagramFull,
+  twitterFull,
+  facebookFull,
+  upload,
   starColored,
   arrowRight,
   hashtag,
