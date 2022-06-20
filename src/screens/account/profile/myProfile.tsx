@@ -49,6 +49,7 @@ export const MyProfile = () => {
             </MyTextMulish>
             <View style={{marginTop: 25}} />
             <GradientButton icon={ICONS.binFull} title="Delete your account" />
+            <View style={{marginTop: 25}} />
           </View>
         </View>
       </ScrollView>

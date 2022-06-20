@@ -16,17 +16,58 @@ interface Props {
     goalAmount?: string;
   };
   onPress?(): void;
+  transparent?: boolean;
+  noGradient?: boolean;
+  hideUser?: boolean;
 }
 
 export const HomeBeg = (props: Props) => {
   const twidth = Dimensions.get('window').width;
   const width = twidth - 2;
   const {data} = props;
+
+  function OuterLayer({children}: any) {
+    if (!props.noGradient) {
+      return (
+        <LinearGradient
+          colors={['#676DFF', '#ED6C79']}
+          start={{x: 0.0, y: 1.0}}
+          end={{x: 1.0, y: 1.0}}
+          style={{
+            height: 281.25,
+            width: width,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+          {children}
+        </LinearGradient>
+      );
+    } else {
+      return (
+        <View
+          style={{
+            height: 281.25,
+            width: width,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+          {children}
+        </View>
+      );
+    }
+  }
+
   return (
-    <View style={styles.main}>
+    <View
+      style={[
+        styles.main,
+        props.transparent && {backgroundColor: 'transparent'}
+      ]}>
       <TouchableOpacity onPress={props.onPress} style={styles.topRow}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Avatar customSize size={42} style={{borderRadius: 16}} />
+          {!props.hideUser && (
+            <Avatar customSize size={42} style={{borderRadius: 16}} />
+          )}
           <View
             style={{
               marginLeft: 8,
@@ -38,14 +79,14 @@ export const HomeBeg = (props: Props) => {
             <MyTextMulish style={styles.title}>
               {data.title ?? 'No title provided'}
             </MyTextMulish>
-            <MyTextMulish style={styles.subtitle}>by user</MyTextMulish>
+            {<MyTextMulish style={styles.subtitle}>by user</MyTextMulish>}
           </View>
         </View>
         <View style={{minHeight: 42}}>
           <MoreIcon />
         </View>
       </TouchableOpacity>
-      <LinearGradient
+      {/* <LinearGradient
         colors={['#676DFF', '#ED6C79']}
         start={{x: 0.0, y: 1.0}}
         end={{x: 1.0, y: 1.0}}
@@ -54,7 +95,8 @@ export const HomeBeg = (props: Props) => {
           width: width,
           alignItems: 'center',
           justifyContent: 'center'
-        }}>
+        }}> */}
+      <OuterLayer>
         <View
           style={{
             height: 276.25,
@@ -104,7 +146,8 @@ export const HomeBeg = (props: Props) => {
             </View>
           </View>
         </View>
-      </LinearGradient>
+      </OuterLayer>
+      {/* </LinearGradient> */}
     </View>
   );
 };

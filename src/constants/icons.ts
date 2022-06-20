@@ -46,9 +46,19 @@ const instagramFull = require('../assets/images/icons/instagramFull.png');
 const twitterFull = require('../assets/images/icons/twitterFull.png');
 const facebookFull = require('../assets/images/icons/facebookFull.png');
 const binFull = require('../assets/images/icons/binFull.png');
+const arrowRightBlack = require('../assets/images/icons/arrowRightBlack.png');
+const arrowDownBlack = require('../assets/images/icons/arrowDownBlack.png');
+const arrowDownFilled = require('../assets/images/icons/arrowDownFilled.png');
+const infoBig = require('../assets/images/icons/infoBig.png');
+const linkStraight = require('../assets/images/icons/linkStraight.png');
 
 const ICONS = {
   fullLogo,
+  linkStraight,
+  arrowDownFilled,
+  infoBig,
+  arrowRightBlack,
+  arrowDownBlack,
   binFull,
   instagramFull,
   twitterFull,

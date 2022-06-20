@@ -12,7 +12,7 @@ import {HomeStack} from './homeRoutes';
 import {Image} from 'react-native';
 import {ICONS} from '../constants/icons';
 import {DiscoverStack} from './discoverRoutes';
-import {ProfileRoutes} from './profileRoutes';
+import {AccountRoutes} from './accountRoutes';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -74,8 +74,8 @@ export const MainBottomNavigation = () => {
         }}
       />
       <BottomTabs.Screen
-        name="bn-profile"
-        component={ProfileRoutes}
+        name="bn-accounts"
+        component={AccountRoutes}
         options={{
           tabBarIcon: ({color, focused}) => (
             <PersonSVG color={color} focused={focused} />
