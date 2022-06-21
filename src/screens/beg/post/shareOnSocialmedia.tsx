@@ -11,7 +11,7 @@ import {BegHeadings} from './components/begHeadings';
 import {Divider} from './components/divider';
 import {ShareLinkBox} from './components/shareLinkBox';
 
-export const ShareBegOnSocialMedia = () => {
+export const ShareBegOnSocialMedia = ({navigation}: any) => {
   var subtext = 'We recommed asking least 3-5 firends to help you share';
   var subtext1 = 'sharing on a social network can raise up to 5x more!';
 
@@ -19,28 +19,28 @@ export const ShareBegOnSocialMedia = () => {
     {
       name: 'mail',
       icon: ICONS.mail,
-      onPress: () => {},
+      onPress: () => {}
     },
     {
       name: 'insta',
       icon: ICONS.insta,
-      onPress: () => {},
+      onPress: () => {}
     },
     {
       name: 'fb',
       icon: ICONS.facebook,
-      onPress: () => {},
+      onPress: () => {}
     },
     {
       name: 'share',
       icon: ICONS.sharing,
-      onPress: () => {},
+      onPress: () => {}
     },
     {
       name: 'twitter',
       icon: ICONS.twitter,
-      onPress: () => {},
-    },
+      onPress: () => {}
+    }
   ];
 
   const RenderIcon = (item: any) => {
@@ -60,21 +60,28 @@ export const ShareBegOnSocialMedia = () => {
           style={{
             textAlign: 'center',
             fontFamily: FONTS.P_SEMIBOLD,
-            color: '#000000',
+            color: '#000000'
           }}>
           Share your beg
         </BegHeadings>
-        <MyTextPoppins style={[styles.subHeading, {marginTop: 10}]}>
+        <MyTextPoppins
+          style={[
+            styles.subHeading,
+            {marginTop: 10, width: '90%', alignSelf: 'center'}
+          ]}>
           {subtext}
         </MyTextPoppins>
-        <MyTextPoppins style={styles.subHeading}>{subtext1}</MyTextPoppins>
+        <MyTextPoppins
+          style={[styles.subHeading, {width: '95%', alignSelf: 'center'}]}>
+          {subtext1}
+        </MyTextPoppins>
         <Divider
           style={{
             borderColor: 'rgba(40, 56, 62, 0.8)',
             borderWidth: 0.8,
             marginVertical: 28,
             width: '100%',
-            alignSelf: 'center',
+            alignSelf: 'center'
           }}
         />
 
@@ -84,7 +91,7 @@ export const ShareBegOnSocialMedia = () => {
             flexDirection: 'row',
             alignItems: 'center',
             marginBottom: 24,
-            justifyContent: 'center',
+            justifyContent: 'center'
           }}>
           {social.map(RenderIcon)}
         </View>
@@ -101,11 +108,14 @@ export const ShareBegOnSocialMedia = () => {
           textStyles={{
             fontFamily: FONTS.P_REGULAR,
             fontWeight: '600',
-            letterSpacing: 0,
+            letterSpacing: 0
           }}
+          onPress={() => navigation.navigate('bn-home')}
         />
         <View style={{marginTop: 10}} />
-        <MyTextPoppins onPress={() => {}} style={styles.skipText}>
+        <MyTextPoppins
+          onPress={() => navigation.navigate('myBegDashboard')}
+          style={styles.skipText}>
           Skip,View Beg Dashboard
         </MyTextPoppins>
       </View>
@@ -118,22 +128,22 @@ const styles = StyleSheet.create({
     color: '#28383E',
     lineHeight: 20,
     opacity: 0.8,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   heading: {
     color: '#000000',
     fontFamily: FONTS.P_MEDIUM,
-    lineHeight: 22,
+    lineHeight: 22
   },
   ti: {
     borderRadius: 8,
-    borderColor: 'rgba(40,56,61,0.8)',
+    borderColor: 'rgba(40,56,61,0.8)'
   },
   skipText: {
     color: COLORS.primary,
     fontSize: 12,
     textAlign: 'center',
     textDecorationColor: COLORS.primary,
-    textDecorationLine: 'underline',
-  },
+    textDecorationLine: 'underline'
+  }
 });

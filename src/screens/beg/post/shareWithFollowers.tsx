@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {MyButton} from '../../../components/myButton';
 import {MyTextInput} from '../../../components/myTextinput';
 import {MyTextPoppins} from '../../../components/textPoppins';
 import {COLORS} from '../../../constants/colors';
 import {FONTS} from '../../../constants/fonts';
+import {
+  removeItemOnceFromArray,
+  searchInArrayOfObjectsWithID
+} from '../../../helpers/searchInArrayOfObjects';
 import {commonStyles} from '../../../styles/styles';
 import {BegHeadings} from './components/begHeadings';
 import {FollowerComponent} from './components/follwerComponent';
@@ -12,6 +16,29 @@ import {FollowerComponent} from './components/follwerComponent';
 export const ShareBegWithFollowers = ({navigation}: any) => {
   var subtext = 'We recommed asking least 3-5 firends to help you share';
   var subtext1 = 'sharing on a social network can raise up to 5x more!';
+  const [selectedFollowers, setSelectedFollowers]: any = useState([]);
+  const followers = [
+    {name: 'john_doe', id: '1'},
+    {name: 'jone_doe', id: '2'},
+    {name: 'jake_doe', id: '3'}
+  ];
+  function renderFollowers(item: any) {
+    return (
+      <FollowerComponent
+        onPress={() => onFollowerSelect(item)}
+        name={item.name}
+        active={searchInArrayOfObjectsWithID(item.id, selectedFollowers)}
+      />
+    );
+  }
+  function onFollowerSelect(item: any) {
+    if (searchInArrayOfObjectsWithID(item.id, selectedFollowers)) {
+      var res = removeItemOnceFromArray(item, selectedFollowers);
+      setSelectedFollowers(res);
+    } else {
+      setSelectedFollowers([...selectedFollowers, item]);
+    }
+  }
   return (
     <View style={commonStyles.main}>
       <View style={{width: '90%', marginTop: 10}}>
@@ -19,30 +46,39 @@ export const ShareBegWithFollowers = ({navigation}: any) => {
           style={{
             textAlign: 'center',
             fontFamily: FONTS.P_SEMIBOLD,
-            color: '#000000',
+            color: '#000000'
           }}>
           Share your beg
         </BegHeadings>
-        <MyTextPoppins style={[styles.subHeading, {marginTop: 10}]}>
+        <MyTextPoppins
+          style={[
+            styles.subHeading,
+            {
+              marginTop: 10,
+              width: '90%',
+              alignSelf: 'center'
+            }
+          ]}>
           {subtext}
         </MyTextPoppins>
-        <MyTextPoppins style={styles.subHeading}>{subtext1}</MyTextPoppins>
+        <MyTextPoppins
+          style={[styles.subHeading, {width: '95%', alignSelf: 'center'}]}>
+          {subtext1}
+        </MyTextPoppins>
         <View style={{marginTop: 15, width: '100%'}}>
           <MyTextPoppins style={styles.heading}>
             Select Followers to Share With:
           </MyTextPoppins>
         </View>
         <View style={{width: '90%', alignSelf: 'center'}}>
-          <FollowerComponent />
-          <FollowerComponent />
-          <FollowerComponent />
+          {followers.map(renderFollowers)}
         </View>
         <MyTextPoppins
           style={{
             fontFamily: FONTS.P_SEMIBOLD,
             fontSize: 12,
             color: '#3B3E44',
-            marginTop: 10,
+            marginTop: 10
           }}>
           Invite Users
         </MyTextPoppins>
@@ -54,7 +90,7 @@ export const ShareBegWithFollowers = ({navigation}: any) => {
             color: '#7B7B7B',
             width: '95%',
             textAlign: 'left',
-            alignSelf: 'center',
+            alignSelf: 'center'
           }}>
           Enter each email address with a comma separation
         </MyTextPoppins>
@@ -63,7 +99,7 @@ export const ShareBegWithFollowers = ({navigation}: any) => {
             width: '40%',
             marginTop: 30,
             alignItems: 'center',
-            alignSelf: 'center',
+            alignSelf: 'center'
           }}>
           <MyButton
             title="Share"
@@ -72,7 +108,7 @@ export const ShareBegWithFollowers = ({navigation}: any) => {
               fontSize: 16,
               alignSelf: 'center',
               letterSpacing: 0,
-              fontWeight: '600',
+              fontWeight: '600'
             }}
           />
         </View>
@@ -87,7 +123,7 @@ export const ShareBegWithFollowers = ({navigation}: any) => {
           textStyles={{
             fontFamily: FONTS.P_REGULAR,
             fontWeight: '600',
-            letterSpacing: 0,
+            letterSpacing: 0
           }}
           onPress={() => navigation.navigate('shareOnSocial')}
         />
@@ -105,22 +141,22 @@ const styles = StyleSheet.create({
     color: '#28383E',
     lineHeight: 20,
     opacity: 0.8,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   heading: {
     color: '#000000',
     fontFamily: FONTS.P_MEDIUM,
-    lineHeight: 22,
+    lineHeight: 22
   },
   ti: {
     borderRadius: 8,
-    borderColor: 'rgba(40,56,61,0.8)',
+    borderColor: 'rgba(40,56,61,0.8)'
   },
   skipText: {
     color: COLORS.primary,
     fontSize: 12,
     textAlign: 'center',
     textDecorationColor: COLORS.primary,
-    textDecorationLine: 'underline',
-  },
+    textDecorationLine: 'underline'
+  }
 });

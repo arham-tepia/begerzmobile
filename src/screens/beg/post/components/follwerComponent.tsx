@@ -8,20 +8,24 @@ import {COLORS} from '../../../../constants/colors';
 interface Props {
   name?: string;
   source?: any;
+  active?: boolean;
+  onPress?(): void;
 }
 
 export const FollowerComponent = (props: Props) => {
   return (
     <View style={styles.main}>
       <Radio
+        onPress={props.onPress}
         innerStyle={{backgroundColor: COLORS.primary}}
         mainStyle={{
           borderColor: COLORS.primary,
           height: 20,
           width: 20,
           borderRadius: 16,
-          marginRight: 15,
+          marginRight: 15
         }}
+        active={props.active}
       />
       <Avatar
         source={props.source && {uri: props.source}}
@@ -40,11 +44,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     alignItems: 'center',
-    marginVertical: 5,
+    marginVertical: 5
   },
   name: {
     color: COLORS.primary,
     lineHeight: 20,
-    marginLeft: 10,
-  },
+    marginLeft: 10
+  }
 });
