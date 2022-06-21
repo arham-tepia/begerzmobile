@@ -1,12 +1,5 @@
-import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import React from 'react';
+import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {DrawerItemList} from '@react-navigation/drawer';
 import {useEffect} from 'react';
 import {BrandingMain} from './branding';

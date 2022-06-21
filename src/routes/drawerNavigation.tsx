@@ -1,7 +1,5 @@
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import {Image, SafeAreaView} from 'react-native';
-import {ICONS} from '../constants/icons';
 import {AccountRoutes} from './accountRoutes';
 import {MyBegDashboard} from '../screens/account/begDashboard/myBegDash';
 import {ArrowBackBlack} from '../components/icons/arowBackBlack';
