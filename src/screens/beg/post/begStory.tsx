@@ -18,6 +18,7 @@ export const TellYourStory = ({navigation, route}: any) => {
   const [saveType, setSaveType]: any = useState('');
   const [story, setStory]: any = useState('');
   const [loader, setLoader]: any = useState(false);
+  const [instant, setInstant]: any = useState(false);
 
   var subtext = 'Explain who you are and why you are creating this beg.';
 
@@ -79,6 +80,7 @@ export const TellYourStory = ({navigation, route}: any) => {
       userId: '627d929fee9add11e100038e',
       title: r.title,
       textDescription: story,
+      htmlDescription: story,
       thumbLink: r.media.thumbnail,
       videoLink: r.media.video,
       goalAmount: parseInt(r.begAmount),
@@ -176,7 +178,10 @@ export const TellYourStory = ({navigation, route}: any) => {
                         alignItems: 'center',
                         justifyContent: 'center'
                       }}>
-                      <Checkbox />
+                      <Checkbox
+                        active={instant}
+                        onPress={() => setInstant(!instant)}
+                      />
                     </View>
                     <View style={{width: '88%'}}>
                       <MyTextPoppins style={styles.cardHeading}>

@@ -18,6 +18,8 @@ import {AccessHeading} from './components/heading';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {ConvertDateToObject} from '../../helpers/simplifyDateObject';
 import {createNewAccount} from '../../api/accounts';
+import {ErrorText} from '../../components/errorText';
+import {ERRORS} from '../../helpers/errors';
 
 export const Signup = ({navigation}: any) => {
   const [datePicker, setDatePicker]: any = useState(false);
@@ -26,6 +28,7 @@ export const Signup = ({navigation}: any) => {
   const [email, setEmail]: any = useState('');
   const [password, setPassword]: any = useState('');
   const [loader, setLoader]: any = useState(false);
+  const [error, setError]: any = useState(false);
   const [date, setDate] = useState(new Date());
   var subtext =
     'Welcome to Begerz, Please put your credentials below to start using the app.';
@@ -45,6 +48,7 @@ export const Signup = ({navigation}: any) => {
   const dateObj = ConvertDateToObject(date);
 
   async function onRegister() {
+    setError(false);
     setLoader(true);
     const dob = dateObj.year + '-' + dateObj.monthNumber + '-' + dateObj.date;
     setLoader(true);
@@ -60,7 +64,13 @@ export const Signup = ({navigation}: any) => {
       status: 'active'
     };
     const res = await createNewAccount(data).finally(() => setLoader(false));
-    navigation.navigate('signin');
+    console.log(res, 'response');
+    if (res.message === 'username and email must be unique') {
+      setError(true);
+    }
+    if (res.message === 'account created successfully') {
+      navigation.navigate('signin');
+    }
   }
   function disabled() {
     return (
@@ -96,6 +106,7 @@ export const Signup = ({navigation}: any) => {
                   onChangeText={setFname}
                   value={fname}
                 />
+
                 <View style={{marginTop: 38}} />
                 <MyTextInput
                   label="Last Name"
@@ -110,6 +121,9 @@ export const Signup = ({navigation}: any) => {
                   onChangeText={setEmail}
                   value={email}
                 />
+                {error && (
+                  <ErrorText>{ERRORS.signup.emailalreadytaken}</ErrorText>
+                )}
                 <View style={{marginTop: 38}} />
                 <MyTextInput
                   label="Password"
@@ -141,7 +155,9 @@ export const Signup = ({navigation}: any) => {
           </ScrollView>
           <Text style={styles.bottomText}>
             {'Already have an account? '}{' '}
-            <Text onPress={() => {}} style={{color: COLORS.primary}}>
+            <Text
+              onPress={() => navigation.navigate('signin')}
+              style={{color: COLORS.primary}}>
               Sign In
             </Text>
           </Text>

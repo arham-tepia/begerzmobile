@@ -7,6 +7,7 @@ interface PostBeg {
   userId: string;
   title: string;
   textDescription: string;
+  htmlDescription: string;
   thumbLink: string;
   videoLink: string;
   goalAmount: number;

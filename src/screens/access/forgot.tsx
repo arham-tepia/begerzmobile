@@ -5,7 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View,
+  View
 } from 'react-native';
 import {MyButton} from '../../components/myButton';
 import {MyTextInput} from '../../components/myTextinput';
@@ -16,10 +16,13 @@ import {AccessHeading} from './components/heading';
 export const ForgotPassword = ({navigation}: any) => {
   var subtext =
     'Welcome to Begerz, Please put your credentials below to start using the app.';
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : 0;
+
   return (
     <View style={[commonStyles.main]}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+        behavior="padding"
+        keyboardVerticalOffset={keyboardVerticalOffset}
         style={{marginTop: 21}}>
         <ScrollView style={{width: '100%'}}>
           <View
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     letterSpacing: 0.4,
     color: '#7B7B7B',
-    marginTop: 8,
+    marginTop: 8
   },
   forgot: {
     fontSize: 14,
@@ -61,9 +64,9 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     textAlign: 'center',
     textDecorationLine: 'underline',
-    textDecorationColor: COLORS.primary,
+    textDecorationColor: COLORS.primary
   },
   bottomText: {
-    marginBottom: 30,
-  },
+    marginBottom: 30
+  }
 });

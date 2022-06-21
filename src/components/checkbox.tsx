@@ -9,7 +9,7 @@ interface Props {
 export const Checkbox = (props: Props) => {
   return (
     <TouchableOpacity onPress={props.onPress} style={styles.main}>
-      <></>
+      {props.active && <View style={styles.active} />}
     </TouchableOpacity>
   );
 };
@@ -22,6 +22,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 3,
     borderWidth: 1.5,
-    borderColor: 'white',
+    borderColor: 'white'
   },
+  active: {
+    height: 9,
+    width: 9,
+    backgroundColor: 'white'
+  }
 });

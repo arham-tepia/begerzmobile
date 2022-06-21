@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import {CalendarIcon} from '../../../components/icons/calendar';
 import {InfoIcon} from '../../../components/icons/info';
 import {LinkIcon} from '../../../components/icons/linkIcon';
@@ -18,6 +24,8 @@ import {ConvertDateToObject} from '../../../helpers/simplifyDateObject';
 import {MEDIA_URL} from '../../../api/url';
 import Toast from 'react-native-toast-message';
 import Video from 'react-native-video';
+import {MyTextMulish} from '../../../components/textMulish';
+import {COLORS} from '../../../constants/colors';
 
 // import {UploadPhoto} from './components/uploadPhoto';
 
@@ -114,6 +122,12 @@ export const CreateBeg = ({navigation}: any) => {
   function disabled() {
     return title.length < 2;
   }
+
+  function onMediaRemove() {
+    setFileObj(false);
+    setSignedUrl([]);
+  }
+
   return (
     <>
       <View style={[commonStyles.main]}>
@@ -172,27 +186,39 @@ export const CreateBeg = ({navigation}: any) => {
             <View style={{marginBottom: 24}} />
 
             {fileObj && (
-              <Video
-                source={{
-                  uri: fileObj.path
-                }}
-                controls
-                style={{
-                  width: '100%',
-                  height: 150,
-                  borderWidth: 1,
-                  borderRadius: 16,
-                  marginBottom: 10
-                }}
-              />
+              <View>
+                <MyTextMulish
+                  onPress={onMediaRemove}
+                  style={{
+                    color: COLORS.primary,
+                    textAlign: 'right',
+                    marginBottom: 5,
+                    fontWeight: '600'
+                  }}>
+                  Remove
+                </MyTextMulish>
+                <Video
+                  source={{
+                    uri: fileObj.path
+                  }}
+                  controls
+                  style={{
+                    width: '100%',
+                    height: 150,
+                    borderWidth: 1,
+                    borderRadius: 16,
+                    marginBottom: 10
+                  }}
+                />
+              </View>
             )}
-
             <MyButton
               title="Add video"
               textStyles={{fontFamily: FONTS.P_SEMIBOLD, letterSpacing: 0}}
               leftComponent={<LinkIcon />}
               onPress={onVideoPick}
               loading={loader}
+              disabled={loader}
             />
             <Divider style={{marginVertical: 12}} />
             {/* <UploadPhoto /> */}

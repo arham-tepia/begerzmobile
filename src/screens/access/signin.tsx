@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {createRef, useRef, useState} from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -18,17 +18,21 @@ import Toast from 'react-native-toast-message';
 import {useStore} from 'react-redux';
 import rememberMeAction from '../../redux/action/rememberMeAction';
 import {storeToken} from '../../helpers/tokenManagement';
+import {CRITERIAS, ERRORS} from '../../helpers/errors';
+import {ErrorText} from '../../components/errorText';
 
 export const Signin = ({navigation}: any) => {
   const [email, setEmail]: any = useState('');
   const [password, setPassword]: any = useState('');
   const [loader, setLoader]: any = useState(false);
+  const [error, setError]: any = useState(false);
   const store = useStore();
   var subtext =
     'Welcome to Begerz, Please put your credentials below to start using the app.';
 
   async function onLogin() {
     setLoader(true);
+    setError(false);
     const data = {
       username: email.trim(),
       password: password.trim(),
@@ -52,6 +56,7 @@ export const Signin = ({navigation}: any) => {
         text1: 'Auth',
         text2: res.message
       });
+      setError(true);
     }
   }
   function disabled() {
@@ -83,6 +88,7 @@ export const Signin = ({navigation}: any) => {
                   onChangeText={setEmail}
                   value={email}
                 />
+                {error && <ErrorText>{ERRORS.signin.emailnotvalid}</ErrorText>}
                 <View style={{marginTop: 38}} />
                 <MyTextInput
                   label="Password"
@@ -91,12 +97,16 @@ export const Signin = ({navigation}: any) => {
                   onChangeText={setPassword}
                   value={password}
                 />
+                {error && (
+                  <ErrorText>{ERRORS.signin.passwordnotvalid}</ErrorText>
+                )}
                 <View style={{marginTop: 38}} />
                 <MyButton
                   title="SIGN IN"
                   onPress={onLogin}
                   loading={loader}
-                  disabled={loader || disabled()}
+                  //disabled={loader || disabled()}
+                  disabled={loader}
                 />
                 <View style={{marginTop: 38}} />
                 <Text
@@ -117,7 +127,7 @@ export const Signin = ({navigation}: any) => {
           </Text>
         </KeyboardAvoidingView>
       </SafeAreaView>
-      <Toast position="bottom" />
+      {/* <Toast position="bottom" /> */}
     </>
   );
 };

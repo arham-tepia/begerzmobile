@@ -8,7 +8,7 @@ import {
   TextInputProps,
   TouchableOpacity,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native';
 import {COLORS} from '../constants/colors';
 import {ICONS} from '../constants/icons';
@@ -19,6 +19,7 @@ interface Props extends TextInputProps {
   focused?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   rightComponentStyles?: StyleProp<ViewStyle>;
+  ref?: any;
 }
 
 export const MyTextInput = (props: Props) => {
@@ -29,6 +30,8 @@ export const MyTextInput = (props: Props) => {
     secureTextEntry,
     style,
     containerStyle,
+    onFocus,
+    onBlur,
     ...rest
   } = props;
   const [state, setState]: any = useState(false);
@@ -41,28 +44,35 @@ export const MyTextInput = (props: Props) => {
       style={[
         styles.container,
         (focused || state) && styles.highlightedContainer,
-        containerStyle,
+        containerStyle
       ]}>
       {label && (
         <View style={styles.labelContainer}>
           <Text
             style={[
               styles.label,
-              (focused || state) && {color: COLORS.primary},
+              (focused || state) && {color: COLORS.primary}
             ]}>
             {label}
           </Text>
         </View>
       )}
       <TextInput
+        ref={props.ref}
         style={[
           styles.textInput,
           rightComponent || secureTextEntry ? {width: '75%'} : {width: '90%'},
-          style,
+          style
         ]}
         placeholderTextColor="#00000061"
-        onFocus={() => setState(true)}
-        onBlur={() => setState(false)}
+        onFocus={(s: any) => {
+          setState(true);
+          onFocus && onFocus(s);
+        }}
+        onBlur={e => {
+          setState(false);
+          onBlur && onBlur(e);
+        }}
         secureTextEntry={secure}
         {...rest}
       />
@@ -94,42 +104,42 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     flexDirection: 'row',
-    marginVertical: 5,
+    marginVertical: 5
   },
   labelContainer: {
     position: 'absolute',
     backgroundColor: '#FFF',
     top: -10,
     left: 18,
-    zIndex: 50,
+    zIndex: 50
   },
   textInput: {
     minHeight: 24,
     width: '80%',
-    color: '#000000DE',
+    color: '#000000DE'
   },
   iconContainer: {
     width: '15%',
     height: '100%',
     alignItems: 'flex-end',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   label: {
     color: '#28383ECC',
     fontSize: 12,
     lineHeight: 16,
     letterSpacing: 0.4,
-    fontWeight: '400',
+    fontWeight: '400'
   },
   highlightedContainer: {
-    borderColor: COLORS.primary,
+    borderColor: COLORS.primary
   },
   eyeClose: {
     height: 24,
-    width: 24,
+    width: 24
   },
   eyeOpen: {
     height: 15,
-    width: 22,
-  },
+    width: 22
+  }
 });
