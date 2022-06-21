@@ -51,9 +51,11 @@ const arrowDownBlack = require('../assets/images/icons/arrowDownBlack.png');
 const arrowDownFilled = require('../assets/images/icons/arrowDownFilled.png');
 const infoBig = require('../assets/images/icons/infoBig.png');
 const linkStraight = require('../assets/images/icons/linkStraight.png');
+const menu = require('../assets/images/icons/menu.png');
 
 const ICONS = {
   fullLogo,
+  menu,
   linkStraight,
   arrowDownFilled,
   infoBig,

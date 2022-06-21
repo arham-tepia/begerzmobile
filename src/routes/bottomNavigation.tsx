@@ -13,6 +13,7 @@ import {Image} from 'react-native';
 import {ICONS} from '../constants/icons';
 import {DiscoverStack} from './discoverRoutes';
 import {AccountRoutes} from './accountRoutes';
+import {DrawerNavigation} from './drawerNavigation';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -75,7 +76,7 @@ export const MainBottomNavigation = () => {
       />
       <BottomTabs.Screen
         name="bn-accounts"
-        component={AccountRoutes}
+        component={DrawerNavigation}
         options={{
           tabBarIcon: ({color, focused}) => (
             <PersonSVG color={color} focused={focused} />

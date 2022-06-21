@@ -6,6 +6,7 @@ import {MyProfile} from '../screens/account/profile/myProfile';
 import {FONTS} from '../constants/fonts';
 import {ArrowBackBlack} from '../components/icons/arowBackBlack';
 import {MyBegDashboard} from '../screens/account/begDashboard/myBegDash';
+import {PublicProfile} from '../screens/account/public/publicProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,10 +23,11 @@ export const AccountRoutes = () => {
         headerShadowVisible: true
       }}>
       <Stack.Screen
-        name="profile-main"
-        component={ProfileMain}
+        name="publicProfile"
+        component={PublicProfile}
         options={(navigation: any) => ({
-          header: props => <NavigationHeader rightComponent={() => null} />
+          header: props => <NavigationHeader rightComponent={() => null} />,
+          headerShown: false
         })}
       />
       <Stack.Screen
@@ -36,14 +38,14 @@ export const AccountRoutes = () => {
           headerTitle: 'My Profile'
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="myBegDashboard"
         component={MyBegDashboard}
         options={{
           headerLeft: () => <ArrowBackBlack />,
           headerTitle: 'My Beg Dashboard'
         }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };
