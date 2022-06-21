@@ -19,8 +19,13 @@ export const Splash = ({navigation}: any) => {
         password: state.password.trim(),
         role: 'customer'
       };
-      const res = await loginUser(data);
+      const res = await loginUser(data).catch(e => {
+        console.log(e, 'This is error');
+      });
       console.log(res, 'response');
+      if (res === undefined) {
+        navigation.navigate('accessStack');
+      }
       if (res._id !== undefined) {
         storeToken(res.accessToken);
         navigation.replace('mainBottomNavigation');

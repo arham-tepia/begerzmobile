@@ -38,7 +38,16 @@ export const Signin = ({navigation}: any) => {
       password: password.trim(),
       role: 'customer'
     };
-    const res = await loginUser(data).finally(() => setLoader(false));
+    const res = await loginUser(data)
+      .catch(e => {
+        Toast.show({
+          type: 'error',
+          text1: 'Network Request Failed',
+          text2: e
+        });
+        setLoader(false);
+      })
+      .finally(() => setLoader(false));
     console.log(res, 'response');
     if (res._id !== undefined) {
       store.dispatch(
@@ -51,11 +60,11 @@ export const Signin = ({navigation}: any) => {
       storeToken(res.accessToken);
       navigation.replace('mainBottomNavigation');
     } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Auth',
-        text2: res.message
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Auth',
+      //   text2: res.message
+      // });
       setError(true);
     }
   }
@@ -127,7 +136,7 @@ export const Signin = ({navigation}: any) => {
           </Text>
         </KeyboardAvoidingView>
       </SafeAreaView>
-      {/* <Toast position="bottom" /> */}
+      <Toast position="bottom" />
     </>
   );
 };
