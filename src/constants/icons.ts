@@ -52,9 +52,17 @@ const arrowDownFilled = require('../assets/images/icons/arrowDownFilled.png');
 const infoBig = require('../assets/images/icons/infoBig.png');
 const linkStraight = require('../assets/images/icons/linkStraight.png');
 const menu = require('../assets/images/icons/menu.png');
+const wallet = require('../assets/images/icons/wallet.png');
+const karmaBlue = require('../assets/images/icons/karmaBlue.png');
+const infoPink = require('../assets/images/icons/infoPink.png');
+const share = require('../assets/images/icons/share.png');
 
 const ICONS = {
   fullLogo,
+  share,
+  infoPink,
+  karmaBlue,
+  wallet,
   menu,
   linkStraight,
   arrowDownFilled,

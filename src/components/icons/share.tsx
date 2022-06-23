@@ -6,8 +6,6 @@ interface Props {
   style?: any;
 }
 
-export const InfoIcon = (props: Props) => {
-  return (
-    <Image source={ICONS.info} style={[{height: 10, width: 10}, props.style]} />
-  );
+export const ShareIcon = (props: Props) => {
+  return <Image source={ICONS.share} style={[{height: 16.6, width: 15}]} />;
 };

@@ -1,5 +1,11 @@
 import React from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Dimensions,
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  TouchableOpacity
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {Image} from 'react-native';
 import {ICONS} from '../../../../constants/icons';
@@ -8,6 +14,7 @@ import {MyTextMulish} from '../../../../components/textMulish';
 interface Props {
   icon?: string;
   title?: string;
+  titleStyle?: StyleProp<TextStyle>;
 }
 
 export const GradientButton = (props: Props) => {
@@ -28,7 +35,9 @@ export const GradientButton = (props: Props) => {
           //@ts-ignore
           <Image source={props.icon} style={{height: 48, width: 48}} />
         )}
-        <MyTextMulish style={styles.btn}>{props.title ?? 'Btn'}</MyTextMulish>
+        <MyTextMulish style={[styles.btn, props.titleStyle]}>
+          {props.title ?? 'Btn'}
+        </MyTextMulish>
       </TouchableOpacity>
     </LinearGradient>
   );

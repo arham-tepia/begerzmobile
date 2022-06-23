@@ -6,8 +6,8 @@ interface Props {
   style?: any;
 }
 
-export const InfoIcon = (props: Props) => {
+export const KarmaBlueIcon = (props: Props) => {
   return (
-    <Image source={ICONS.info} style={[{height: 10, width: 10}, props.style]} />
+    <Image source={ICONS.karmaBlue} style={[{height: 83.87, width: 84}]} />
   );
 };

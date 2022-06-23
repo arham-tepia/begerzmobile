@@ -6,8 +6,8 @@ interface Props {
   style?: any;
 }
 
-export const InfoIcon = (props: Props) => {
+export const Wallet = (props: Props) => {
   return (
-    <Image source={ICONS.info} style={[{height: 10, width: 10}, props.style]} />
+    <Image source={ICONS.wallet} style={[{height: 47.31, width: 47.31}]} />
   );
 };

@@ -6,6 +6,8 @@ import {ArrowBackBlack} from '../components/icons/arowBackBlack';
 import {FONTS} from '../constants/fonts';
 import {MyDrawerDesign} from '../components/drawerDesign';
 import {COLORS} from '../constants/colors';
+import {PaymentAndWithdrawl} from '../screens/account/begDashboard/payments';
+import {MyChipInsAndKarma} from '../screens/account/begDashboard/myChipins';
 
 const DrawerTabs = createDrawerNavigator();
 
@@ -37,6 +39,24 @@ export const DrawerNavigation = () => {
           headerLeft: () => <ArrowBackBlack style={{marginLeft: 10}} />,
           headerTitle: 'My Beg Dashboard',
           title: 'My Beg Dashboard'
+        }}
+      />
+      <DrawerTabs.Screen
+        name="dr-payments"
+        component={PaymentAndWithdrawl}
+        options={{
+          headerLeft: () => <ArrowBackBlack style={{marginLeft: 10}} />,
+          headerTitle: 'Payments & Withdrawl',
+          title: 'Payments & Withdrawl'
+        }}
+      />
+      <DrawerTabs.Screen
+        name="dr-myChipins"
+        component={MyChipInsAndKarma}
+        options={{
+          headerLeft: () => <ArrowBackBlack style={{marginLeft: 10}} />,
+          headerTitle: 'My Chip-Ins & Karma Points',
+          title: 'My Chip-Ins & Karma Points'
         }}
       />
     </DrawerTabs.Navigator>
