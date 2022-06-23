@@ -26,7 +26,7 @@ export const MyProfile = () => {
             <MyTextInput label="Last Name" placeholder="Doe" />
             <View style={{marginTop: 35}} />
             <MyTextInput label="Email" placeholder="abc@xyz.com" />
-            <MyTextMulish style={[styles.heading, {marginTop: 42}]}>
+            {/* <MyTextMulish style={[styles.heading, {marginTop: 42}]}>
               Connect Social
             </MyTextMulish>
             <View style={{marginTop: 24}} />
@@ -43,7 +43,7 @@ export const MyProfile = () => {
             <GradientButton
               icon={ICONS.twitterFull}
               title="Connect your twitter"
-            />
+            /> */}
             <MyTextMulish style={[styles.heading, {marginTop: 49}]}>
               Delete your account
             </MyTextMulish>

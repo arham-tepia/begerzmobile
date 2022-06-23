@@ -35,9 +35,9 @@ export const ProfileAvatar = (props: Props) => {
         disabled={!pressable}
         style={[styles.main, styles.ratio, props.style]}>
         {props.source !== undefined ? (
-          <Image style={[styles.ratio]} source={source ?? ICONS.user} />
+          <Image style={[styles.ratio]} source={source ?? ICONS.user1} />
         ) : (
-          <Image style={[styles.ratio]} source={ICONS.user} />
+          <Image style={[styles.ratio]} source={ICONS.user1} />
         )}
       </TouchableOpacity>
     </LinearGradient>
