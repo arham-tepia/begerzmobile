@@ -35,17 +35,21 @@ export const Avatar = (props: Props) => {
         <Image
           style={[
             styles.ratio,
-            customSize && {height: size, width: size, borderRadius: size}
+            customSize && {height: size, width: size, borderRadius: size},
+            //@ts-ignore
+            props.style
           ]}
-          source={source ?? ICONS.user}
+          source={source ?? ICONS.user1}
         />
       ) : (
         <Image
           style={[
             styles.ratio,
-            customSize && {height: size, width: size, borderRadius: size}
+            customSize && {height: size, width: size, borderRadius: size},
+            //@ts-ignore
+            props.style
           ]}
-          source={ICONS.user}
+          source={ICONS.user1}
         />
       )}
       {/* {( upload) && (

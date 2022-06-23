@@ -8,6 +8,7 @@ import {MyDrawerDesign} from '../components/drawerDesign';
 import {COLORS} from '../constants/colors';
 import {PaymentAndWithdrawl} from '../screens/account/begDashboard/payments';
 import {MyChipInsAndKarma} from '../screens/account/begDashboard/myChipins';
+import {LeaderBoard} from '../screens/account/leaderboard/leaderboard';
 
 const DrawerTabs = createDrawerNavigator();
 
@@ -57,6 +58,15 @@ export const DrawerNavigation = () => {
           headerLeft: () => <ArrowBackBlack style={{marginLeft: 10}} />,
           headerTitle: 'My Chip-Ins & Karma Points',
           title: 'My Chip-Ins & Karma Points'
+        }}
+      />
+      <DrawerTabs.Screen
+        name="dr-leaderboard"
+        component={LeaderBoard}
+        options={{
+          headerLeft: () => <ArrowBackBlack style={{marginLeft: 10}} />,
+          headerTitle: 'Leader Board',
+          title: 'Leader Board'
         }}
       />
     </DrawerTabs.Navigator>

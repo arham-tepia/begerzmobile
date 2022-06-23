@@ -13,6 +13,7 @@ const info = require('../assets/images/icons/info.png');
 const checkCircle = require('../assets/images/icons/checkCircle.png');
 const dollarBag = require('../assets/images/icons/dollarBag.png');
 const user = require('../assets/images/icons/user.png');
+const user1 = require('../assets/images/icons/user1.png');
 const facebook = require('../assets/images/icons/facebook-outline.png');
 const insta = require('../assets/images/icons/insta-outline.png');
 const twitter = require('../assets/images/icons/twitter-outline.png');
@@ -59,6 +60,7 @@ const share = require('../assets/images/icons/share.png');
 
 const ICONS = {
   fullLogo,
+  user1,
   share,
   infoPink,
   karmaBlue,

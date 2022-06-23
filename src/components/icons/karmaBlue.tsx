@@ -8,6 +8,9 @@ interface Props {
 
 export const KarmaBlueIcon = (props: Props) => {
   return (
-    <Image source={ICONS.karmaBlue} style={[{height: 83.87, width: 84}]} />
+    <Image
+      source={ICONS.karmaBlue}
+      style={[{height: 83.87, width: 84}, props.style]}
+    />
   );
 };
