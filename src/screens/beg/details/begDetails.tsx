@@ -1,5 +1,12 @@
 import React from 'react';
-import {ScrollView, View, Image, TouchableOpacity} from 'react-native';
+import {
+  ScrollView,
+  View,
+  Image,
+  TouchableOpacity,
+  Share,
+  Alert
+} from 'react-native';
 import {Avatar} from '../../../components/avatar';
 import {MoreIcon} from '../../../components/icons/moreIcon';
 import {MyTextMulish} from '../../../components/textMulish';
@@ -54,6 +61,29 @@ export const BegDetails = ({route, navigation}: any) => {
       count: acheivements?.admirable ?? '0'
     }
   ];
+
+  const onShare = async () => {
+    console.log(begDetails);
+
+    try {
+      const result = await Share.share({
+        message: 'https://app.begerz.net/beg/details/' + begDetails._id,
+        url: 'https://app.begerz.net/beg/details/' + begDetails._id
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error: any) {
+      Alert.alert(error.message);
+    }
+  };
+
   return (
     <View style={[commonStyles.main, {backgroundColor: '#f2f2f2'}]}>
       <ScrollView style={{width: '100%'}}>
@@ -80,10 +110,19 @@ export const BegDetails = ({route, navigation}: any) => {
                 customSize
                 size={24}
                 pressable
-                onPress={() => navigation.navigate('details-begerProfile')}
+                source={
+                  begDetails.author.profileImage && {
+                    uri: begDetails.author.profileImage
+                  }
+                }
+                onPress={() =>
+                  navigation.navigate('details-begerProfile', {
+                    user: begDetails.author
+                  })
+                }
               />
               <MyTextMulish style={[styles.createdBytext, {marginLeft: 8}]}>
-                {begDetails._id} Created this beg
+                {begDetails.author.username} Created this beg
               </MyTextMulish>
             </View>
           </View>
@@ -127,7 +166,7 @@ export const BegDetails = ({route, navigation}: any) => {
             </View>
             <View style={styles.contributionView}>
               <MyTextMulish style={styles.daysLeftText}>
-                10{' '}
+                {begDetails.daysRemaining}{' '}
                 <MyTextMulish style={styles.daysText}>
                   {' '}
                   days left to contribute
@@ -140,6 +179,7 @@ export const BegDetails = ({route, navigation}: any) => {
                 style={styles.button}
                 inverse
                 textStyles={styles.buttonText}
+                onPress={onShare}
               />
               <MyButton
                 title="Chip in"
@@ -157,11 +197,15 @@ export const BegDetails = ({route, navigation}: any) => {
                   styles.statBox,
                   {borderRightWidth: 0.5, borderColor: '#dedede'}
                 ]}>
-                <MyTextMulish style={styles.statValue}>3.6k</MyTextMulish>
+                <MyTextMulish style={styles.statValue}>
+                  {begDetails.donorCount}
+                </MyTextMulish>
                 <MyTextMulish style={styles.statName}>Donors</MyTextMulish>
               </View>
               <View style={styles.statBox}>
-                <MyTextMulish style={styles.statValue}>5.6k</MyTextMulish>
+                <MyTextMulish style={styles.statValue}>
+                  {begDetails.shareCount}
+                </MyTextMulish>
                 <MyTextMulish style={styles.statName}>Shares</MyTextMulish>
               </View>
             </View>
@@ -172,7 +216,7 @@ export const BegDetails = ({route, navigation}: any) => {
                 <ChatIcon />
                 <MyTextMulish
                   style={[styles.cardBottomItemText, {marginLeft: 13}]}>
-                  0 Comments
+                  {begDetails.commentCount} Comments
                 </MyTextMulish>
               </TouchableOpacity>
               <TouchableOpacity style={styles.cardBottomItem}>

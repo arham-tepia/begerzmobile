@@ -1,16 +1,46 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, View, TextInput, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  FlatList,
+  ActivityIndicator
+} from 'react-native';
+import {textSearchForBegs} from '../../api/beg';
+import {MyTextMontserrat} from '../../components/textMontserrat';
+import {COLORS} from '../../constants/colors';
 import {FONTS} from '../../constants/fonts';
-import {ICONS} from '../../constants/icons';
 import {commonStyles} from '../../styles/styles';
 import {SearchHeader} from './components/header';
+import {HomeBeg} from './components/homeBeg';
 
-export const SearchHomePage = () => {
+export const SearchHomePage = ({navigation}: any) => {
   var searchInput: any;
+  const [search, setSearch]: any = useState('');
+  const [results, setResults]: any = useState([]);
+  const [loader, setLoader]: any = useState(false);
 
   useEffect(() => {
     searchInput.focus();
   }, []);
+
+  async function onSearch(text: string) {
+    setSearch(text);
+    setLoader(true);
+    const res = await textSearchForBegs(text).finally(() => setLoader(false));
+    console.log(res, 'Response Search');
+    setResults(res.results);
+  }
+
+  function renderResults({item}: any) {
+    return (
+      <HomeBeg
+        data={item}
+        onPress={() => navigation.navigate('home-begDetailsStack', {beg: item})}
+      />
+    );
+  }
+
   return (
     <View style={commonStyles.main}>
       <SearchHeader
@@ -20,11 +50,24 @@ export const SearchHomePage = () => {
               searchInput = input;
             }}
             style={styles.ti}
+            onChangeText={onSearch}
           />
         }
       />
-
-      <Image source={ICONS.noData} style={{height: '90%', width: '90%'}} />
+      <MyTextMontserrat style={{marginTop: 15, width: '90%'}}>
+        Showing results for{' '}
+        <MyTextMontserrat style={{color: COLORS.primary}}>
+          {search}
+        </MyTextMontserrat>
+      </MyTextMontserrat>
+      {loader && (
+        <ActivityIndicator style={{marginTop: 10}} color={COLORS.primary} />
+      )}
+      <FlatList
+        renderItem={renderResults}
+        data={results}
+        initialNumToRender={5}
+      />
     </View>
   );
 };

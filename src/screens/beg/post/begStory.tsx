@@ -12,6 +12,7 @@ import {commonStyles} from '../../../styles/styles';
 import {BegHeadings} from './components/begHeadings';
 import {GreyCard} from './components/greyCard';
 import Toast from 'react-native-toast-message';
+import {RootStateOrAny, useSelector} from 'react-redux';
 
 export const TellYourStory = ({navigation, route}: any) => {
   // const [saveMode, setSavemode]: any = useState(false);
@@ -19,6 +20,7 @@ export const TellYourStory = ({navigation, route}: any) => {
   const [story, setStory]: any = useState('');
   const [loader, setLoader]: any = useState(false);
   const [instant, setInstant]: any = useState(false);
+  const user = useSelector((state: RootStateOrAny) => state.currentUser);
 
   var subtext = 'Explain who you are and why you are creating this beg.';
 
@@ -77,7 +79,7 @@ export const TellYourStory = ({navigation, route}: any) => {
     setLoader(true);
     const data = {
       publishType: saveType.toLowerCase(),
-      userId: '627d929fee9add11e100038e',
+      userId: user.id,
       title: r.title,
       textDescription: story,
       htmlDescription: story,

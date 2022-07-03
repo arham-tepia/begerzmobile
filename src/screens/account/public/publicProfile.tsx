@@ -47,7 +47,12 @@ export const PublicProfile = ({navigation}: any) => {
           />
           <View style={{marginBottom: 20}} />
         </View>
-        <HomeBeg data={{}} transparent hideUser />
+        <HomeBeg
+          data={{}}
+          transparent
+          hideUser
+          onMorePress={() => navigation.navigate('begDashboard')}
+        />
         <HomeBeg data={{}} transparent hideUser />
       </ScrollView>
     </View>

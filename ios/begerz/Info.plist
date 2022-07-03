@@ -37,8 +37,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Phone Camera Access</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Phone Microphone Access</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photo Library Access</string>
 	<key>UIAppFonts</key>

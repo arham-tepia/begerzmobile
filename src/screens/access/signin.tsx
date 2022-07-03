@@ -20,6 +20,7 @@ import rememberMeAction from '../../redux/action/rememberMeAction';
 import {storeToken} from '../../helpers/tokenManagement';
 import {CRITERIAS, ERRORS} from '../../helpers/errors';
 import {ErrorText} from '../../components/errorText';
+import updateCurrentUserAction from '../../redux/action/currectUserAction';
 
 export const Signin = ({navigation}: any) => {
   const [email, setEmail]: any = useState('');
@@ -55,6 +56,11 @@ export const Signin = ({navigation}: any) => {
           email: email,
           password: password,
           rememberMe: true
+        })
+      );
+      store.dispatch(
+        updateCurrentUserAction({
+          id: res._id
         })
       );
       storeToken(res.accessToken);

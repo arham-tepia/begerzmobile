@@ -3,7 +3,17 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import {ProfileAvatar} from '../../../../components/profileAvatar';
 import {MyTextMulish} from '../../../../components/textMulish';
 
-export const BegerProfileCard = () => {
+interface Props {
+  user?: {
+    _id: string;
+    profileImage: string;
+    username: string;
+    email: string;
+    karma: string;
+  };
+}
+
+export const BegerProfileCard = (props: Props) => {
   const data = [
     {name: 'Begz', value: '10', borderRight: true},
     {name: 'Raised', value: '$8430', borderRight: true},
@@ -28,14 +38,16 @@ export const BegerProfileCard = () => {
           <MyTextMulish style={styles.statBold}>3.6k</MyTextMulish>
           <MyTextMulish style={styles.titleBig}>Followers</MyTextMulish>
         </View>
-        <ProfileAvatar />
+        <ProfileAvatar source={props.user && {uri: props.user.profileImage}} />
         <View style={styles.topRCol}>
           <MyTextMulish style={styles.statBold}>200</MyTextMulish>
           <MyTextMulish style={styles.titleBig}>Following</MyTextMulish>
         </View>
       </View>
       <View style={{marginTop: 28}} />
-      <MyTextMulish style={styles.statSmall}>674</MyTextMulish>
+      <MyTextMulish style={styles.statSmall}>
+        {props.user ? props.user.karma : '0'}
+      </MyTextMulish>
       <MyTextMulish style={styles.titleBig}>Karma earned</MyTextMulish>
       <View style={{width: '100%', marginTop: 18}}>
         <FlatList

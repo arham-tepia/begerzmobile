@@ -1,9 +1,17 @@
 import React, {useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import {Margin} from '../../../components/margin';
 import {MyButton} from '../../../components/myButton';
+import {MyTextInput} from '../../../components/myTextinput';
 import {MyTextMulish} from '../../../components/textMulish';
+import {COLORS} from '../../../constants/colors';
 import {FONTS} from '../../../constants/fonts';
+import {ICONS} from '../../../constants/icons';
+import {
+  removeItemOnceFromArray,
+  searchInArrayOfObjectsWithID
+} from '../../../helpers/searchInArrayOfObjects';
+import {FollowerComponent} from '../../beg/post/components/follwerComponent';
 import {HomeBeg} from '../../home/components/homeBeg';
 import {BegInformationView} from './components/begInformationView';
 import {CollapseableView} from './components/collapsableView';
@@ -12,6 +20,29 @@ import {EndAndWithdraw} from './components/withdraw';
 
 export const MyBegDashboard = () => {
   const [withdrawModal, setWithdrawModal]: any = useState(false);
+  const [selectedFollowers, setSelectedFollowers]: any = useState([]);
+  const followers = [
+    {name: 'john_doe', id: '1'},
+    {name: 'jone_doe', id: '2'},
+    {name: 'jake_doe', id: '3'}
+  ];
+  function renderFollowers(item: any) {
+    return (
+      <FollowerComponent
+        onPress={() => onFollowerSelect(item)}
+        name={item.name}
+        active={searchInArrayOfObjectsWithID(item.id, selectedFollowers)}
+      />
+    );
+  }
+  function onFollowerSelect(item: any) {
+    if (searchInArrayOfObjectsWithID(item.id, selectedFollowers)) {
+      var res = removeItemOnceFromArray(item, selectedFollowers);
+      setSelectedFollowers(res);
+    } else {
+      setSelectedFollowers([...selectedFollowers, item]);
+    }
+  }
   return (
     <>
       <View style={styles.main}>
@@ -100,12 +131,100 @@ export const MyBegDashboard = () => {
                   <Margin top margin={11} />
                 </View>
               </View>
-              <CollapseableView title="Title, Goal & Video" hand>
+              <CollapseableView title="General" hand>
                 <BegInformationView />
               </CollapseableView>
-              <CollapseableView title="Story" edit></CollapseableView>
-              <CollapseableView title="Milestones" golf></CollapseableView>
-              <CollapseableView title="Notifications" bell></CollapseableView>
+              <CollapseableView title="Story" edit>
+                <View style={{width: '95%', marginTop: 25}}>
+                  <MyTextMulish style={styles.storyText}>
+                    {'Tell your story'}
+                  </MyTextMulish>
+                  <MyTextMulish
+                    style={[
+                      styles.storySubText,
+                      {marginTop: 11, marginBottom: 8}
+                    ]}>
+                    {'Explain who you are and why are you creating thig beg.'}
+                  </MyTextMulish>
+                  <MyTextInput
+                    containerStyle={styles.tiContainer}
+                    style={styles.ti}
+                    multiline
+                    blurOnSubmit
+                  />
+                  <View style={{marginBottom: 35}} />
+                </View>
+              </CollapseableView>
+              <CollapseableView title="Invitations" golf>
+                <View style={{width: '95%', marginTop: 25}}>
+                  <MyTextMulish style={styles.storyText}>
+                    {'Share with'}
+                  </MyTextMulish>
+                  <View style={{marginLeft: 10}}>
+                    {followers.map(renderFollowers)}
+                  </View>
+                  <MyTextMulish style={[styles.storyText, {marginTop: 18}]}>
+                    {'Invite Users'}
+                  </MyTextMulish>
+                  <MyTextInput
+                    placeholder="Email Address"
+                    containerStyle={{borderRadius: 8}}
+                  />
+                  <MyTextMulish style={[styles.storySubText, {marginLeft: 10}]}>
+                    {'Enter each email with a comma separation'}
+                  </MyTextMulish>
+                  <Margin top margin={29} />
+                  <MyButton
+                    title="Send Invitations"
+                    style={{width: '70%', alignSelf: 'center'}}
+                    textStyles={{
+                      fontWeight: '600',
+                      fontFamily: FONTS.P_REGULAR,
+                      fontSize: 16
+                    }}
+                  />
+                  <Margin top margin={35} />
+                </View>
+              </CollapseableView>
+              <CollapseableView title="Success Story" bell>
+                <View style={{width: '95%', marginTop: 25}}>
+                  <MyTextMulish style={styles.storyText}>
+                    {'Share your success!'}
+                  </MyTextMulish>
+                  <MyTextMulish
+                    style={[
+                      styles.storySubText,
+                      {marginTop: 11, marginBottom: 12}
+                    ]}>
+                    {
+                      'Explain how you would like to thanks others for this success.'
+                    }
+                  </MyTextMulish>
+                  <Image
+                    source={ICONS.noimage}
+                    style={{height: 285, width: '100%'}}
+                  />
+                  <MyTextMulish
+                    onPress={() => {}}
+                    style={{
+                      color: COLORS.primary,
+                      alignSelf: 'flex-end',
+                      fontWeight: '700',
+                      marginTop: 4,
+                      marginBottom: 25
+                    }}>
+                    Remove
+                  </MyTextMulish>
+                  <MyButton
+                    title="+ Add Video"
+                    inverse
+                    style={{height: 44, borderRadius: 100}}
+                    textStyles={{fontWeight: '700', fontSize: 13}}
+                  />
+                  <Margin top margin={35} />
+                </View>
+              </CollapseableView>
+              <CollapseableView title="Donors" bell></CollapseableView>
             </View>
           </View>
         </ScrollView>
@@ -129,7 +248,8 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     backgroundColor: 'white',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 30
   },
   cardTop: {
     width: '100%',
@@ -158,5 +278,56 @@ const styles = StyleSheet.create({
   statTxt: {
     fontWeight: '700',
     fontSize: 16
+  },
+  tiContainer: {
+    height: 180,
+    borderRadius: 4,
+    borderWidth: 1.25,
+    borderColor: '#28383ECC'
+  },
+  ti: {
+    fontFamily: FONTS.M_REGULAR,
+    fontSize: 10,
+    height: 170
+  },
+  storyText: {
+    color: '#000000',
+    fontSize: 14,
+    fontWeight: '700'
+  },
+  storySubText: {
+    color: 'rgba(40, 56, 62, 0.8)',
+    fontSize: 12
   }
 });
+
+// const styles = StyleSheet.create({
+//   subheading: {
+//     color: '#28383ECC',
+//     fontSize: 12,
+//     lineHeight: 18,
+//     width: '90%'
+//   },
+//   tiContainer: {
+//     height: 180,
+//     borderRadius: 4,
+//     borderWidth: 1.25,
+//     borderColor: '#28383ECC'
+//   },
+//   ti: {
+//     fontFamily: FONTS.M_REGULAR,
+//     fontSize: 10,
+//     height: 170
+//   },
+//   cardHeading: {
+//     fontSize: 14,
+//     color: '#FFFFFF',
+//     fontWeight: '500',
+//     lineHeight: 22
+//   },
+//   noteText: {
+//     color: 'rgba(40, 56, 62, 0.8)',
+//     fontSize: 12,
+//     lineHeight: 18
+//   }
+// });

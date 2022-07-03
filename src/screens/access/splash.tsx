@@ -1,16 +1,17 @@
 import React, {useEffect} from 'react';
 import {Image, View} from 'react-native';
-import {RootStateOrAny, useSelector} from 'react-redux';
+import {RootStateOrAny, useSelector, useStore} from 'react-redux';
 import {loginUser} from '../../api/authentication';
 import {COLORS} from '../../constants/colors';
 import {ICONS} from '../../constants/icons';
 import {storeToken} from '../../helpers/tokenManagement';
 import {wait} from '../../helpers/wait';
+import updateCurrentUserAction from '../../redux/action/currectUserAction';
 import {commonStyles} from '../../styles/styles';
 
 export const Splash = ({navigation}: any) => {
   const state = useSelector((state: RootStateOrAny) => state.rememberMe);
-
+  const store = useStore();
   async function check() {
     console.log(state, 'State');
     if (state.rememberMe) {
@@ -28,6 +29,11 @@ export const Splash = ({navigation}: any) => {
       }
       if (res._id !== undefined) {
         storeToken(res.accessToken);
+        store.dispatch(
+          updateCurrentUserAction({
+            id: res._id
+          })
+        );
         navigation.replace('mainBottomNavigation');
       }
     } else {

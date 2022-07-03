@@ -14,11 +14,16 @@ interface Props {
     videoLink?: string;
     thumbLink?: string;
     goalAmount?: string;
+    author?: {
+      username?: string;
+      profileImage?: string;
+    };
   };
   onPress?(): void;
   transparent?: boolean;
   noGradient?: boolean;
   hideUser?: boolean;
+  onMorePress?(): void;
 }
 
 export const HomeBeg = (props: Props) => {
@@ -66,7 +71,14 @@ export const HomeBeg = (props: Props) => {
       <TouchableOpacity onPress={props.onPress} style={styles.topRow}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {!props.hideUser && (
-            <Avatar customSize size={42} style={{borderRadius: 16}} />
+            <Avatar
+              customSize
+              size={42}
+              style={{borderRadius: 16}}
+              source={
+                data.author?.profileImage && {uri: data.author.profileImage}
+              }
+            />
           )}
           <View
             style={{
@@ -79,23 +91,18 @@ export const HomeBeg = (props: Props) => {
             <MyTextMulish style={styles.title}>
               {data.title ?? 'No title provided'}
             </MyTextMulish>
-            {<MyTextMulish style={styles.subtitle}>by user</MyTextMulish>}
+            {
+              <MyTextMulish style={styles.subtitle}>
+                by {data.author?.username}
+              </MyTextMulish>
+            }
           </View>
         </View>
         <View style={{minHeight: 42}}>
-          <MoreIcon />
+          <MoreIcon onPress={props.onMorePress} />
         </View>
       </TouchableOpacity>
-      {/* <LinearGradient
-        colors={['#676DFF', '#ED6C79']}
-        start={{x: 0.0, y: 1.0}}
-        end={{x: 1.0, y: 1.0}}
-        style={{
-          height: 281.25,
-          width: width,
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}> */}
+
       <OuterLayer>
         <View
           style={{
@@ -147,7 +154,6 @@ export const HomeBeg = (props: Props) => {
           </View>
         </View>
       </OuterLayer>
-      {/* </LinearGradient> */}
     </View>
   );
 };

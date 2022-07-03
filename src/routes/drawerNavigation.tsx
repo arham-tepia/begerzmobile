@@ -33,7 +33,7 @@ export const DrawerNavigation = () => {
         component={AccountRoutes}
         options={{title: 'Profile', headerShown: false}}
       />
-      <DrawerTabs.Screen
+      {/* <DrawerTabs.Screen
         name="dr-begDashboard"
         component={MyBegDashboard}
         options={{
@@ -41,7 +41,7 @@ export const DrawerNavigation = () => {
           headerTitle: 'My Beg Dashboard',
           title: 'My Beg Dashboard'
         }}
-      />
+      /> */}
       <DrawerTabs.Screen
         name="dr-payments"
         component={PaymentAndWithdrawl}

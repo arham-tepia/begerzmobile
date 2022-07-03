@@ -1,11 +1,5 @@
 import React, {useState} from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {CalendarIcon} from '../../../components/icons/calendar';
 import {InfoIcon} from '../../../components/icons/info';
 import {LinkIcon} from '../../../components/icons/linkIcon';
@@ -26,6 +20,7 @@ import Toast from 'react-native-toast-message';
 import Video from 'react-native-video';
 import {MyTextMulish} from '../../../components/textMulish';
 import {COLORS} from '../../../constants/colors';
+import {AddVideoOptions} from './components/addVideoOptions';
 
 // import {UploadPhoto} from './components/uploadPhoto';
 
@@ -33,6 +28,7 @@ export const CreateBeg = ({navigation}: any) => {
   const [title, setTitle]: any = useState('');
   const [signedUrl, setSignedUrl]: any = useState([]);
   const [loader, setLoader]: any = useState(false);
+  const [showOpenOptions, setShowOpenOptions]: any = useState(false);
 
   //---Beg States start
 
@@ -95,6 +91,19 @@ export const CreateBeg = ({navigation}: any) => {
       mediaType: 'video',
       compressVideoPreset: 'MediumQuality'
     }).then(video => {
+      setShowOpenOptions(false);
+      setFileObj(video);
+      processVideo(video);
+    });
+  }
+
+  async function onOpenCamera() {
+    ImagePicker.openCamera({
+      mediaType: 'video',
+      compressVideoPreset: 'MediumQuality'
+    }).then(video => {
+      setShowOpenOptions(false);
+
       setFileObj(video);
       processVideo(video);
     });
@@ -216,7 +225,8 @@ export const CreateBeg = ({navigation}: any) => {
               title="Add video"
               textStyles={{fontFamily: FONTS.P_SEMIBOLD, letterSpacing: 0}}
               leftComponent={<LinkIcon />}
-              onPress={onVideoPick}
+              //onPress={onOpenCamera}
+              onPress={() => setShowOpenOptions(true)}
               loading={loader}
               disabled={loader}
             />
@@ -245,6 +255,12 @@ export const CreateBeg = ({navigation}: any) => {
         onCancel={() => setDatePicker(false)}
       />
       <Toast position="bottom" />
+      <AddVideoOptions
+        onOpenCamera={onOpenCamera}
+        onOpenGallery={onVideoPick}
+        visible={showOpenOptions}
+        onClosePress={() => setShowOpenOptions(false)}
+      />
     </>
   );
 };

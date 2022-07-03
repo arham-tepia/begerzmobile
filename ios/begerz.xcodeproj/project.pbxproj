@@ -715,8 +715,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2022062201;
-				DEVELOPMENT_TEAM = NY435J922S;
+				CURRENT_PROJECT_VERSION = 2022070302;
+				DEVELOPMENT_TEAM = 5J36559NJW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = begerz/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -729,7 +729,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.tepia.begerz;
+				PRODUCT_BUNDLE_IDENTIFIER = co.tepia.begerz1;
 				PRODUCT_NAME = begerz;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -743,8 +743,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2022062201;
-				DEVELOPMENT_TEAM = NY435J922S;
+				CURRENT_PROJECT_VERSION = 2022070302;
+				DEVELOPMENT_TEAM = 5J36559NJW;
 				INFOPLIST_FILE = begerz/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -756,7 +756,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.tepia.begerz;
+				PRODUCT_BUNDLE_IDENTIFIER = co.tepia.begerz1;
 				PRODUCT_NAME = begerz;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

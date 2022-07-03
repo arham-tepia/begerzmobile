@@ -4,5 +4,5 @@ import rememberMereducer from './rememberMeReducer';
 
 export const allReducers = combineReducers({
   currentUser: Current,
-  rememberMe: rememberMereducer,
+  rememberMe: rememberMereducer
 });

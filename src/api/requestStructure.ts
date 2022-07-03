@@ -25,7 +25,6 @@ export const post = async (endpoint: string, data: object) => {
 };
 export const get = async (endpoint: string) => {
   const token = await getToken();
-  console.log(token, 'Token');
 
   return (
     fetch(endpoint, {

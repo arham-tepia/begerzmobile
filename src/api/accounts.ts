@@ -1,4 +1,4 @@
-import {post} from './requestStructure';
+import {get, post} from './requestStructure';
 import {AUTH_BASE_URL} from './url';
 
 interface AddAccount {
@@ -18,5 +18,10 @@ const authurl = AUTH_BASE_URL + 'auth/v1/';
 export async function createNewAccount(data: AddAccount) {
   const endpoint = authurl + 'accounts';
   const res = await post(endpoint, data);
+  return res;
+}
+export async function getAccountInformationById(id: string) {
+  const endpoint = authurl + 'accounts/' + id;
+  const res = await get(endpoint);
   return res;
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {MyTextInput} from '../../../components/myTextinput';
 import {MyTextMulish} from '../../../components/textMulish';
@@ -6,8 +6,18 @@ import {commonStyles} from '../../../styles/styles';
 import {GradientButton} from './components/gradientButton';
 import {MyProfileAvatar} from './components/profileAvatar';
 import {ICONS} from '../../../constants/icons';
+import {getAccountInformationById} from '../../../api/accounts';
 
 export const MyProfile = () => {
+  async function GetData() {
+    const res = await getAccountInformationById('62bdb512cc35e4f19b532c43');
+    console.log(res, 'Account');
+  }
+
+  useEffect(() => {
+    GetData();
+  }, []);
+
   return (
     <View style={commonStyles.main}>
       <ScrollView style={{marginTop: 20, width: '100%'}}>

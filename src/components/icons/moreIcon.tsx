@@ -10,11 +10,14 @@ import {ICONS} from '../../constants/icons';
 
 interface Props {
   styles?: StyleProp<ViewStyle>;
+  onPress?(): void;
 }
 
 export const MoreIcon = (props: Props) => {
   return (
-    <TouchableOpacity onPress={() => {}} style={[styles.main, props.styles]}>
+    <TouchableOpacity
+      onPress={props.onPress}
+      style={[styles.main, props.styles]}>
       <Image source={ICONS.more} style={{height: 14, width: 14}} />
     </TouchableOpacity>
   );

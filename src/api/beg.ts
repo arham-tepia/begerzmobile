@@ -26,3 +26,9 @@ export async function getAllBegs() {
   const res = await get(endpoint);
   return res;
 }
+
+export async function textSearchForBegs(text: any) {
+  const endpoint = BASE_URL + 'begs/search/' + text;
+  const res = await get(endpoint);
+  return res;
+}
