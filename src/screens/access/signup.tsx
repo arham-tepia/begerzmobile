@@ -26,6 +26,7 @@ export const Signup = ({navigation}: any) => {
   const [fname, setFname]: any = useState('');
   const [lname, setLname]: any = useState('');
   const [email, setEmail]: any = useState('');
+  const [username, setUsername]: any = useState('');
   const [password, setPassword]: any = useState('');
   const [loader, setLoader]: any = useState(false);
   const [error, setError]: any = useState(false);
@@ -53,7 +54,7 @@ export const Signup = ({navigation}: any) => {
     const dob = dateObj.year + '-' + dateObj.monthNumber + '-' + dateObj.date;
     setLoader(true);
     const data = {
-      username: email.trim(),
+      username: username.trim(),
       password: password,
       firstName: fname.trim(),
       lastName: lname.trim(),
@@ -68,7 +69,7 @@ export const Signup = ({navigation}: any) => {
     if (res.message === 'username and email must be unique') {
       setError(true);
     }
-    if (res.message === 'account created successfully') {
+    if (res.userId) {
       navigation.navigate('signin');
     }
   }
@@ -120,6 +121,13 @@ export const Signup = ({navigation}: any) => {
                   placeholder="Enter Email Address"
                   onChangeText={setEmail}
                   value={email}
+                />
+                <View style={{marginTop: 38}} />
+                <MyTextInput
+                  label="Username"
+                  placeholder="Enter Username"
+                  onChangeText={setUsername}
+                  value={username}
                 />
                 {error && (
                   <ErrorText>{ERRORS.signup.emailalreadytaken}</ErrorText>

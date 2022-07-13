@@ -98,8 +98,8 @@ export const Signin = ({navigation}: any) => {
                 <Text style={styles.subtext}>{subtext}</Text>
                 <View style={{marginTop: 38}} />
                 <MyTextInput
-                  label="Email Address"
-                  placeholder="Enter Email Address"
+                  label="Username"
+                  placeholder="Enter Username"
                   onChangeText={setEmail}
                   value={email}
                 />

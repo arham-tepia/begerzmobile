@@ -1,5 +1,11 @@
-import React from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Image
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {Avatar} from '../../../components/avatar';
 import {WhiteEyeIcon} from '../../../components/icons/eyeWhite';
@@ -11,13 +17,22 @@ import Video from 'react-native-video';
 interface Props {
   data: {
     title?: string;
-    videoLink?: string;
-    thumbLink?: string;
     goalAmount?: string;
     author?: {
       username?: string;
       profileImage?: string;
     };
+    _id?: string;
+    videos: [
+      {
+        _id: string;
+        createdAt: string;
+        primary: boolean;
+        thumbLink: string;
+        videoLink: string;
+        videoType: string;
+      }
+    ];
   };
   onPress?(): void;
   transparent?: boolean;
@@ -30,6 +45,12 @@ export const HomeBeg = (props: Props) => {
   const twidth = Dimensions.get('window').width;
   const width = twidth - 2;
   const {data} = props;
+
+  useEffect(() => {
+    return () => {
+      console.log('cleaning up --> unmount ');
+    };
+  }, []);
 
   function OuterLayer({children}: any) {
     if (!props.noGradient) {
@@ -64,6 +85,7 @@ export const HomeBeg = (props: Props) => {
 
   return (
     <View
+      key={data._id}
       style={[
         styles.main,
         props.transparent && {backgroundColor: 'transparent'}
@@ -122,14 +144,14 @@ export const HomeBeg = (props: Props) => {
             <WhiteEyeIcon />
           </View>
           <Video
-            source={{uri: data.videoLink}}
-            posterResizeMode={'contain'}
+            source={{uri: data.videos[0].videoLink}}
+            posterResizeMode={'stretch'}
+            resizeMode="stretch"
             controls
-            poster={data.thumbLink}
+            poster={data.videos[0].thumbLink}
             paused
             style={{
-              width: '100%',
-              height: '100%'
+              width: '100%'
             }}
           />
           <View style={styles.bottom}>

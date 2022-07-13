@@ -8,15 +8,29 @@ import {MyTextMulish} from '../../../../components/textMulish';
 import {COLORS} from '../../../../constants/colors';
 import {ICONS} from '../../../../constants/icons';
 
-export const BegInformationView = () => {
+interface Props {
+  beg?: any;
+}
+
+export const BegInformationView = (props: any) => {
+  console.log(props.beg.goalAmount, 'Beg info');
+
   return (
     <View style={styles.main}>
       <Margin top margin={37} />
       <MyTextMulish style={styles.title}>Beg Information</MyTextMulish>
       <Margin top margin={28} />
-      <MyTextInput label="Title" editable={false} value="Beg Title" />
+      <MyTextInput
+        label="Title"
+        editable={false}
+        defaultValue={props.beg.title}
+      />
       <Margin top margin={31} />
-      <MyTextInput label="Goal" editable={false} value="$1500" />
+      <MyTextInput
+        label="Goal"
+        editable={false}
+        defaultValue={props.beg.goalAmount}
+      />
       <Margin top margin={31} />
       <MyTextInput label="End Date" editable={false} value="10/10/2022" />
       <Margin top margin={31} />

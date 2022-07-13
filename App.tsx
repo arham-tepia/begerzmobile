@@ -17,6 +17,7 @@ const App = () => {
   const persistedReducer = persistReducer(persistConfig, allReducers);
   const store = createStore(persistedReducer);
   const persistor = persistStore(store);
+
   LogBox.ignoreAllLogs();
   return (
     <Provider store={store}>

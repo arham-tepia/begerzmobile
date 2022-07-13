@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Alert, ScrollView, StyleSheet, View} from 'react-native';
-import {postBeg} from '../../../api/beg';
+import {postBeg, updateBeg} from '../../../api/beg';
 import {Checkbox} from '../../../components/checkbox';
 import {MyButton} from '../../../components/myButton';
 import {MyTextInput} from '../../../components/myTextinput';
@@ -13,6 +13,9 @@ import {BegHeadings} from './components/begHeadings';
 import {GreyCard} from './components/greyCard';
 import Toast from 'react-native-toast-message';
 import {RootStateOrAny, useSelector} from 'react-redux';
+import {getSignedURL} from '../../../api/signedUrl';
+import {putFile} from '../../../api/uploadFIle';
+import {MEDIA_URL} from '../../../api/url';
 
 export const TellYourStory = ({navigation, route}: any) => {
   // const [saveMode, setSavemode]: any = useState(false);
@@ -98,6 +101,7 @@ export const TellYourStory = ({navigation, route}: any) => {
     console.log(res, 'Post beg response');
 
     if (res._id !== undefined) {
+      // uploadVideos(res);
       navigation.replace('begIsReady');
     } else {
       if (res.errors) {
@@ -109,6 +113,16 @@ export const TellYourStory = ({navigation, route}: any) => {
       }
     }
   }
+
+  // async function uploadVideos(beg: any) {
+  //   const videoObject = route.params.videos;
+  //   videoObject.forEach((video: any) => {
+  //     video.begId = beg._id;
+  //   });
+  //   console.log(videoObject, 'Video object to update to each beg');
+  //   const res = await updateBeg(videoObject, beg._id);
+  //   console.log(res, 'update response');
+  // }
 
   function disabled() {
     return story.length < 8 || saveType.length < 2;
@@ -199,6 +213,7 @@ export const TellYourStory = ({navigation, route}: any) => {
               title="Complete your beg"
               textStyles={{fontFamily: FONTS.P_REGULAR, letterSpacing: 0}}
               onPress={onCompleteBeg}
+              //onPress={() => console.log(route.params, 'Route')}
               disabled={disabled() || loader}
               loading={loader}
             />

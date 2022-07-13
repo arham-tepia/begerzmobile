@@ -27,7 +27,7 @@ export const NavigationHeader = (props: Props) => {
         {props.centerComponent ? props.centerComponent : null}
         {!props.rightComponent ? (
           <View style={{flexDirection: 'row', marginRight: 19.74}}>
-            <ExploreIcon styles={{marginRight: 25}} />
+            {/* <ExploreIcon styles={{marginRight: 25}} /> */}
             <SearchIcon onPress={() => navigation.navigate('home-search')} />
           </View>
         ) : (

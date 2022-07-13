@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {CalendarIcon} from '../../../components/icons/calendar';
 import {InfoIcon} from '../../../components/icons/info';
 import {LinkIcon} from '../../../components/icons/linkIcon';
@@ -38,6 +38,7 @@ export const CreateBeg = ({navigation}: any) => {
   const [date, setDate] = useState(new Date());
   const dateObj = ConvertDateToObject(date);
 
+  const [refreshFlatlist, setRefreshFlatList] = useState(false);
   //--Beg States end
 
   var minGoal = 'Minimum goal is $50.00';
@@ -57,11 +58,11 @@ export const CreateBeg = ({navigation}: any) => {
       });
       return;
     }
-    if (!signedUrl.uuid) {
+    if (fileObj.length < 1) {
       Toast.show({
         type: 'error',
         text1: 'Video',
-        text2: 'Please select a video to continue'
+        text2: 'Please select atleast 1 video to continue'
       });
       return;
     }
@@ -83,6 +84,7 @@ export const CreateBeg = ({navigation}: any) => {
         '-' +
         dateObj.date,
       begAmount: begAmount
+      // videos: signedUrl
     });
   }
 
@@ -92,6 +94,7 @@ export const CreateBeg = ({navigation}: any) => {
       compressVideoPreset: 'MediumQuality'
     }).then(video => {
       setShowOpenOptions(false);
+      // makeFileObject(video);
       setFileObj(video);
       processVideo(video);
     });
@@ -103,16 +106,37 @@ export const CreateBeg = ({navigation}: any) => {
       compressVideoPreset: 'MediumQuality'
     }).then(video => {
       setShowOpenOptions(false);
-
+      // makeFileObject(video);
       setFileObj(video);
       processVideo(video);
     });
   }
 
+  // function makeFileObject(video: any) {
+  //   if (fileObj.length < 1) {
+  //     setFileObj([video]);
+  //   } else {
+  //     setFileObj([...fileObj, video]);
+  //   }
+  // }
+
   async function processVideo(fileObj: any) {
     setLoader(true);
     const res = await getSignedURL();
     setSignedUrl(res);
+
+    // const obj = {
+    //   videoLink: res.uuid ? MEDIA_URL + res.uuid + '.mp4' : '',
+    //   thumbLink: res.uuid ? MEDIA_URL + res.uuid + '-00001.png' : '',
+    //   fileId: res.uuid,
+    //   videoType: 'beg'
+    // };
+    // console.log(obj, 'Object');
+    // if (signedUrl.length < 1) {
+    //   setSignedUrl([obj]);
+    // } else {
+    //   setSignedUrl([...signedUrl, obj]);
+    // }
     await putFile(res, fileObj).finally(() => {
       setLoader(false);
       Toast.show({
@@ -132,10 +156,46 @@ export const CreateBeg = ({navigation}: any) => {
     return title.length < 2;
   }
 
+  //  function onMediaRemove(index: any, item: any) {
   function onMediaRemove() {
+    // const arr = fileObj.slice();
+    // arr.splice(index ?? -1, 1);
+    // setFileObj(arr);
+    // setRefreshFlatList(!refreshFlatlist);
     setFileObj(false);
     setSignedUrl([]);
   }
+
+  // function renderVideos({item, index}: any) {
+  //   return (
+  //     <View style={{width: item.width, marginRight: 10}}>
+  //       <MyTextMulish
+  //         onPress={() => onMediaRemove(index, item)}
+  //         style={{
+  //           color: COLORS.primary,
+  //           textAlign: 'right',
+  //           marginBottom: 5,
+  //           fontWeight: '600'
+  //         }}>
+  //         Remove
+  //       </MyTextMulish>
+  //       <Video
+  //         resizeMode="stretch"
+  //         source={{
+  //           uri: item.path
+  //         }}
+  //         controls
+  //         style={{
+  //           width: '100%',
+  //           height: 150,
+  //           //borderWidth: 1,
+  //           borderRadius: 16,
+  //           marginBottom: 10
+  //         }}
+  //       />
+  //     </View>
+  //   );
+  // }
 
   return (
     <>
@@ -210,17 +270,26 @@ export const CreateBeg = ({navigation}: any) => {
                   source={{
                     uri: fileObj.path
                   }}
+                  resizeMode="stretch"
                   controls
                   style={{
                     width: '100%',
                     height: 150,
-                    borderWidth: 1,
                     borderRadius: 16,
                     marginBottom: 10
                   }}
                 />
               </View>
             )}
+            {/* <View style={{width: '100%'}}>
+              <FlatList
+                showsHorizontalScrollIndicator={false}
+                horizontal
+                data={fileObj}
+                renderItem={renderVideos}
+                extraData={refreshFlatlist}
+              />
+            </View> */}
             <MyButton
               title="Add video"
               textStyles={{fontFamily: FONTS.P_SEMIBOLD, letterSpacing: 0}}

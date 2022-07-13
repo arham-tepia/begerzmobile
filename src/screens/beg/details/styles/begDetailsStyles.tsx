@@ -55,8 +55,8 @@ export const begDetailsStyles = StyleSheet.create({
   },
   videoView: {
     width: '100%',
-    height: 296,
-    backgroundColor: 'black'
+    height: 296
+    // backgroundColor: 'white'
   },
   emojiStyle: {
     height: 34,

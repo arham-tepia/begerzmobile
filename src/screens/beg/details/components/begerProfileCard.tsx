@@ -11,14 +11,15 @@ interface Props {
     email: string;
     karma: string;
   };
+  data?: any;
 }
 
 export const BegerProfileCard = (props: Props) => {
   const data = [
     {name: 'Begz', value: '10', borderRight: true},
-    {name: 'Raised', value: '$8430', borderRight: true},
-    {name: 'Chip-Ins', value: '25', borderRight: true},
-    {name: 'Donated', value: '$2000', borderRight: false}
+    {name: 'Raised', value: '$' + props.data.totalRaised, borderRight: true},
+    {name: 'Chip-Ins', value: '$' + props.data.chipins, borderRight: true},
+    {name: 'Donated', value: '$' + props.data.donations, borderRight: false}
   ];
 
   function renderBottomStats({item}: any) {
@@ -35,19 +36,21 @@ export const BegerProfileCard = (props: Props) => {
     <View style={styles.main}>
       <View style={styles.topRow}>
         <View style={styles.topRCol}>
-          <MyTextMulish style={styles.statBold}>3.6k</MyTextMulish>
+          <MyTextMulish style={styles.statBold}>
+            {props.data.followers}
+          </MyTextMulish>
           <MyTextMulish style={styles.titleBig}>Followers</MyTextMulish>
         </View>
         <ProfileAvatar source={props.user && {uri: props.user.profileImage}} />
         <View style={styles.topRCol}>
-          <MyTextMulish style={styles.statBold}>200</MyTextMulish>
+          <MyTextMulish style={styles.statBold}>
+            {props.data.following}
+          </MyTextMulish>
           <MyTextMulish style={styles.titleBig}>Following</MyTextMulish>
         </View>
       </View>
       <View style={{marginTop: 28}} />
-      <MyTextMulish style={styles.statSmall}>
-        {props.user ? props.user.karma : '0'}
-      </MyTextMulish>
+      <MyTextMulish style={styles.statSmall}>{props.data.karma}</MyTextMulish>
       <MyTextMulish style={styles.titleBig}>Karma earned</MyTextMulish>
       <View style={{width: '100%', marginTop: 18}}>
         <FlatList

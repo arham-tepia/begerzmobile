@@ -44,8 +44,8 @@ export const BegerProfile = ({route}: any) => {
           />
           <View style={{marginBottom: 20}} />
         </View>
-        <HomeBeg data={{}} />
-        <HomeBeg data={{}} />
+        {/* <HomeBeg data={{}} />
+        <HomeBeg data={{}} /> */}
       </ScrollView>
     </View>
   );

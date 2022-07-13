@@ -1,5 +1,5 @@
-import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
 import {commonStyles} from '../../../styles/styles';
 import {NavigationHeader} from '../../../components/navigationHeader';
 import {ArrowBackBlack} from '../../../components/icons/arowBackBlack';
@@ -9,8 +9,33 @@ import {MyButton} from '../../../components/myButton';
 import {HomeBeg} from '../../home/components/homeBeg';
 import {MenuIcon} from '../../../components/icons/menuIcon';
 import {} from '@react-navigation/drawer';
+import {RootStateOrAny, useSelector} from 'react-redux';
+import {getUserInformationById} from '../../../api/user';
+import {getActiveBegsForUser} from '../../../api/beg';
 
 export const PublicProfile = ({navigation}: any) => {
+  const user = useSelector((state: RootStateOrAny) => state.currentUser);
+  const [data, setData]: any = useState([]);
+  const [begs, setBegs]: any = useState([]);
+  async function GetData() {
+    const res = await getUserInformationById(user.id);
+    setData(res);
+    const additional = '?sort=-createdAt';
+    const b = await getActiveBegsForUser(user.id, additional);
+    setBegs(b);
+    console.log(b, 'Begs');
+  }
+  useEffect(() => {
+    GetData();
+  }, []);
+  function renderBegs({item}: any) {
+    return (
+      <HomeBeg
+        data={item}
+        onMorePress={() => navigation.navigate('begDashboard', {beg: item})}
+      />
+    );
+  }
   return (
     <View style={[commonStyles.main, {backgroundColor: 'transparent'}]}>
       <View style={{width: '100%'}}>
@@ -24,7 +49,7 @@ export const PublicProfile = ({navigation}: any) => {
           }
           centerComponent={
             <MyTextMulish style={{fontSize: 20, fontWeight: '700'}}>
-              User
+              {data.username}
             </MyTextMulish>
           }
         />
@@ -33,7 +58,7 @@ export const PublicProfile = ({navigation}: any) => {
         showsVerticalScrollIndicator={false}
         style={{marginTop: 10, width: '100%'}}>
         <View style={{width: '90%', alignSelf: 'center'}}>
-          <BegerProfileCard />
+          <BegerProfileCard data={data} />
           <MyButton
             inverse
             title="Edit Profile"
@@ -47,13 +72,14 @@ export const PublicProfile = ({navigation}: any) => {
           />
           <View style={{marginBottom: 20}} />
         </View>
-        <HomeBeg
-          data={{}}
+        <FlatList data={begs.results} renderItem={renderBegs} />
+        {/* <HomeBeg
+          data={}
           transparent
           hideUser
           onMorePress={() => navigation.navigate('begDashboard')}
         />
-        <HomeBeg data={{}} transparent hideUser />
+        <HomeBeg data={{}} transparent hideUser /> */}
       </ScrollView>
     </View>
   );

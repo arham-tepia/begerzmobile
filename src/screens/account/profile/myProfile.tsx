@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {MyTextInput} from '../../../components/myTextinput';
 import {MyTextMulish} from '../../../components/textMulish';
@@ -6,17 +6,39 @@ import {commonStyles} from '../../../styles/styles';
 import {GradientButton} from './components/gradientButton';
 import {MyProfileAvatar} from './components/profileAvatar';
 import {ICONS} from '../../../constants/icons';
-import {getAccountInformationById} from '../../../api/accounts';
+import {FONTS} from '../../../constants/fonts';
+import {MyButton} from '../../../components/myButton';
+import {Margin} from '../../../components/margin';
+import {RootStateOrAny, useSelector} from 'react-redux';
+import {getUserInformationById} from '../../../api/user';
+import {updateAccountInformationByID} from '../../../api/accounts';
 
 export const MyProfile = () => {
+  const user = useSelector((state: RootStateOrAny) => state.currentUser);
+  const [data, setData]: any = useState([]);
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   async function GetData() {
-    const res = await getAccountInformationById('62bdb512cc35e4f19b532c43');
-    console.log(res, 'Account');
+    const res = await getUserInformationById(user.id);
+    setData(res);
+    if (data.email) {
+      setUsername(data.username);
+      setEmail(data.email);
+    }
+    console.log(res, 'user');
   }
-
   useEffect(() => {
     GetData();
   }, []);
+
+  async function onSaveChanges() {
+    const obj = {
+      username: username,
+      email: email
+    };
+    const res = await updateAccountInformationByID(user.id, obj);
+    console.log(res, 'update response');
+  }
 
   return (
     <View style={commonStyles.main}>
@@ -35,7 +57,19 @@ export const MyProfile = () => {
             <View style={{marginTop: 35}} />
             <MyTextInput label="Last Name" placeholder="Doe" />
             <View style={{marginTop: 35}} />
-            <MyTextInput label="Email" placeholder="abc@xyz.com" />
+            <MyTextInput
+              label="Email"
+              placeholder="abc@xyz.com"
+              defaultValue={data.email}
+              onChangeText={setEmail}
+            />
+            <View style={{marginTop: 35}} />
+            <MyTextInput
+              label="Username"
+              placeholder="abc@xyz.com"
+              defaultValue={data.username}
+              onChangeText={setUsername}
+            />
             {/* <MyTextMulish style={[styles.heading, {marginTop: 42}]}>
               Connect Social
             </MyTextMulish>
@@ -59,7 +93,18 @@ export const MyProfile = () => {
             </MyTextMulish>
             <View style={{marginTop: 25}} />
             <GradientButton icon={ICONS.binFull} title="Delete your account" />
-            <View style={{marginTop: 25}} />
+            <View style={{marginTop: 59}} />
+            <MyButton
+              title="Save Changes"
+              onPress={onSaveChanges}
+              textStyles={{
+                fontFamily: FONTS.P_REGULAR,
+                fontWeight: '600',
+                fontSize: 16
+              }}
+              style={{height: 48, borderRadius: 24}}
+            />
+            <Margin top margin={25} />
           </View>
         </View>
       </ScrollView>

@@ -5,7 +5,8 @@ import {
   Image,
   TouchableOpacity,
   Share,
-  Alert
+  Alert,
+  Dimensions
 } from 'react-native';
 import {Avatar} from '../../../components/avatar';
 import {MoreIcon} from '../../../components/icons/moreIcon';
@@ -19,9 +20,14 @@ import {PaymentIcon} from '../../../components/icons/payment';
 import {ChatIcon} from '../../../components/icons/chat';
 import {ConvertDateToObject} from '../../../helpers/simplifyDateObject';
 import {begDetailsStyles as styles} from './styles/begDetailsStyles';
+//@ts-ignore
+import MentionHashtagTextView from 'react-native-mention-hashtag-text';
+import {COLORS} from '../../../constants/colors';
+import Carousel from 'react-native-snap-carousel';
 
 export const BegDetails = ({route, navigation}: any) => {
   const begDetails = route.params.params.beg;
+  console.log(begDetails, 'Beg Details');
   const acheivements: {
     inspiring?: string;
     informative?: string;
@@ -84,6 +90,28 @@ export const BegDetails = ({route, navigation}: any) => {
     }
   };
 
+  function onTagPress(word: any) {
+    console.log(word, 'word pressed');
+  }
+  const twidth = Dimensions.get('window').width;
+  const width = twidth - 2;
+  function renderVideos({item, index}: any) {
+    return (
+      <Video
+        source={{uri: item.videoLink}}
+        posterResizeMode={'contain'}
+        controls
+        poster={item.thumbLink}
+        resizeMode="stretch"
+        paused
+        style={{
+          width: '100%',
+          height: '100%'
+        }}
+      />
+    );
+  }
+
   return (
     <View style={[commonStyles.main, {backgroundColor: '#f2f2f2'}]}>
       <ScrollView style={{width: '100%'}}>
@@ -127,16 +155,24 @@ export const BegDetails = ({route, navigation}: any) => {
             </View>
           </View>
           <View style={styles.videoView}>
-            <Video
-              source={{uri: begDetails.videoLink}}
+            {/* <Video
+              source={{uri: begDetails.videos[0].videoLink}}
               posterResizeMode={'contain'}
               controls
-              poster={begDetails.thumbLink}
+              poster={begDetails.videos[0].thumbLink}
               paused
               style={{
                 width: '100%',
                 height: '100%'
               }}
+            /> */}
+            <Carousel
+              // ref={(c) => { this._carousel = c; }}
+              data={begDetails.videos}
+              renderItem={renderVideos}
+              sliderWidth={width}
+              itemWidth={width}
+              slideStyle={{borderColor: 'red'}}
             />
           </View>
           <View style={styles.emojiRow}>
@@ -235,7 +271,11 @@ export const BegDetails = ({route, navigation}: any) => {
           </View>
           <View style={styles.detailsCont}>
             <MyTextMulish style={styles.details}>
-              {begDetails.textDescription ?? 'No description'}
+              <MentionHashtagTextView
+                mentionHashtagPress={onTagPress}
+                mentionHashtagColor={COLORS.primary}>
+                {begDetails.textDescription ?? 'No description'}
+              </MentionHashtagTextView>
             </MyTextMulish>
             {/* <MyTextMulish
               style={[styles.details, {color: COLORS.primary, marginTop: 15}]}>

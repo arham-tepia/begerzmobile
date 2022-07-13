@@ -17,8 +17,15 @@ import {BegInformationView} from './components/begInformationView';
 import {CollapseableView} from './components/collapsableView';
 import {Dropdown} from './components/dropdown';
 import {EndAndWithdraw} from './components/withdraw';
+//@ts-ignore
+import MentionHashtagTextView from 'react-native-mention-hashtag-text';
+import {BottomCard} from '../../../components/bottomCard';
 
-export const MyBegDashboard = () => {
+export const MyBegDashboard = ({route}: any) => {
+  const beg = route.params.beg;
+  console.log(beg, 'Beg data');
+
+  const [storyCard, setStoryCard] = useState(false);
   const [withdrawModal, setWithdrawModal]: any = useState(false);
   const [selectedFollowers, setSelectedFollowers]: any = useState([]);
   const followers = [
@@ -49,7 +56,7 @@ export const MyBegDashboard = () => {
         <ScrollView style={{width: '100%'}}>
           <View style={{alignItems: 'center', width: '100%'}}>
             <Margin top margin={0} />
-            <HomeBeg noGradient data={{}} hideUser transparent />
+            <HomeBeg noGradient data={beg} hideUser transparent />
             <View style={styles.card}>
               <View style={styles.cardTop}>
                 <View
@@ -76,7 +83,9 @@ export const MyBegDashboard = () => {
                         width: '50%',
                         alignItems: 'center'
                       }}>
-                      <MyTextMulish style={styles.statTxt}>4.2k</MyTextMulish>
+                      <MyTextMulish style={styles.statTxt}>
+                        {beg.donors}
+                      </MyTextMulish>
                       <MyTextMulish style={[styles.statTxt, {color: 'grey'}]}>
                         Donors
                       </MyTextMulish>
@@ -86,7 +95,9 @@ export const MyBegDashboard = () => {
                         width: '50%',
                         alignItems: 'center'
                       }}>
-                      <MyTextMulish style={styles.statTxt}>1.2k</MyTextMulish>
+                      <MyTextMulish style={styles.statTxt}>
+                        {beg.shares}
+                      </MyTextMulish>
                       <MyTextMulish style={[styles.statTxt, {color: 'grey'}]}>
                         Shares
                       </MyTextMulish>
@@ -112,9 +123,18 @@ export const MyBegDashboard = () => {
                     Success Story
                   </MyTextMulish>
                   <Margin top margin={10} />
+
                   <MyTextMulish
-                    style={[styles.desc, {textAlign: 'center', width: '60%'}]}>
-                    Submit a success story to be featured in Begerz community.
+                    numberOfLines={3}
+                    onPress={() => setStoryCard(true)}
+                    style={[
+                      styles.desc,
+                      {textAlign: 'center', width: '60%', height: 87}
+                    ]}>
+                    <MentionHashtagTextView
+                      mentionHashtagColor={COLORS.primary}>
+                      {beg.textDescription}
+                    </MentionHashtagTextView>
                   </MyTextMulish>
                   <Margin top margin={13} />
 
@@ -132,7 +152,7 @@ export const MyBegDashboard = () => {
                 </View>
               </View>
               <CollapseableView title="General" hand>
-                <BegInformationView />
+                <BegInformationView beg={beg} />
               </CollapseableView>
               <CollapseableView title="Story" edit>
                 <View style={{width: '95%', marginTop: 25}}>
@@ -233,6 +253,21 @@ export const MyBegDashboard = () => {
         visible={withdrawModal}
         onCancelPress={() => setWithdrawModal(false)}
       />
+      <BottomCard
+        topViewStyle={{height: '70%'}}
+        contentContainerStyles={{
+          height: '30%',
+          paddingTop: '5%',
+          alignItems: 'center'
+        }}
+        visible={storyCard}
+        onCancelPress={() => setStoryCard(false)}>
+        <MyTextMulish style={[styles.desc, {width: '90%'}]}>
+          <MentionHashtagTextView mentionHashtagColor={COLORS.primary}>
+            {beg.textDescription}
+          </MentionHashtagTextView>
+        </MyTextMulish>
+      </BottomCard>
       <Dropdown />
     </>
   );

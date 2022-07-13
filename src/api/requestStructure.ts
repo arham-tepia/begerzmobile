@@ -62,11 +62,14 @@ export const del = async (endpoint: string, data?: any) => {
     });
 };
 export const patch = async (endpoint: string, data: any) => {
+  const token = await getToken();
+
   return fetch(endpoint, {
     method: 'PATCH',
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token
     },
     body: JSON.stringify(data)
   })
