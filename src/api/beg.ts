@@ -53,3 +53,8 @@ export async function getActiveBegsForUser(id: string, additional?: string) {
   const res = await get(endpoint);
   return res;
 }
+export async function getCommentsForBeg(id: string) {
+  const endpoint = BASE_URL + 'begs/' + id + '/comments';
+  const res = await get(endpoint);
+  return res;
+}

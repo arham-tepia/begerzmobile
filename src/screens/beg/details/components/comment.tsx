@@ -8,9 +8,12 @@ interface Props {
   comment?: string;
   noLike?: boolean;
   name?: string;
+  data?: any;
 }
 
 export const Comment = (props: Props) => {
+  console.log(props.data, 'Data');
+
   var cmnt =
     'So many people showed up to watch me perform this weekend. I am so grateful for your support!';
   return (
@@ -33,12 +36,17 @@ export const Comment = (props: Props) => {
           <Avatar
             style={{borderRadius: 16, marginRight: 16}}
             customSize
+            source={
+              props.data?.author?.profileImage && {
+                uri: props.data?.author?.profileImage
+              }
+            }
             size={42}
           />
           <MyTextMulish style={[styles.name, {width: '90%'}]}>
-            {props.name ?? 'Jane Doe'}{' '}
+            {props.data?.author?.username ?? 'Jane Doe'}{' '}
             <MyTextMulish style={[styles.comment]}>
-              {props.comment ?? cmnt}
+              {props.data?.textDescription ?? cmnt}
             </MyTextMulish>
           </MyTextMulish>
         </View>

@@ -14,6 +14,8 @@ import {ICONS} from '../constants/icons';
 import {DiscoverStack} from './discoverRoutes';
 import {AccountRoutes} from './accountRoutes';
 import {DrawerNavigation} from './drawerNavigation';
+import {BellSvg} from '../components/svgs/bell';
+import {BellOutlineSvg} from '../components/svgs/bellOutline';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -66,11 +68,11 @@ export const MainBottomNavigation = () => {
         })}
       />
       <BottomTabs.Screen
-        name="bn-favorites"
+        name="bn-notifications"
         component={Test}
         options={{
           tabBarIcon: ({color, focused}) => (
-            <HeartSVG color={color} focused={focused} />
+            <BellOutlineSvg color={color} focused={focused} />
           )
         }}
       />

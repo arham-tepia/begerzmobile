@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -12,8 +12,10 @@ import {WhiteEyeIcon} from '../../../components/icons/eyeWhite';
 import {MoneyBagHd} from '../../../components/icons/moneybagHd';
 import {MoreIcon} from '../../../components/icons/moreIcon';
 import {MyTextMulish} from '../../../components/textMulish';
-import Video from 'react-native-video';
-
+import Carousel from 'react-native-snap-carousel';
+import {Video, ResizeMode} from 'expo-av';
+import {BegReactions} from './begReactions';
+import {VideoCam} from '../../../components/icons/videoCam';
 interface Props {
   data: {
     title?: string;
@@ -33,6 +35,8 @@ interface Props {
         videoType: string;
       }
     ];
+    achievements?: any;
+    views?: string;
   };
   onPress?(): void;
   transparent?: boolean;
@@ -47,9 +51,7 @@ export const HomeBeg = (props: Props) => {
   const {data} = props;
 
   useEffect(() => {
-    return () => {
-      console.log('cleaning up --> unmount ');
-    };
+    return () => {};
   }, []);
 
   function OuterLayer({children}: any) {
@@ -81,6 +83,26 @@ export const HomeBeg = (props: Props) => {
         </View>
       );
     }
+  }
+  function renderVideos({item, index}: any) {
+    return (
+      <Video
+        style={{
+          width: '100%',
+          marginBottom: 10,
+          aspectRatio: 1
+        }}
+        source={{
+          uri: item.videoLink
+        }}
+        useNativeControls
+
+        // resizeMode={ResizeMode.COVER}
+        // onReadyForDisplay={response => {
+        //   console.log(response, 'Video Respose');
+        // }}
+      />
+    );
   }
 
   return (
@@ -128,7 +150,7 @@ export const HomeBeg = (props: Props) => {
       <OuterLayer>
         <View
           style={{
-            height: 276.25,
+            height: '99%',
             width: width - 5,
             alignItems: 'center',
             backgroundColor: 'black'
@@ -143,7 +165,7 @@ export const HomeBeg = (props: Props) => {
             }}>
             <WhiteEyeIcon />
           </View>
-          <Video
+          {/* <Video
             source={{uri: data.videos[0].videoLink}}
             posterResizeMode={'stretch'}
             resizeMode="stretch"
@@ -153,14 +175,23 @@ export const HomeBeg = (props: Props) => {
             style={{
               width: '100%'
             }}
+          /> */}
+          <Carousel
+            // ref={(c) => { this._carousel = c; }}
+            data={data.videos}
+            style={{alignItems: 'center', justifyContent: 'center'}}
+            renderItem={renderVideos}
+            sliderWidth={width}
+            itemWidth={width}
           />
           <View style={styles.bottom}>
             <View
               style={{
-                width: '90%',
+                //width: '90%',
                 height: 42,
                 flexDirection: 'row',
-                alignItems: 'center'
+                alignItems: 'center',
+                marginLeft: 10
               }}>
               <MoneyBagHd />
               <MyTextMulish
@@ -172,6 +203,31 @@ export const HomeBeg = (props: Props) => {
                 }}>
                 ${data.goalAmount}
               </MyTextMulish>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginRight: 10
+              }}>
+              <BegReactions reactions={data.achievements} />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginLeft: 15
+                }}>
+                <VideoCam />
+                <MyTextMulish
+                  style={{
+                    fontWeight: '700',
+                    fontSize: 13,
+                    color: 'black',
+                    marginLeft: 9
+                  }}>
+                  {data.views ?? '0'}
+                </MyTextMulish>
+              </View>
             </View>
           </View>
         </View>
@@ -212,6 +268,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'rgba(255, 255, 255, 0.63)',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-between',
+    flexDirection: 'row'
   }
 });

@@ -1,11 +1,16 @@
 import React from 'react';
-import {StyleSheet, TextInput, View} from 'react-native';
+import {StyleSheet, TextInput, TextInputProps, View} from 'react-native';
 import {Avatar} from '../../../../components/avatar';
 import {MyTextMulish} from '../../../../components/textMulish';
 import {COLORS} from '../../../../constants/colors';
 import {FONTS} from '../../../../constants/fonts';
 
-export const CommentInput = () => {
+interface Props extends TextInputProps {
+  onPostPress?(): void;
+}
+
+export const CommentInput = (props: Props) => {
+  const {style, placeholder, placeholderTextColor, multiline, ...rest} = props;
   return (
     <View style={styles.main}>
       <Avatar style={{borderRadius: 16, marginLeft: 21}} customSize size={42} />
@@ -14,8 +19,9 @@ export const CommentInput = () => {
         style={styles.ti}
         placeholder={'Comment as user'}
         placeholderTextColor="#B0B0B0"
+        {...rest}
       />
-      <MyTextMulish onPress={() => {}} style={styles.post}>
+      <MyTextMulish onPress={props.onPostPress} style={styles.post}>
         POST
       </MyTextMulish>
     </View>

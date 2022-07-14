@@ -14,11 +14,17 @@ interface Props {
   source?: string;
   onPress?(): void;
   amount?: any;
+  data?: any;
+  navigation: any;
 }
 
 export const Story = (props: Props) => {
   return (
-    <TouchableOpacity onPress={props.onPress} style={{alignSelf: 'center'}}>
+    <TouchableOpacity
+      onPress={() =>
+        props.navigation.navigate('home-begDetailsStack', {beg: props.data})
+      }
+      style={{alignSelf: 'center'}}>
       <LinearGradient
         colors={['#676DFF', '#ED6C79']}
         start={{x: 0.0, y: 1.0}}
@@ -38,7 +44,8 @@ export const Story = (props: Props) => {
         <ImageBackground
           style={styles.main}
           borderRadius={16}
-          source={props.source ?? ICONS.noimage}>
+          defaultSource={ICONS.noimage}
+          source={props.data?.videos[0]?.thumbLink ?? ICONS.noimage}>
           <View style={styles.bottom}>
             <View
               style={{
@@ -57,7 +64,7 @@ export const Story = (props: Props) => {
                   marginLeft: 5,
                   textAlign: 'center'
                 }}>
-                ${props.amount ?? '500'}
+                ${props.data.goalAmount ?? '500'}
               </MyTextMulish>
             </View>
           </View>

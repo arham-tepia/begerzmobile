@@ -24,7 +24,7 @@ export const Splash = ({navigation}: any) => {
         console.log(e, 'This is error');
       });
       console.log(res, 'response');
-      if (res === undefined) {
+      if (res === undefined || res.message === 'invalid username or password') {
         navigation.navigate('accessStack');
       }
       if (res._id !== undefined) {

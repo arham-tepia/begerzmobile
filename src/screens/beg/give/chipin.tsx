@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Dimensions, ScrollView, StyleSheet, Switch, View} from 'react-native';
 import {commonStyles} from '../../../styles/styles';
-import Video from 'react-native-video';
 import {Avatar} from '../../../components/avatar';
 import {MyTextPoppins} from '../../../components/textPoppins';
 import {BugButton} from './components/bigButton';
@@ -12,6 +11,7 @@ import {MySwitch} from '../../../components/mySwitch';
 import {InfoIcon} from '../../../components/icons/info';
 import {MyButton} from '../../../components/myButton';
 import {FONTS} from '../../../constants/fonts';
+import {Video, ResizeMode} from 'expo-av';
 
 export const Chipin = ({route, navigation}: any) => {
   const beg = route.params.beg ?? [];
@@ -52,15 +52,16 @@ export const Chipin = ({route, navigation}: any) => {
       <ScrollView showsVerticalScrollIndicator={false} style={{width: '90%'}}>
         <View style={styles.videoView}>
           <Video
-            source={{uri: beg.videoLink}}
-            posterResizeMode={'contain'}
-            controls
-            poster={beg.thumbLink}
-            paused
             style={{
               width: '100%',
-              height: '100%',
-              borderRadius: 8
+              marginBottom: 10,
+              aspectRatio: 1
+            }}
+            source={{uri: beg.videoLink}}
+            useNativeControls
+            // resizeMode={ResizeMode.COVER}
+            onReadyForDisplay={response => {
+              console.log(response, 'Video Respose');
             }}
           />
         </View>

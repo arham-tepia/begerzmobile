@@ -85,7 +85,7 @@ export const Home = ({navigation}: any) => {
         data={begs}
         // onRefresh={onRefresh}
         keyExtractor={(item, index) => item._id}
-        ListHeaderComponent={() => <SuccessStories />}
+        ListHeaderComponent={() => <SuccessStories navigation={navigation} />}
         ListFooterComponent={() => (
           <>{footerLoader && <ActivityIndicator size={'small'} />}</>
         )}

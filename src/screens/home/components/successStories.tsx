@@ -1,8 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import {Image} from 'react-native';
+import {getSuccessStories} from '../../../api/success';
 import {MyTextMulish} from '../../../components/textMulish';
-import {ICONS} from '../../../constants/icons';
 import {Story} from './story';
 
 const SuccessText = () => {
@@ -22,19 +21,18 @@ const SuccessText = () => {
   );
 };
 
-export const SuccessStories = () => {
-  const stories = [
-    {name: 'hi'},
-    {name: 'hi 1'},
-    {name: 'hi 2'},
-    {name: 'hi 3'},
-    {name: 'hi 4'},
-    {name: 'hi 5'},
-    {name: 'hi 6'}
-  ];
+export const SuccessStories = ({navigation}: any) => {
+  const [stories, setStories]: any = useState([]);
+  async function getData() {
+    const res = await getSuccessStories();
+    setStories(res.results);
+  }
+  useEffect(() => {
+    getData();
+  }, []);
 
   const renderStories = ({item}: any) => {
-    return <Story />;
+    return <Story data={item} navigation={navigation} />;
   };
 
   return (

@@ -19,6 +19,7 @@
 		1C506F31C2E74443BB2FA94B /* Mulish-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 498F1320FCE742259238CE34 /* Mulish-ExtraLight.ttf */; };
 		1D7154746734498BA283156D /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81817E2B32BE45D0916162B3 /* Montserrat-Black.ttf */; };
 		2459FC7DF89D4998A5D4BEAA /* Poppins-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5BD9E3402A1544168CA2B2FA /* Poppins-ExtraBoldItalic.ttf */; };
+		2464416AEBF7923B5D25C0D8 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32327C5488C522D4E4EB750 /* ExpoModulesProvider.swift */; };
 		2501D6F5EE15423B9DE4170B /* Mulish-Italic-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B6E2B83E1A14766920115A5 /* Mulish-Italic-VariableFont_wght.ttf */; };
 		296CD032BE9E4A8FBE694B70 /* Mulish-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EBB2DA638374C578C807E65 /* Mulish-ExtraBoldItalic.ttf */; };
 		2B41CAA0D1C846258F4D5772 /* Mulish-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F3150C0511945C78E87A102 /* Mulish-ExtraBold.ttf */; };
@@ -59,6 +60,7 @@
 		DA23827335394657B668A9E6 /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C958367B5B00406BB9C399F8 /* Poppins-SemiBoldItalic.ttf */; };
 		DC920D9199AD4E618347D5B5 /* Mulish-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 968BAE1C500C4AC884A2D416 /* Mulish-BoldItalic.ttf */; };
 		DCC331E75B5644A4B2649E56 /* Mulish-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6468D5B8373A4499A1DFDED2 /* Mulish-SemiBoldItalic.ttf */; };
+		E19B5CEDD263CF0C1A47FDAE /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA9D22CB524EC401906E8E1 /* ExpoModulesProvider.swift */; };
 		E338E382F8284F20A70E093C /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3D3919E796CA42649695B3EB /* Poppins-Light.ttf */; };
 		E3BEE1700CBB4EBB8F2138F8 /* Mulish-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E2BC4E8CEACB4E0482681F24 /* Mulish-VariableFont_wght.ttf */; };
 		ED746095AA554CEDA09B0F5D /* Mulish-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C4FE82E20204E83A5C2366D /* Mulish-BlackItalic.ttf */; };
@@ -106,6 +108,7 @@
 		3B4392A12AC88292D35C810B /* Pods-begerz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-begerz.debug.xcconfig"; path = "Target Support Files/Pods-begerz/Pods-begerz.debug.xcconfig"; sourceTree = "<group>"; };
 		3CD6B49506D24ADBB97341DE /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../src/assets/fonts/Montserrat/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		3D3919E796CA42649695B3EB /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins/Poppins-Light.ttf"; sourceTree = "<group>"; };
+		3DA9D22CB524EC401906E8E1 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-begerz-begerzTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		449A4975E2234A75BC22688C /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../src/assets/fonts/Poppins/Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		457D945129034889B6293CCE /* Montserrat-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Light.ttf"; path = "../src/assets/fonts/Montserrat/Montserrat-Light.ttf"; sourceTree = "<group>"; };
 		498F1320FCE742259238CE34 /* Mulish-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Mulish-ExtraLight.ttf"; path = "../src/assets/fonts/Mulish/Mulish-ExtraLight.ttf"; sourceTree = "<group>"; };
@@ -150,6 +153,7 @@
 		CE2DD472EF3140A8AFC7D8E5 /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../src/assets/fonts/Poppins/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
 		D429454F1EE44E0D9F8674F7 /* Mulish-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Mulish-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Mulish/Mulish-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		E2BC4E8CEACB4E0482681F24 /* Mulish-VariableFont_wght.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Mulish-VariableFont_wght.ttf"; path = "../src/assets/fonts/Mulish/Mulish-VariableFont_wght.ttf"; sourceTree = "<group>"; };
+		E32327C5488C522D4E4EB750 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-begerz/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		E374BA91C3A141738E332A3D /* Montserrat-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-MediumItalic.ttf"; path = "../src/assets/fonts/Montserrat/Montserrat-MediumItalic.ttf"; sourceTree = "<group>"; };
 		E828714E061D46DA9CFCC494 /* Montserrat-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Montserrat/Montserrat-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -298,6 +302,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
 				256258172B86474DB53F0283 /* Resources */,
+				F0F81D163EFC6404BDE563EE /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -313,6 +318,22 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		9C369137AA6FC4AF3B76422E /* begerzTests */ = {
+			isa = PBXGroup;
+			children = (
+				3DA9D22CB524EC401906E8E1 /* ExpoModulesProvider.swift */,
+			);
+			name = begerzTests;
+			sourceTree = "<group>";
+		};
+		B0C354E26384110DFD033462 /* begerz */ = {
+			isa = PBXGroup;
+			children = (
+				E32327C5488C522D4E4EB750 /* ExpoModulesProvider.swift */,
+			);
+			name = begerz;
+			sourceTree = "<group>";
+		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -322,6 +343,15 @@
 				89C6BE57DB24E9ADA2F236DE /* Pods-begerz-begerzTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		F0F81D163EFC6404BDE563EE /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				B0C354E26384110DFD033462 /* begerz */,
+				9C369137AA6FC4AF3B76422E /* begerzTests */,
+			);
+			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -635,6 +665,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00E356F31AD99517003FC87E /* begerzTests.m in Sources */,
+				E19B5CEDD263CF0C1A47FDAE /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -644,6 +675,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				2464416AEBF7923B5D25C0D8 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -668,7 +700,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = begerzTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -679,6 +711,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/begerz.app/begerz";
@@ -692,7 +725,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = begerzTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -703,6 +736,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/begerz.app/begerz";
@@ -715,7 +749,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2022071301;
+				CURRENT_PROJECT_VERSION = 2022071303;
 				DEVELOPMENT_TEAM = 5J36559NJW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = begerz/Info.plist;
@@ -729,6 +763,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = co.tepia.begerz1;
 				PRODUCT_NAME = begerz;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -743,8 +778,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2022071301;
+				CURRENT_PROJECT_VERSION = 2022071303;
 				DEVELOPMENT_TEAM = 5J36559NJW;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = begerz/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -756,6 +792,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = co.tepia.begerz1;
 				PRODUCT_NAME = begerz;
 				SWIFT_VERSION = 5.0;
@@ -812,7 +849,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -876,7 +913,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",

@@ -33,9 +33,11 @@ export const MyProfile = () => {
 
   async function onSaveChanges() {
     const obj = {
-      username: username,
-      email: email
+      username: username
+      // email: email
     };
+    console.log(obj, 'Updated values');
+
     const res = await updateAccountInformationByID(user.id, obj);
     console.log(res, 'update response');
   }

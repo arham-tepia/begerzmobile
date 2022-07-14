@@ -17,10 +17,10 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {ConvertDateToObject} from '../../../helpers/simplifyDateObject';
 import {MEDIA_URL} from '../../../api/url';
 import Toast from 'react-native-toast-message';
-import Video from 'react-native-video';
 import {MyTextMulish} from '../../../components/textMulish';
 import {COLORS} from '../../../constants/colors';
 import {AddVideoOptions} from './components/addVideoOptions';
+import {Video, ResizeMode} from 'expo-av';
 
 // import {UploadPhoto} from './components/uploadPhoto';
 
@@ -267,16 +267,18 @@ export const CreateBeg = ({navigation}: any) => {
                   Remove
                 </MyTextMulish>
                 <Video
+                  style={{
+                    width: '100%',
+                    marginBottom: 10,
+                    aspectRatio: 1
+                  }}
                   source={{
                     uri: fileObj.path
                   }}
-                  resizeMode="stretch"
-                  controls
-                  style={{
-                    width: '100%',
-                    height: 150,
-                    borderRadius: 16,
-                    marginBottom: 10
+                  useNativeControls
+                  // resizeMode={ResizeMode.COVER}
+                  onReadyForDisplay={response => {
+                    console.log(response, 'Video Respose');
                   }}
                 />
               </View>
