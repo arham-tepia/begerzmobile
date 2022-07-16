@@ -8,7 +8,6 @@ import {BegerProfileCard} from '../../beg/details/components/begerProfileCard';
 import {MyButton} from '../../../components/myButton';
 import {HomeBeg} from '../../home/components/homeBeg';
 import {MenuIcon} from '../../../components/icons/menuIcon';
-import {} from '@react-navigation/drawer';
 import {RootStateOrAny, useSelector} from 'react-redux';
 import {getUserInformationById} from '../../../api/user';
 import {getActiveBegsForUser} from '../../../api/beg';
@@ -58,7 +57,7 @@ export const PublicProfile = ({navigation}: any) => {
         showsVerticalScrollIndicator={false}
         style={{marginTop: 10, width: '100%'}}>
         <View style={{width: '90%', alignSelf: 'center'}}>
-          <BegerProfileCard data={data} />
+          <BegerProfileCard user={data} />
           <MyButton
             inverse
             title="Edit Profile"

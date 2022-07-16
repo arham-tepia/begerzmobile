@@ -41,7 +41,7 @@ export const BegInformationView = (props: any) => {
         Beg. You can add up to 5 total videos or Images.
       </MyTextMulish>
       <Margin top margin={5} />
-      <Image source={ICONS.noimage} style={{height: 285, width: '100%'}} />
+      {/* <Image source={ICONS.noimage} style={{height: 285, width: '100%'}} />
       <Margin top margin={5} />
       <View style={styles.row}>
         <MyTextMulish style={[styles.begTitle, {maxWidth: '70%'}]}>
@@ -53,15 +53,15 @@ export const BegInformationView = (props: any) => {
         </MyTextMulish>
       </View>
       <Margin top margin={3} />
-      <MyTextMulish style={styles.link}>viemo.com/q9047/38</MyTextMulish>
-      <Margin top margin={37} />
-      <MyButton
+      <MyTextMulish style={styles.link}>viemo.com/q9047/38</MyTextMulish> */}
+      {/* <Margin top margin={37} /> */}
+      {/* <MyButton
         title="+ Add Video"
         inverse
         style={{height: 44, borderRadius: 100}}
         textStyles={{fontWeight: '700', fontSize: 13}}
       />
-      <Margin top margin={19} />
+      <Margin top margin={19} /> */}
     </View>
   );
 };

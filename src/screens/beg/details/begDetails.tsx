@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ScrollView,
   View,
@@ -6,7 +6,9 @@ import {
   TouchableOpacity,
   Share,
   Alert,
-  Dimensions
+  Dimensions,
+  ActivityIndicator,
+  ImageBackground
 } from 'react-native';
 import {Avatar} from '../../../components/avatar';
 import {MoreIcon} from '../../../components/icons/moreIcon';
@@ -24,7 +26,7 @@ import {begDetailsStyles as styles} from './styles/begDetailsStyles';
 import MentionHashtagTextView from 'react-native-mention-hashtag-text';
 import {COLORS} from '../../../constants/colors';
 import Carousel from 'react-native-snap-carousel';
-import {Video, ResizeMode} from 'expo-av';
+import {Video} from 'expo-av';
 import {RootStateOrAny, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {postReaction} from '../../../api/reactions';
@@ -32,7 +34,8 @@ import {postReaction} from '../../../api/reactions';
 export const BegDetails = ({route, navigation}: any) => {
   const begDetails = route.params.params.beg;
   const user = useSelector((state: RootStateOrAny) => state.currentUser);
-  console.log(begDetails, 'Beg Details');
+  const [status, setStatus]: any = useState([]);
+  //console.log(begDetails, 'Beg Details');
   const acheivements: {
     inspiring?: string;
     informative?: string;
@@ -100,36 +103,36 @@ export const BegDetails = ({route, navigation}: any) => {
   }
   const twidth = Dimensions.get('window').width;
   const width = twidth - 2;
-  function renderVideos({item, index}: any) {
+  var ref: any;
+  function renderVideos({item}: any) {
     return (
-      // <Video
-      //   source={{uri: item.videoLink}}
-      //   posterResizeMode={'contain'}
-      //   controls
-      //   poster={item.thumbLink}
-      //   resizeMode="stretch"
-      //   paused
-      //   style={{
-      //     width: '100%',
-      //     height: '100%'
-      //   }}
-      // />
-      <Video
-        //ref={video}
-        style={{
-          width: width - 4,
-          height: '100%',
-          alignSelf: 'center'
-        }}
-        source={{
-          uri: item.videoLink
-        }}
-        useNativeControls
-        //usePoster
-        posterSource={{uri: item.thumbLink}}
-        resizeMode={ResizeMode.STRETCH}
-        // onPlaybackStatusUpdate={status => setStatus(() => status)}
-      />
+      <>
+        <Video
+          style={{
+            width: width - 4,
+            height: '100%',
+            alignSelf: 'center'
+          }}
+          source={{
+            uri: item.videoLink
+          }}
+          onError={e => {
+            console.log(e, 'Error');
+          }}
+          onPlaybackStatusUpdate={status => {
+            setStatus(() => status);
+          }}
+          useNativeControls
+          usePoster={!status.isLoaded}
+          // usePoster={status.isLoaded === 'true' ? false : true}
+          posterSource={{uri: item.thumbLink}}
+          posterStyle={{
+            width: width - 4,
+            height: '100%',
+            backgroundColor: 'black'
+          }}
+        />
+      </>
     );
   }
 
@@ -198,17 +201,6 @@ export const BegDetails = ({route, navigation}: any) => {
               </View>
             </View>
             <View style={styles.videoView}>
-              {/* <Video
-              source={{uri: begDetails.videos[0].videoLink}}
-              posterResizeMode={'contain'}
-              controls
-              poster={begDetails.videos[0].thumbLink}
-              paused
-              style={{
-                width: '100%',
-                height: '100%'
-              }}
-            /> */}
               <Carousel
                 // ref={(c) => { this._carousel = c; }}
                 data={begDetails.videos}

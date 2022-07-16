@@ -15,7 +15,7 @@ export const CommentInput = (props: Props) => {
     <View style={styles.main}>
       <Avatar style={{borderRadius: 16, marginLeft: 21}} customSize size={42} />
       <TextInput
-        multiline
+        //multiline
         style={styles.ti}
         placeholder={'Comment as user'}
         placeholderTextColor="#B0B0B0"

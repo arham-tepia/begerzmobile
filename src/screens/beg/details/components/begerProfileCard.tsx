@@ -1,25 +1,38 @@
-import React from 'react';
+import React, {useReducer} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {ProfileAvatar} from '../../../../components/profileAvatar';
 import {MyTextMulish} from '../../../../components/textMulish';
 
 interface Props {
-  user?: {
-    _id: string;
-    profileImage: string;
-    username: string;
-    email: string;
-    karma: string;
-  };
-  data?: any;
+  user?: any;
+  // user?: {
+  //   _id: string;
+  //   profileImage: string;
+  //   username: string;
+  //   email: string;
+  //   karma: string;
+  // };
 }
 
 export const BegerProfileCard = (props: Props) => {
+  const {user} = props;
   const data = [
     {name: 'Begz', value: '10', borderRight: true},
-    {name: 'Raised', value: '$' + props.data.totalRaised, borderRight: true},
-    {name: 'Chip-Ins', value: '$' + props.data.chipins, borderRight: true},
-    {name: 'Donated', value: '$' + props.data.donations, borderRight: false}
+    {
+      name: 'Raised',
+      value: '$' + user.totalRaised,
+      borderRight: true
+    },
+    {
+      name: 'Chip-Ins',
+      value: '$' + user.totalChippedIn,
+      borderRight: true
+    },
+    {
+      name: 'Donated',
+      value: '$' + user.totalDonated,
+      borderRight: false
+    }
   ];
 
   function renderBottomStats({item}: any) {
@@ -36,21 +49,19 @@ export const BegerProfileCard = (props: Props) => {
     <View style={styles.main}>
       <View style={styles.topRow}>
         <View style={styles.topRCol}>
-          <MyTextMulish style={styles.statBold}>
-            {props.data.followers}
-          </MyTextMulish>
+          <MyTextMulish style={styles.statBold}>{user.followers}</MyTextMulish>
           <MyTextMulish style={styles.titleBig}>Followers</MyTextMulish>
         </View>
-        <ProfileAvatar source={props.user && {uri: props.user.profileImage}} />
+        <ProfileAvatar
+          source={props.user.profileImage && {uri: user.profileImage}}
+        />
         <View style={styles.topRCol}>
-          <MyTextMulish style={styles.statBold}>
-            {props.data.following}
-          </MyTextMulish>
+          <MyTextMulish style={styles.statBold}>{user.following}</MyTextMulish>
           <MyTextMulish style={styles.titleBig}>Following</MyTextMulish>
         </View>
       </View>
       <View style={{marginTop: 28}} />
-      <MyTextMulish style={styles.statSmall}>{props.data.karma}</MyTextMulish>
+      <MyTextMulish style={styles.statSmall}>{user.karma}</MyTextMulish>
       <MyTextMulish style={styles.titleBig}>Karma earned</MyTextMulish>
       <View style={{width: '100%', marginTop: 18}}>
         <FlatList

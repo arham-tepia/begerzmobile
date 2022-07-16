@@ -46,11 +46,14 @@ export const get = async (endpoint: string) => {
   );
 };
 export const del = async (endpoint: string, data?: any) => {
+  const token = await getToken();
+
   return fetch(endpoint, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token
     }
   })
     .then(response => response.json())

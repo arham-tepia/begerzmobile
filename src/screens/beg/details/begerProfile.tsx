@@ -1,5 +1,8 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, View} from 'react-native';
+import {RootStateOrAny, useSelector} from 'react-redux';
+import {followUser} from '../../../api/followers';
+import {getUserInformationById} from '../../../api/user';
 import {ArrowBackBlack} from '../../../components/icons/arowBackBlack';
 import {MoreIcon} from '../../../components/icons/moreIcon';
 import {MyButton} from '../../../components/myButton';
@@ -10,10 +13,27 @@ import {HomeBeg} from '../../home/components/homeBeg';
 import {BegerProfileCard} from './components/begerProfileCard';
 
 export const BegerProfile = ({route}: any) => {
+  const [user, setUser]: any = useState([]);
+  const [loading, setLoading]: any = useState(false);
   useEffect(() => {
-    console.log(user, 'user');
+    getData();
   }, []);
-  const user = route.params.user;
+
+  async function getData() {
+    const res = await getUserInformationById(route.params.user._id);
+    setUser(res);
+    console.log(res, 'real user');
+  }
+  const thisUser = useSelector((state: RootStateOrAny) => state.currentUser);
+  async function onFollowPress() {
+    setLoading(true);
+    const data = {
+      followerId: user._id,
+      userId: thisUser.id
+    };
+    const res = await followUser(data).finally(() => setLoading(false));
+    console.log(res, 'follow repsponse');
+  }
   return (
     <View style={[commonStyles.main, {backgroundColor: 'transparent'}]}>
       <View style={{width: '100%'}}>
@@ -35,6 +55,9 @@ export const BegerProfile = ({route}: any) => {
           <MyButton
             inverse
             title="Follow"
+            onPress={onFollowPress}
+            loading={loading}
+            disabled={loading}
             style={{
               height: 36,
               borderRadius: 4,

@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Image, ScrollView, StyleSheet, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FlatList, Image, ScrollView, StyleSheet, View} from 'react-native';
 import {Margin} from '../../../components/margin';
 import {MyButton} from '../../../components/myButton';
 import {MyTextInput} from '../../../components/myTextinput';
@@ -20,10 +20,27 @@ import {EndAndWithdraw} from './components/withdraw';
 //@ts-ignore
 import MentionHashtagTextView from 'react-native-mention-hashtag-text';
 import {BottomCard} from '../../../components/bottomCard';
+import {Video, ResizeMode} from 'expo-av';
+import ImagePicker from 'react-native-image-crop-picker';
+import {putFile} from '../../../api/uploadFIle';
+import {getSignedURL} from '../../../api/signedUrl';
+import Toast from 'react-native-toast-message';
+import {MEDIA_URL} from '../../../api/url';
+import {deleteVideo, postVideo} from '../../../api/video';
 
 export const MyBegDashboard = ({route}: any) => {
   const beg = route.params.beg;
   console.log(beg, 'Beg data');
+  const [videos, setVideos]: any = useState([]);
+  useEffect(() => {
+    const beg = route.params.beg;
+
+    setVideos(beg.videos);
+  }, []);
+  // const [signedUrl, setSignedUrl]: any = useState([]);
+  const [loader, setLoader]: any = useState(false);
+  const [showOpenOptions, setShowOpenOptions]: any = useState(false);
+  const [fileObj, setFileObj]: any = useState(false);
 
   const [storyCard, setStoryCard] = useState(false);
   const [withdrawModal, setWithdrawModal]: any = useState(false);
@@ -50,6 +67,82 @@ export const MyBegDashboard = ({route}: any) => {
       setSelectedFollowers([...selectedFollowers, item]);
     }
   }
+  async function onVideoPick() {
+    ImagePicker.openPicker({
+      mediaType: 'video',
+      compressVideoPreset: 'MediumQuality'
+    }).then(video => {
+      setShowOpenOptions(false);
+      setFileObj(video);
+      processVideo(video);
+    });
+  }
+
+  async function onOpenCamera() {
+    ImagePicker.openCamera({
+      mediaType: 'video',
+      compressVideoPreset: 'MediumQuality'
+    }).then(video => {
+      setShowOpenOptions(false);
+      setFileObj(video);
+      processVideo(video);
+    });
+  }
+
+  async function processVideo(fileObj: any) {
+    setLoader(true);
+    const res = await getSignedURL();
+    // setSignedUrl(res);
+    await putFile(res, fileObj).finally(() => {
+      setLoader(false);
+      Toast.show({
+        type: 'success',
+        text1: 'Upload successful',
+        text2: 'Your video has been uploaded successfully'
+      });
+    });
+
+    // const video = {
+    //   videoLink: res.uuid ? MEDIA_URL + res.uuid + '.mp4' : '',
+    //   thumbLink: res.uuid ? MEDIA_URL + res.uuid + '-00001.png' : '',
+    //   videoType:'beg',
+    //   fileId:res.uuid,
+    //   begId:beg._id
+    // };
+
+    const link = await postVideo({
+      videoLink: res.uuid ? MEDIA_URL + res.uuid + '.mp4' : '',
+      thumbLink: res.uuid
+        ? MEDIA_URL + 'thumbs/' + res.uuid + '-00001.png'
+        : '',
+      videoType: 'beg',
+      fileId: res.uuid,
+      begId: beg._id
+    });
+    console.log(link, 'Video Linked response');
+  }
+
+  function onMediaRemove() {
+    setFileObj(false);
+    // setSignedUrl([]);
+  }
+
+  async function onBegRemove(item: any) {
+    console.log(item);
+
+    const res = await deleteVideo(item._id);
+    console.log(res, 'Video Deleted');
+    Toast.show({
+      type: 'success',
+      text1: 'Video removed successfully'
+    });
+    deleteItemById(item._id);
+  }
+  const deleteItemById = (id: any) => {
+    const filteredData = videos.filter((item: any) => item._id !== id);
+    setVideos(filteredData);
+  };
+
   return (
     <>
       <View style={styles.main}>
@@ -153,6 +246,46 @@ export const MyBegDashboard = ({route}: any) => {
               </View>
               <CollapseableView title="General" hand>
                 <BegInformationView beg={beg} />
+                <FlatList
+                  data={videos}
+                  style={{width: '95%'}}
+                  renderItem={({item}: any) => {
+                    console.log(item.thumbLink, 'Thumblinks');
+
+                    return (
+                      <View style={{width: '95%', alignSelf: 'center'}}>
+                        <Image
+                          source={{uri: item.thumbLink}}
+                          style={{height: 285, width: '100%'}}
+                        />
+                        <MyTextMulish
+                          onPress={() => onBegRemove(item)}
+                          style={[
+                            {
+                              fontWeight: '700',
+                              marginVertical: 3,
+                              alignSelf: 'flex-end'
+                            },
+                            {fontSize: 13, color: COLORS.primary}
+                          ]}>
+                          Remove
+                        </MyTextMulish>
+                      </View>
+                    );
+                  }}
+                />
+
+                <Margin top margin={10} />
+                <MyButton
+                  title="+ Add Video"
+                  loading={loader}
+                  onPress={onVideoPick}
+                  disabled={loader}
+                  inverse
+                  style={{height: 44, borderRadius: 100, width: '95%'}}
+                  textStyles={{fontWeight: '700', fontSize: 13}}
+                />
+                <Margin top margin={10} />
               </CollapseableView>
               <CollapseableView title="Story" edit>
                 <View style={{width: '95%', marginTop: 25}}>
@@ -269,6 +402,7 @@ export const MyBegDashboard = ({route}: any) => {
         </MyTextMulish>
       </BottomCard>
       <Dropdown />
+      <Toast position="bottom" />
     </>
   );
 };

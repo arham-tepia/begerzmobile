@@ -1,5 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, SafeAreaView} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
+import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform
+} from 'react-native';
 import {RootStateOrAny, useSelector} from 'react-redux';
 import {getCommentsForBeg} from '../../../api/beg';
 import {postComment} from '../../../api/comments';
@@ -18,25 +26,42 @@ export const BegComments = ({navigation, route}: any) => {
     setAllComments(res.results);
     console.log(res, 'All comments');
   }
+
   useEffect(() => {
     getData();
-    // navigation
-    //   .getParent()
-    //   ?.getParent()
-    //   ?.setOptions(
-    //     {tabBarStyle: {display: 'none', paddingBottom: 0}},
-    //     {safeAreaInsets: {bottom: 0, top: 0}}
-    //   );
-    // return () =>
-    //   navigation.getParent()?.getParent()?.setOptions({tabBarStyle: undefined});
-  }, [navigation]);
+  }, []);
+
+  // useLayoutEffect(() => {
+  //   navigation
+  //     .getParent()
+  //     ?.getParent()
+  //     ?.setOptions(
+  //       {
+  //         tabBarStyle: {
+  //           display: 'none',
+  //           aspectRatio: 0,
+  //           maxHeight: 0,
+  //           height: 0,
+  //           padding: 0,
+  //           margin: 0
+  //           //paddingBottom: 0
+  //           //bottom: 0
+  //           //height: 0
+  //           // width: 0
+  //         }
+  //       },
+  //       {safeAreaInsets: {bottom: 0, top: 0}}
+  //     );
+  //   return () =>
+  //     navigation.getParent()?.getParent()?.setOptions({tabBarStyle: undefined});
+  // }, [navigation]);
 
   function renderComments({item}: any) {
     return <Comment data={item} />;
   }
 
   async function onPostPress() {
-    if (comment.length > 1) {
+    if (comment.length >= 1) {
       const data = {
         textDescription: comment,
         htmlDescription: comment,
@@ -46,17 +71,23 @@ export const BegComments = ({navigation, route}: any) => {
       const res = await postComment(data);
       console.log(res, 'Comment response');
       setComment('');
+      getData();
     }
   }
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : 0;
 
   return (
     <SafeAreaView style={[commonStyles.main]}>
-      <View style={{width: '100%'}}>
-        <Comment noLike name="Amy" />
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={keyboardVerticalOffset}
+        behavior="padding"
+        style={{width: '100%'}}>
+        {/* <View style={{width: '100%'}}> */}
+        {/* <Comment noLike name="Amy" /> */}
         <FlatList
           data={allComments}
           renderItem={renderComments}
-          style={{height: '72%'}}
+          style={{height: '90%'}}
           // ListFooterComponent={() => {
           //   return (
           //     <CommentInput
@@ -67,7 +98,8 @@ export const BegComments = ({navigation, route}: any) => {
           // }}
         />
         <CommentInput onChangeText={setComment} onPostPress={onPostPress} />
-      </View>
+        {/* </View> */}
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

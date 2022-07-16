@@ -1,11 +1,5 @@
 import React, {useEffect} from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Image
-} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {Avatar} from '../../../components/avatar';
 import {WhiteEyeIcon} from '../../../components/icons/eyeWhite';
@@ -13,9 +7,10 @@ import {MoneyBagHd} from '../../../components/icons/moneybagHd';
 import {MoreIcon} from '../../../components/icons/moreIcon';
 import {MyTextMulish} from '../../../components/textMulish';
 import Carousel from 'react-native-snap-carousel';
-import {Video, ResizeMode} from 'expo-av';
+import {Video} from 'expo-av';
 import {BegReactions} from './begReactions';
 import {VideoCam} from '../../../components/icons/videoCam';
+
 interface Props {
   data: {
     title?: string;
@@ -84,24 +79,33 @@ export const HomeBeg = (props: Props) => {
       );
     }
   }
-  function renderVideos({item, index}: any) {
-    return (
-      <Video
-        style={{
-          width: '100%',
-          marginBottom: 10,
-          aspectRatio: 1
-        }}
-        source={{
-          uri: item.videoLink
-        }}
-        useNativeControls
+  const video = React.useRef(null);
 
-        // resizeMode={ResizeMode.COVER}
-        // onReadyForDisplay={response => {
-        //   console.log(response, 'Video Respose');
-        // }}
-      />
+  function renderVideos({item}: any) {
+    return (
+      <>
+        <Video
+          ref={video}
+          style={{
+            width: width - 4,
+            height: '100%',
+            alignSelf: 'center'
+          }}
+          source={{
+            uri: item.videoLink
+          }}
+          onError={e => {
+            console.log(e, 'Error');
+          }}
+          useNativeControls
+          posterSource={{uri: item.thumbLink}}
+          posterStyle={{
+            width: width - 4,
+            height: '100%',
+            backgroundColor: 'black'
+          }}
+        />
+      </>
     );
   }
 
@@ -154,9 +158,7 @@ export const HomeBeg = (props: Props) => {
             width: width - 5,
             alignItems: 'center',
             backgroundColor: 'black'
-          }}
-          // source={data.thumbLink ? {uri: data.thumbLink} : ICONS.noimage}
-        >
+          }}>
           <View
             style={{
               position: 'absolute',
@@ -165,19 +167,8 @@ export const HomeBeg = (props: Props) => {
             }}>
             <WhiteEyeIcon />
           </View>
-          {/* <Video
-            source={{uri: data.videos[0].videoLink}}
-            posterResizeMode={'stretch'}
-            resizeMode="stretch"
-            controls
-            poster={data.videos[0].thumbLink}
-            paused
-            style={{
-              width: '100%'
-            }}
-          /> */}
+
           <Carousel
-            // ref={(c) => { this._carousel = c; }}
             data={data.videos}
             style={{alignItems: 'center', justifyContent: 'center'}}
             renderItem={renderVideos}

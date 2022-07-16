@@ -23,8 +23,10 @@ const SuccessText = () => {
 
 export const SuccessStories = ({navigation}: any) => {
   const [stories, setStories]: any = useState([]);
+  const [loading, setLoading]: any = useState(false);
   async function getData() {
-    const res = await getSuccessStories();
+    setLoading(true);
+    const res = await getSuccessStories().finally(() => setLoading(false));
     setStories(res.results);
   }
   useEffect(() => {
@@ -42,7 +44,9 @@ export const SuccessStories = ({navigation}: any) => {
         renderItem={renderStories}
         horizontal
         showsHorizontalScrollIndicator={false}
-        ListHeaderComponent={() => <SuccessText />}
+        ListHeaderComponent={() => {
+          return !loading ? <SuccessText /> : <></>;
+        }}
       />
     </View>
   );
