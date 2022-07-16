@@ -68,7 +68,9 @@ export const BegReactions = (props: {reactions: any}) => {
 const styles = StyleSheet.create({
   main: {
     flexDirection: 'row',
-    height: 20
+    height: 20,
+    alignSelf: 'center',
+    alignItems: 'center'
     //width: 52
   }
 });

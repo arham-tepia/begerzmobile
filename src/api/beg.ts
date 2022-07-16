@@ -26,6 +26,12 @@ interface UpdateBeg {
   status?: string;
 }
 
+interface SearchProps {
+  terms?: string;
+  diacratic?: boolean;
+  caseSensitive?: boolean;
+}
+
 export async function postBeg(data: PostBeg) {
   const endpoint = BASE_URL + 'begs';
   const res = await post(endpoint, data);
@@ -42,9 +48,9 @@ export async function getAllBegs(additionalUrl?: string) {
   return res;
 }
 
-export async function textSearchForBegs(text: any) {
-  const endpoint = BASE_URL + 'begs/search/' + text;
-  const res = await get(endpoint);
+export async function textSearchForBegs(data: SearchProps) {
+  const endpoint = BASE_URL + 'begs/search';
+  const res = await post(endpoint, data);
   return res;
 }
 

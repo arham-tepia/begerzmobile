@@ -44,8 +44,12 @@ export const Story = (props: Props) => {
         <ImageBackground
           style={styles.main}
           borderRadius={16}
-          defaultSource={ICONS.noimage}
-          source={props.data?.videos[0]?.thumbLink ?? ICONS.noimage}>
+          //defaultSource={ICONS.noimage}
+          source={
+            props.data?.videos[0]?.thumbLink
+              ? {uri: props.data?.videos[0]?.thumbLink}
+              : ICONS.noimage
+          }>
           <View style={styles.bottom}>
             <View
               style={{

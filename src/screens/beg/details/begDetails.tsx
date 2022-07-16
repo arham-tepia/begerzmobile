@@ -26,7 +26,7 @@ import {begDetailsStyles as styles} from './styles/begDetailsStyles';
 import MentionHashtagTextView from 'react-native-mention-hashtag-text';
 import {COLORS} from '../../../constants/colors';
 import Carousel from 'react-native-snap-carousel';
-import {Video} from 'expo-av';
+import {ResizeMode, Video} from 'expo-av';
 import {RootStateOrAny, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {postReaction} from '../../../api/reactions';
@@ -122,6 +122,7 @@ export const BegDetails = ({route, navigation}: any) => {
           onPlaybackStatusUpdate={status => {
             setStatus(() => status);
           }}
+          resizeMode={ResizeMode.COVER}
           useNativeControls
           usePoster={!status.isLoaded}
           // usePoster={status.isLoaded === 'true' ? false : true}

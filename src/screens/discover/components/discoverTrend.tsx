@@ -1,53 +1,90 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
   View,
   Image,
-  FlatList
+  FlatList,
+  ActivityIndicator
 } from 'react-native';
+import {textSearchForBegs} from '../../../api/beg';
 import {ArrowRight} from '../../../components/icons/arrowRight';
 import {HashtagIcon} from '../../../components/icons/hashtagIcon';
 import {MyTextMulish} from '../../../components/textMulish';
 import {COLORS} from '../../../constants/colors';
 import {ICONS} from '../../../constants/icons';
 
-export const DiscoverTrend = () => {
-  const images = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const uri = 'https://source.unsplash.com/random';
+interface Props {
+  tag: string;
+  navigation?: any;
+}
+
+export const DiscoverTrend = (props: Props) => {
+  // const images = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  // const uri = 'https://source.unsplash.com/random';
+  const [data, setData]: any = useState([]);
+  const [loading, setLoading]: any = useState(false);
+  async function GetData() {
+    setLoading(true);
+    const res = await textSearchForBegs({terms: '#' + props.tag}).finally(() =>
+      setLoading(false)
+    );
+    setData(res.results);
+    console.log(res, 'Results for ' + props.tag);
+  }
 
   function renderImages({item}: any) {
     return (
-      <TouchableOpacity style={styles.imgContainer}>
-        <Image source={ICONS.noimage} style={styles.img} />
+      <TouchableOpacity
+        onPress={() =>
+          props.navigation.navigate('home-begDetailsStack', {beg: item})
+        }
+        style={styles.imgContainer}>
+        <Image source={{uri: item.videos[0].thumbLink}} style={styles.img} />
       </TouchableOpacity>
     );
   }
-  return (
-    <View style={styles.main}>
-      <View style={styles.topRow}>
-        <View style={styles.rowElement1}>
-          <HashtagIcon />
-          <View style={{marginLeft: 13}}>
-            <MyTextMulish style={[styles.title]}>SuccessBeggerz</MyTextMulish>
-            <MyTextMulish style={[styles.subtitle]}>Trending</MyTextMulish>
+
+  useEffect(() => {
+    GetData();
+  }, []);
+  if (data.length >= 1) {
+    return (
+      <View style={styles.main}>
+        <View style={styles.topRow}>
+          <View style={styles.rowElement1}>
+            <HashtagIcon />
+            <View style={{marginLeft: 13}}>
+              <MyTextMulish style={[styles.title]}>{props.tag}</MyTextMulish>
+              <MyTextMulish style={[styles.subtitle]}>Trending</MyTextMulish>
+            </View>
           </View>
+          <TouchableOpacity style={styles.rowElement2}>
+            {!loading && (
+              <>
+                <MyTextMulish style={[styles.viewall, {marginRight: 10}]}>
+                  View All
+                </MyTextMulish>
+                <ArrowRight />
+              </>
+            )}
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.rowElement2}>
-          <MyTextMulish style={[styles.viewall, {marginRight: 10}]}>
-            View All
-          </MyTextMulish>
-          <ArrowRight />
-        </TouchableOpacity>
+        {loading ? (
+          <ActivityIndicator size={'small'} />
+        ) : (
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            data={data}
+            renderItem={renderImages}
+            horizontal
+          />
+        )}
       </View>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        data={images}
-        renderItem={renderImages}
-        horizontal
-      />
-    </View>
-  );
+    );
+  } else {
+    return <View />;
+  }
 };
 
 const styles = StyleSheet.create({

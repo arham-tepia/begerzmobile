@@ -7,7 +7,7 @@ import {MoneyBagHd} from '../../../components/icons/moneybagHd';
 import {MoreIcon} from '../../../components/icons/moreIcon';
 import {MyTextMulish} from '../../../components/textMulish';
 import Carousel from 'react-native-snap-carousel';
-import {Video} from 'expo-av';
+import {ResizeMode, Video} from 'expo-av';
 import {BegReactions} from './begReactions';
 import {VideoCam} from '../../../components/icons/videoCam';
 
@@ -91,6 +91,7 @@ export const HomeBeg = (props: Props) => {
             height: '100%',
             alignSelf: 'center'
           }}
+          resizeMode={ResizeMode.COVER}
           source={{
             uri: item.videoLink
           }}
@@ -199,7 +200,8 @@ export const HomeBeg = (props: Props) => {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginRight: 10
+                marginRight: 10,
+                justifyContent: 'center'
               }}>
               <BegReactions reactions={data.achievements} />
               <View

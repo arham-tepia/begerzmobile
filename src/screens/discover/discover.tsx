@@ -6,14 +6,19 @@ import {DiscoverCover} from './components/cover';
 import {DiscoverHeader} from './components/discoverHeader';
 import {DiscoverTrend} from './components/discoverTrend';
 
-export const Discover = () => {
+export const Discover = ({navigation}: any) => {
+  const tags = ['charity', 'vacation', 'travel'];
+  function mapTags(item: any) {
+    return <DiscoverTrend tag={item} navigation={navigation} />;
+  }
   return (
     <View style={commonStyles.main}>
       <DiscoverHeader leftComponent={<TextInput style={styles.ti} />} />
       <ScrollView style={{width: '90%', marginTop: 10}}>
-        <DiscoverCover />
-        <DiscoverTrend />
-        <DiscoverTrend />
+        {/* <DiscoverCover /> */}
+        {tags.map(mapTags)}
+        {/* <DiscoverTrend />
+        <DiscoverTrend /> */}
       </ScrollView>
     </View>
   );
