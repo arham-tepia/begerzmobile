@@ -27,7 +27,9 @@ export const SearchHomePage = ({navigation}: any) => {
   async function onSearch(text: string) {
     setSearch(text);
     setLoader(true);
-    const res = await textSearchForBegs(text).finally(() => setLoader(false));
+    const res = await textSearchForBegs({terms: text}).finally(() =>
+      setLoader(false)
+    );
     console.log(res, 'Response Search');
     setResults(res.results);
   }
