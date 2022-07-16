@@ -9,6 +9,7 @@ import {
 import {getAllBegs} from '../../api/beg';
 import {MyButton} from '../../components/myButton';
 import {HomeBeg} from './components/homeBeg';
+import {HomeBegNew} from './components/homeBegNew';
 import {SuccessStories} from './components/successStories';
 
 export const Home = ({navigation}: any) => {
@@ -25,7 +26,7 @@ export const Home = ({navigation}: any) => {
       setPagination(res.pagination);
     }
     console.log(res.pagination, 'response');
-    console.log(res.results[0], 'response obj');
+    // console.log(res.results, 'response obj');
   }
 
   async function fetchBegs(page: any) {
@@ -57,26 +58,35 @@ export const Home = ({navigation}: any) => {
   useEffect(() => {
     GetData();
   }, []);
-  function renderBegs({item}: any) {
+  const renderBegs = ({item}: any) => {
     return (
-      <HomeBeg
+      <HomeBegNew
+        //noGradient
         onPress={() => navigation.navigate('home-begDetailsStack', {beg: item})}
         data={item}
       />
     );
-  }
+  };
+  // function renderBegs({item}: any) {
+  //   return (
+  //     <HomeBeg
+  //       onPress={() => navigation.navigate('home-begDetailsStack', {beg: item})}
+  //       data={item}
+  //     />
+  //   );
+  // }
   const getItemLayout = (data: any, index: number) => ({
-    length: 281.25,
-    offset: 281.25 * index,
+    length: 333,
+    offset: 333 * index,
     index
   });
-  async function onRefresh() {
+  const onRefresh = async () => {
     console.log('refreshed');
     const page = parseInt(pagination.current) - 1;
     if (pagination.current === '1') {
       fetchBegs(page);
     }
-  }
+  };
 
   return (
     <View style={styles.main}>
@@ -89,14 +99,14 @@ export const Home = ({navigation}: any) => {
         ListFooterComponent={() => (
           <>{footerLoader && <ActivityIndicator size={'small'} />}</>
         )}
-        initialNumToRender={10}
+        style={{width: '100%'}}
+        initialNumToRender={5}
         renderItem={renderBegs}
-        // onEndReached={onEndReached}
-        // onEndReachedThreshold={0.2}
-        // getItemLayout={getItemLayout}
-        // maxToRenderPerBatch={10}
-        // windowSize={10}
-        // disableVirtualization
+        onEndReached={onEndReached}
+        getItemLayout={getItemLayout}
+        maxToRenderPerBatch={5}
+        windowSize={4}
+        disableVirtualization
         // removeClippedSubviews
         refreshControl={
           <RefreshControl refreshing={loader} onRefresh={GetData} />

@@ -9,27 +9,32 @@ export const BegReactions = (props: {reactions: any}) => {
     {
       name: 'hilarious',
       count: reactions.hilarious,
-      icon: ICONS.emojiHilarious
+      icon: ICONS.emojiHilarious,
+      id: 1
     },
     {
       name: 'brilliant',
       count: reactions.brilliant,
-      icon: ICONS.emojiBrilliant
+      icon: ICONS.emojiBrilliant,
+      id: 2
     },
     {
       name: 'informative',
       count: reactions.informative,
-      icon: ICONS.emojiInformative
+      icon: ICONS.emojiInformative,
+      id: 3
     },
     {
       name: 'inspiring',
       count: reactions.inspiring,
-      icon: ICONS.emojiInspiring
+      icon: ICONS.emojiInspiring,
+      id: 4
     },
     {
       name: 'admirable',
       count: reactions.admirable,
-      icon: ICONS.emojiAdmirable
+      icon: ICONS.emojiAdmirable,
+      id: 5
     }
   ];
 
@@ -49,8 +54,12 @@ export const BegReactions = (props: {reactions: any}) => {
   };
   return (
     <View style={styles.main}>
-      {allReactions.map((item: any) => {
-        return <MyEmoji item={item} />;
+      {allReactions.map((item: any, index: number) => {
+        return (
+          <View key={index}>
+            <MyEmoji item={item} />
+          </View>
+        );
       })}
       <MyTextMulish
         style={{
