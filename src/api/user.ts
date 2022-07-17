@@ -6,3 +6,13 @@ export async function getUserInformationById(id: string) {
   const res = await get(endpoint);
   return res;
 }
+export async function getChipinsMadeByAUser(id: string) {
+  const endpoint = BASE_URL + 'users/' + id + '/chipins';
+  const res = await get(endpoint);
+  return res;
+}
+export async function getUserReactionToABeg(userId: string, begId: string) {
+  const endpoint = BASE_URL + 'users/' + userId + '/reactions/begs/' + begId;
+  const res = await get(endpoint);
+  return res;
+}

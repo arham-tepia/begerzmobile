@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
+import {RootStateOrAny, useSelector} from 'react-redux';
+import {getChipinsMadeByAUser} from '../../../api/user';
 import {InfoIcon} from '../../../components/icons/info';
 import {InfoPinkIcon} from '../../../components/icons/infoPink';
 import {KarmaBlueIcon} from '../../../components/icons/karmaBlue';
@@ -9,11 +11,27 @@ import {Margin} from '../../../components/margin';
 import {MyButton} from '../../../components/myButton';
 import {MyTextMulish} from '../../../components/textMulish';
 import {COLORS} from '../../../constants/colors';
+import {ConvertDateStringToObject} from '../../../helpers/formatDateObject';
 import {commonStyles} from '../../../styles/styles';
 import {Divider} from '../../beg/post/components/divider';
 import {MyChipInsData} from './components/dummyData';
 
 export const MyChipInsAndKarma = () => {
+  const user = useSelector((state: RootStateOrAny) => state.currentUser);
+  const [data, setData]: any = useState([]);
+  const [loader, setLoader]: any = useState(false);
+  async function GetData() {
+    setLoader(true);
+    const res = await getChipinsMadeByAUser('627e487fc32baa9e18b4fa58').finally(
+      () => setLoader(false)
+    );
+    setData(res.results);
+  }
+
+  useEffect(() => {
+    GetData();
+  }, []);
+
   function CardElementRowHead() {
     return (
       <View style={styles.cardElementsRow}>
@@ -33,6 +51,7 @@ export const MyChipInsAndKarma = () => {
     );
   }
   function ChipInDataRow({item, index}: any) {
+    const date = ConvertDateStringToObject(item.createdAt);
     return (
       <View
         style={[
@@ -40,15 +59,26 @@ export const MyChipInsAndKarma = () => {
           index % 2 === 0 && {backgroundColor: 'rgba(250, 250, 250, 1)'}
         ]}>
         <View style={[styles.elementBox, {width: '24%'}]}>
-          <MyTextMulish style={[styles.cardElement]}>{item.date}</MyTextMulish>
+          <MyTextMulish style={[styles.cardElement]}>
+            {date.monthNumber}/{date.date}/{date.year}
+          </MyTextMulish>
         </View>
         <View style={[styles.elementBox, {width: '19%'}]}>
           <MyTextMulish style={[styles.cardElement, {}]}>
-            {item.amount}
+            ${item.amount}
           </MyTextMulish>
         </View>
-        <View style={[styles.elementBox, {width: '39%'}]}>
-          <MyTextMulish style={[styles.cardElement]}>{item.name}</MyTextMulish>
+        <View
+          style={[
+            styles.elementBox,
+            {
+              width: '39%'
+              //alignItems: 'flex-start'
+            }
+          ]}>
+          <MyTextMulish style={[styles.cardElement]}>
+            {item.beg.title}
+          </MyTextMulish>
         </View>
         <View style={[styles.elementBox, {width: '14%'}]}>
           <ShareIcon />
@@ -87,7 +117,7 @@ export const MyChipInsAndKarma = () => {
         <Divider style={{width: '100%'}} />
         <CardElementRowHead />
         <FlatList
-          data={MyChipInsData}
+          data={data}
           renderItem={ChipInDataRow}
           scrollEnabled={false}
         />
@@ -117,7 +147,7 @@ export const MyChipInsAndKarma = () => {
 
               <View style={styles.circle}>
                 <MyTextMulish style={{fontSize: 40, color: 'white'}}>
-                  75
+                  {user.karma}
                 </MyTextMulish>
               </View>
             </View>

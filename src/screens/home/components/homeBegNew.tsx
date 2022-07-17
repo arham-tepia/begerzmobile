@@ -143,7 +143,9 @@ export const HomeBegNew = React.memo((props: Props) => {
                 <MyTextMulish numberOfLines={1} style={styles.title}>
                   {data.title}
                 </MyTextMulish>
-                <MyTextMulish numberOfLines={1} style={styles.subtitle}>
+                <MyTextMulish
+                  numberOfLines={1}
+                  style={[styles.subtitle, {marginTop: 1}]}>
                   by {data.author?.username}
                 </MyTextMulish>
               </View>
@@ -231,7 +233,7 @@ const styles = StyleSheet.create({
   },
   topBarCol1: {
     width: '80%',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     height: '100%',
     flexDirection: 'row'
   },

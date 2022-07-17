@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   View,
@@ -30,12 +30,29 @@ import {ResizeMode, Video} from 'expo-av';
 import {RootStateOrAny, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {postReaction} from '../../../api/reactions';
+import {getUserReactionToABeg} from '../../../api/user';
 
 export const BegDetails = ({route, navigation}: any) => {
   const begDetails = route.params.params.beg;
   const user = useSelector((state: RootStateOrAny) => state.currentUser);
   const [status, setStatus]: any = useState([]);
-  //console.log(begDetails, 'Beg Details');
+  const [userReaction, setUserReactions]: any = useState([]);
+
+  async function getUserReactions() {
+    const res = await getUserReactionToABeg(user.id, begDetails._id);
+    console.log(res, 'user Reactions');
+    if (res.results) {
+      if (res.results[0]._id) {
+        setUserReactions(res.results[0]);
+      }
+    }
+  }
+
+  useEffect(() => {
+    getUserReactions();
+  }, []);
+
+  console.log(begDetails, 'Beg Details');
   const acheivements: {
     inspiring?: string;
     informative?: string;
@@ -148,11 +165,12 @@ export const BegDetails = ({route, navigation}: any) => {
     console.log(d, 'data');
     const res = await postReaction(d).finally(() => {});
     if (res._id) {
-      Toast.show({
-        type: 'success',
-        text1: lcaps,
-        text2: 'Your reaction has been saved'
-      });
+      // Toast.show({
+      //   type: 'success',
+      //   text1: lcaps,
+      //   text2: 'Your reaction has been saved'
+      // });
+      getUserReactions();
     }
   }
 
@@ -216,7 +234,13 @@ export const BegDetails = ({route, navigation}: any) => {
                 return (
                   <TouchableOpacity
                     onPress={() => onReactionPress(item.name)}
-                    style={[styles.emojiView, item.customStyle]}>
+                    style={[
+                      styles.emojiView,
+                      item.customStyle,
+                      userReaction.reactionType === item.name.toLowerCase() && {
+                        backgroundColor: COLORS.lightPink
+                      }
+                    ]}>
                     <Image source={item.icon} style={styles.emojiStyle} />
                     <MyTextMulish style={styles.emojiText}>
                       {item.name}
@@ -271,13 +295,13 @@ export const BegDetails = ({route, navigation}: any) => {
                     {borderRightWidth: 0.5, borderColor: '#dedede'}
                   ]}>
                   <MyTextMulish style={styles.statValue}>
-                    {begDetails.donorCount}
+                    {begDetails.donors}
                   </MyTextMulish>
                   <MyTextMulish style={styles.statName}>Donors</MyTextMulish>
                 </View>
                 <View style={styles.statBox}>
                   <MyTextMulish style={styles.statValue}>
-                    {begDetails.shareCount}
+                    {begDetails.shares}
                   </MyTextMulish>
                   <MyTextMulish style={styles.statName}>Shares</MyTextMulish>
                 </View>
@@ -291,7 +315,7 @@ export const BegDetails = ({route, navigation}: any) => {
                   <ChatIcon />
                   <MyTextMulish
                     style={[styles.cardBottomItemText, {marginLeft: 13}]}>
-                    {begDetails.commentCount} Comments
+                    {begDetails.comments} Comments
                   </MyTextMulish>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.cardBottomItem}>

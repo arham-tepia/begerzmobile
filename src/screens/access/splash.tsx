@@ -31,7 +31,8 @@ export const Splash = ({navigation}: any) => {
         storeToken(res.accessToken);
         store.dispatch(
           updateCurrentUserAction({
-            id: res._id
+            id: res._id,
+            karma: res.karma
           })
         );
         navigation.replace('mainBottomNavigation');

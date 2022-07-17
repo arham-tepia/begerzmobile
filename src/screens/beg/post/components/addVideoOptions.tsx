@@ -22,6 +22,7 @@ export const AddVideoOptions = (props: Props) => {
         alignItems: 'center',
         justifyContent: 'center'
       }}
+      topViewStyle={{height: 600}}
       visible={props.visible}
       onCancelPress={props.onClosePress}>
       <View style={{width: '90%', alignSelf: 'center'}}>

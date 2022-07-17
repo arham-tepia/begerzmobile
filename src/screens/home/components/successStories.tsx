@@ -21,17 +21,9 @@ const SuccessText = () => {
   );
 };
 
-export const SuccessStories = ({navigation}: any) => {
-  const [stories, setStories]: any = useState([]);
+export const SuccessStories = ({navigation, stories}: any) => {
+  // const [stories, setStories]: any = useState([]);
   const [loading, setLoading]: any = useState(false);
-  async function getData() {
-    setLoading(true);
-    const res = await getSuccessStories().finally(() => setLoading(false));
-    setStories(res.results);
-  }
-  useEffect(() => {
-    getData();
-  }, []);
 
   const renderStories = ({item}: any) => {
     return <Story data={item} navigation={navigation} />;

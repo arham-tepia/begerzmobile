@@ -6,7 +6,8 @@ import {
   FlatList,
   SafeAreaView,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  ActivityIndicator
 } from 'react-native';
 import {RootStateOrAny, useSelector} from 'react-redux';
 import {getCommentsForBeg} from '../../../api/beg';
@@ -18,11 +19,13 @@ import {CommentInput} from './components/commentInput';
 export const BegComments = ({navigation, route}: any) => {
   const [comment, setComment]: any = useState('');
   const [allComments, setAllComments]: any = useState([]);
+  const [loader, setLoader]: any = useState(false);
   const begId = route.params.begId;
   const user = useSelector((state: RootStateOrAny) => state.currentUser);
 
   async function getData() {
-    const res = await getCommentsForBeg(begId);
+    setLoader(true);
+    const res = await getCommentsForBeg(begId).finally(() => setLoader(false));
     setAllComments(res.results);
     console.log(res, 'All comments');
   }
@@ -78,27 +81,21 @@ export const BegComments = ({navigation, route}: any) => {
 
   return (
     <SafeAreaView style={[commonStyles.main]}>
+      {loader && <ActivityIndicator />}
       <KeyboardAvoidingView
         keyboardVerticalOffset={keyboardVerticalOffset}
         behavior="padding"
         style={{width: '100%'}}>
-        {/* <View style={{width: '100%'}}> */}
-        {/* <Comment noLike name="Amy" /> */}
         <FlatList
           data={allComments}
           renderItem={renderComments}
           style={{height: '90%'}}
-          // ListFooterComponent={() => {
-          //   return (
-          //     <CommentInput
-          //       onChangeText={setComment}
-          //       onPostPress={onPostPress}
-          //     />
-          //   );
-          // }}
         />
-        <CommentInput onChangeText={setComment} onPostPress={onPostPress} />
-        {/* </View> */}
+        <CommentInput
+          onChangeText={setComment}
+          onPostPress={onPostPress}
+          value={comment}
+        />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

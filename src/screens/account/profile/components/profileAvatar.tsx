@@ -6,13 +6,22 @@ import {ICONS} from '../../../../constants/icons';
 interface Props {
   source?: any;
   onPress?(): void;
+  onLoadStart?(res?: any): void;
+  onLoadEnd?(res?: any): void;
 }
 
 export const MyProfileAvatar = (props: Props) => {
   return (
     <View>
       <View style={styles.main}>
-        <Avatar customSize size={115} {...props} pressable />
+        <Avatar
+          customSize
+          size={115}
+          {...props}
+          pressable
+          onLoadStart={props.onLoadStart}
+          onLoadEnd={props.onLoadEnd}
+        />
       </View>
       <View style={styles.up}>
         <Image source={ICONS.upload} style={{height: 24, width: 24}} />

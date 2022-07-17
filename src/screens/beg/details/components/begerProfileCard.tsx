@@ -16,6 +16,8 @@ interface Props {
 
 export const BegerProfileCard = (props: Props) => {
   const {user} = props;
+  console.log(user, 'userrr');
+
   const data = [
     {name: 'Begz', value: '10', borderRight: true},
     {

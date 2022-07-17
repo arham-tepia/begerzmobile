@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -19,6 +19,9 @@ interface Props {
 }
 
 export const Story = (props: Props) => {
+  useEffect(() => {
+    return () => {};
+  }, []);
   return (
     <TouchableOpacity
       onPress={() =>

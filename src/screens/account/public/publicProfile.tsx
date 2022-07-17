@@ -10,7 +10,7 @@ import {HomeBeg} from '../../home/components/homeBeg';
 import {MenuIcon} from '../../../components/icons/menuIcon';
 import {RootStateOrAny, useSelector} from 'react-redux';
 import {getUserInformationById} from '../../../api/user';
-import {getActiveBegsForUser} from '../../../api/beg';
+import {getAllBegsForUser} from '../../../api/beg';
 
 export const PublicProfile = ({navigation}: any) => {
   const user = useSelector((state: RootStateOrAny) => state.currentUser);
@@ -20,7 +20,7 @@ export const PublicProfile = ({navigation}: any) => {
     const res = await getUserInformationById(user.id);
     setData(res);
     const additional = '?sort=-createdAt';
-    const b = await getActiveBegsForUser(user.id, additional);
+    const b = await getAllBegsForUser(user.id, additional);
     setBegs(b);
     console.log(b, 'Begs');
   }

@@ -60,7 +60,8 @@ export const Signin = ({navigation}: any) => {
       );
       store.dispatch(
         updateCurrentUserAction({
-          id: res._id
+          id: res._id,
+          karma: res.karma
         })
       );
       storeToken(res.accessToken);

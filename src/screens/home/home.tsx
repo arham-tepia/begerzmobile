@@ -1,13 +1,14 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   RefreshControl,
   StyleSheet,
   View,
-  FlatList
+  FlatList,
+  Dimensions
 } from 'react-native';
 import {getAllBegs} from '../../api/beg';
-import {MyButton} from '../../components/myButton';
+import {getSuccessStories} from '../../api/success';
 import {HomeBeg} from './components/homeBeg';
 import {HomeBegNew} from './components/homeBegNew';
 import {SuccessStories} from './components/successStories';
@@ -15,7 +16,10 @@ import {SuccessStories} from './components/successStories';
 export const Home = ({navigation}: any) => {
   const [begs, setBegs]: any = useState([]);
   const [loader, setLoader]: any = useState(false);
+  const [storyLoader, setStoryLoader]: any = useState(false);
   const [footerLoader, seFootertLoader]: any = useState(false);
+  const [stories, setStories]: any = useState([]);
+
   const [pagination, setPagination]: any = useState([]);
   async function GetData() {
     const additional = '?page=1' + '&sort=-createdAt';
@@ -27,6 +31,12 @@ export const Home = ({navigation}: any) => {
     }
     console.log(res.pagination, 'response');
     // console.log(res.results, 'response obj');
+  }
+
+  async function getStories() {
+    setStoryLoader(true);
+    const res = await getSuccessStories().finally(() => setStoryLoader(false));
+    setStories(res.results);
   }
 
   async function fetchBegs(page: any) {
@@ -57,6 +67,7 @@ export const Home = ({navigation}: any) => {
 
   useEffect(() => {
     GetData();
+    getStories();
   }, []);
   const renderBegs = ({item}: any) => {
     return (
@@ -80,13 +91,6 @@ export const Home = ({navigation}: any) => {
     offset: 333 * index,
     index
   });
-  const onRefresh = async () => {
-    console.log('refreshed');
-    const page = parseInt(pagination.current) - 1;
-    if (pagination.current === '1') {
-      fetchBegs(page);
-    }
-  };
 
   return (
     <View style={styles.main}>
@@ -95,7 +99,13 @@ export const Home = ({navigation}: any) => {
         data={begs}
         // onRefresh={onRefresh}
         keyExtractor={(item, index) => item._id}
-        ListHeaderComponent={() => <SuccessStories navigation={navigation} />}
+        ListHeaderComponent={() => (
+          <>
+            {!storyLoader && (
+              <SuccessStories navigation={navigation} stories={stories} />
+            )}
+          </>
+        )}
         ListFooterComponent={() => (
           <>{footerLoader && <ActivityIndicator size={'small'} />}</>
         )}
@@ -104,10 +114,12 @@ export const Home = ({navigation}: any) => {
         renderItem={renderBegs}
         onEndReached={onEndReached}
         getItemLayout={getItemLayout}
-        maxToRenderPerBatch={5}
-        windowSize={4}
+        //maxToRenderPerBatch={9}
+        //updateCellsBatchingPeriod={10}
+        windowSize={Dimensions.get('window').height * 2}
+        //windowSize={3}
         disableVirtualization
-        // removeClippedSubviews
+        removeClippedSubviews
         refreshControl={
           <RefreshControl refreshing={loader} onRefresh={GetData} />
         }

@@ -17,6 +17,8 @@ interface Props {
   onPress?(): void;
   pressable?: boolean;
   style?: StyleProp<ViewStyle>;
+  onLoadStart?(res?: any): void;
+  onLoadEnd?(res?: any): void;
 }
 
 export const Avatar = (props: Props) => {
@@ -39,6 +41,8 @@ export const Avatar = (props: Props) => {
             //@ts-ignore
             props.style
           ]}
+          onLoadStart={props.onLoadStart}
+          onLoadEnd={props.onLoadEnd}
           source={source ?? ICONS.user1}
         />
       ) : (
