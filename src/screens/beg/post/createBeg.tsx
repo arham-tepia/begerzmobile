@@ -68,7 +68,6 @@ export const CreateBeg = ({navigation}: any) => {
         ? MEDIA_URL + 'thumbs/' + signedUrl.uuid + '-00001.png'
         : ''
     };
-
     navigation.navigate('tellYourStory', {
       media: video,
       title: title,
@@ -108,8 +107,10 @@ export const CreateBeg = ({navigation}: any) => {
 
   async function processVideo(fileObj: any) {
     setLoader(true);
-    const res = await getSignedURL();
+    const res = await getSignedURL('');
     setSignedUrl(res);
+    console.log(res, 'upload reposnse');
+
     await putFile(res, fileObj).finally(() => {
       setLoader(false);
       Toast.show({

@@ -79,7 +79,6 @@ export const TellYourStory = ({navigation, route}: any) => {
 
   async function onCompleteBeg() {
     const r = route.params;
-    setLoader(true);
     const data = {
       publishType: saveType.toLowerCase(),
       userId: user.id,
@@ -93,6 +92,7 @@ export const TellYourStory = ({navigation, route}: any) => {
       goalDate: r.begDate,
       status: 'active'
     };
+
     const res = await postBeg(data)
       .finally(() => setLoader(false))
       .catch((err: any) => {

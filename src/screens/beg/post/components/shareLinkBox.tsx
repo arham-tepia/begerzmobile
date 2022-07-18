@@ -14,7 +14,7 @@ export const ShareLinkBox = (props: Props) => {
   return (
     <View style={styles.main}>
       <View style={styles.textView}>
-        <MyTextMontserrat style={styles.text}>
+        <MyTextMontserrat numberOfLines={1} style={styles.text}>
           {props.link ?? 'begerz.com/08989'}
         </MyTextMontserrat>
       </View>
@@ -23,7 +23,7 @@ export const ShareLinkBox = (props: Props) => {
           style={{
             fontFamily: FONTS.P_SEMIBOLD,
             fontSize: 14,
-            color: COLORS.primary,
+            color: COLORS.primary
           }}>
           Copy
         </MyTextPoppins>
@@ -37,13 +37,13 @@ const styles = StyleSheet.create({
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 10,
+    marginVertical: 10
   },
   text: {
     width: '90%',
     textAlign: 'left',
     alignSelf: 'center',
-    color: '#7b7b7b',
+    color: '#7b7b7b'
   },
   button: {
     borderWidth: 1,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     borderTopLeftRadius: 0,
     borderBottomRightRadius: 8,
-    borderBottomLeftRadius: 0,
+    borderBottomLeftRadius: 0
   },
   textView: {
     borderTopWidth: 1,
@@ -69,6 +69,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 8,
     borderTopColor: '#28383e',
     borderBottomColor: '#28383e',
-    borderLeftColor: '#28383e',
-  },
+    borderLeftColor: '#28383e'
+  }
 });

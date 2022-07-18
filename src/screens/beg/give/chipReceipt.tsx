@@ -1,3 +1,4 @@
+import Clipboard from '@react-native-community/clipboard';
 import React from 'react';
 import {
   SafeAreaView,
@@ -7,7 +8,6 @@ import {
   Image
 } from 'react-native';
 import {CheckCircle} from '../../../components/icons/checkCircle';
-import {DollarBag} from '../../../components/icons/dollarBag';
 import {MyButton} from '../../../components/myButton';
 import {MyTextMontserrat} from '../../../components/textMontserrat';
 import {MyTextPoppins} from '../../../components/textPoppins';
@@ -17,12 +17,14 @@ import {ICONS} from '../../../constants/icons';
 import {commonStyles} from '../../../styles/styles';
 import {BegHeadings} from '../post/components/begHeadings';
 import {ShareLinkBox} from '../post/components/shareLinkBox';
+import Toast from 'react-native-toast-message';
 
-export const ChipReceipt = ({navigation}: any) => {
+export const ChipReceipt = ({navigation, route}: any) => {
+  const beg = route.params.beg;
   function onNextPress() {
-    navigation.navigate('chipin-react');
+    navigation.navigate('chipin-react', {beg: beg});
   }
-
+  const link = 'https://app.begerz.net/beg/details/' + beg._id;
   const social = [
     {
       name: 'mail',
@@ -60,60 +62,70 @@ export const ChipReceipt = ({navigation}: any) => {
       </TouchableOpacity>
     );
   };
-
+  function onCopyLink() {
+    Clipboard.setString(link);
+    Toast.show({
+      type: 'success',
+      text1: 'Link copied to clipboard'
+    });
+  }
   return (
-    <SafeAreaView style={commonStyles.main}>
-      <View style={{marginTop: 20}} />
-      <BegHeadings style={{fontFamily: FONTS.P_SEMIBOLD}}>
-        You chipped in, nice!
-      </BegHeadings>
-      <View style={{marginTop: 21}} />
-      <CheckCircle />
-      <View style={{marginTop: 21}} />
-      <MyTextMontserrat style={[styles.email, {marginBottom: 5}]}>
-        A receipt was sent to
-      </MyTextMontserrat>
-      <MyTextMontserrat style={[styles.email, {marginBottom: 5}]}>
-        someuser@someemail.com
-      </MyTextMontserrat>
-      <View style={[styles.divider, {marginTop: 16, marginBottom: 23}]} />
-      <BegHeadings style={{fontFamily: FONTS.P_SEMIBOLD}}>
-        Share the love
-      </BegHeadings>
-      <View style={{width: '90%', marginTop: 24}}>
-        <View
-          style={{
-            width: '100%',
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 24,
-            justifyContent: 'center'
-          }}>
-          {social.map(RenderIcon)}
-        </View>
-        <ShareLinkBox />
-        <View style={{marginBottom: 50}} />
+    <>
+      <SafeAreaView style={commonStyles.main}>
+        <View style={{marginTop: 20}} />
+        <BegHeadings style={{fontFamily: FONTS.P_SEMIBOLD}}>
+          You chipped in, nice!
+        </BegHeadings>
+        <View style={{marginTop: 21}} />
+        <CheckCircle />
+        <View style={{marginTop: 21}} />
+        <MyTextMontserrat style={[styles.email, {marginBottom: 5}]}>
+          A receipt was sent to
+        </MyTextMontserrat>
+        <MyTextMontserrat style={[styles.email, {marginBottom: 5}]}>
+          {beg.author.email}
+        </MyTextMontserrat>
+        <View style={[styles.divider, {marginTop: 16, marginBottom: 23}]} />
+        <BegHeadings style={{fontFamily: FONTS.P_SEMIBOLD}}>
+          Share the love
+        </BegHeadings>
+        <View style={{width: '90%', marginTop: 24}}>
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginBottom: 24,
+              justifyContent: 'center'
+            }}>
+            {social.map(RenderIcon)}
+          </View>
+          <ShareLinkBox link={link} onCopyPress={onCopyLink} />
+          <View style={{marginBottom: 50}} />
 
-        <MyTextPoppins style={{color: '#3b3e44', fontFamily: FONTS.P_REGULAR}}>
-          Finished Sharing?
-        </MyTextPoppins>
-        <View style={{marginTop: 10}} />
-        <MyButton
-          style={{height: 48, borderRadius: 24, alignSelf: 'center'}}
-          title="NEXT"
-          onPress={onNextPress}
-          textStyles={{
-            fontFamily: FONTS.P_REGULAR,
-            fontWeight: '600',
-            letterSpacing: 0
-          }}
-        />
-        <View style={{marginTop: 10}} />
-        <MyTextPoppins onPress={() => {}} style={styles.skipText}>
-          Skip,View Beg Dashboard
-        </MyTextPoppins>
-      </View>
-    </SafeAreaView>
+          <MyTextPoppins
+            style={{color: '#3b3e44', fontFamily: FONTS.P_REGULAR}}>
+            Finished Sharing?
+          </MyTextPoppins>
+          <View style={{marginTop: 10}} />
+          <MyButton
+            style={{height: 48, borderRadius: 24, alignSelf: 'center'}}
+            title="NEXT"
+            onPress={onNextPress}
+            textStyles={{
+              fontFamily: FONTS.P_REGULAR,
+              fontWeight: '600',
+              letterSpacing: 0
+            }}
+          />
+          <View style={{marginTop: 10}} />
+          <MyTextPoppins onPress={() => {}} style={styles.skipText}>
+            Skip,View Beg Dashboard
+          </MyTextPoppins>
+        </View>
+      </SafeAreaView>
+      <Toast position="bottom" />
+    </>
   );
 };
 

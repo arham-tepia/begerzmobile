@@ -1,5 +1,14 @@
-import React from 'react';
-import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Image,
+  ActivityIndicator
+} from 'react-native';
+import {RootStateOrAny, useSelector} from 'react-redux';
+import {postReaction} from '../../../api/reactions';
+import {getUserInformationById, getUserReactionToABeg} from '../../../api/user';
 import {Avatar} from '../../../components/avatar';
 import {StarColored} from '../../../components/icons/starColored';
 import {MyButton} from '../../../components/myButton';
@@ -12,7 +21,49 @@ import {ICONS} from '../../../constants/icons';
 import {commonStyles} from '../../../styles/styles';
 import {BegHeadings} from '../post/components/begHeadings';
 
-export const ChipReact = () => {
+export const ChipReact = ({route, navigation}: any) => {
+  const [user, setUser]: any = useState([]);
+  const [userReactions, setUserReactions]: any = useState([]);
+  const [loader, setLoader]: any = useState(false);
+  const state = useSelector((state: RootStateOrAny) => state.currentUser);
+  const beg = route.params.beg;
+
+  async function GetData() {
+    const u = await getUserInformationById(state.id);
+    setUser(u);
+    getUserReactions();
+  }
+
+  async function getUserReactions() {
+    setLoader(true);
+    const res = await getUserReactionToABeg(state.id, beg._id).finally(() =>
+      setLoader(false)
+    );
+    if (res.results) {
+      if (res.results[0]._id) {
+        setUserReactions(res.results[0]);
+      }
+    }
+  }
+
+  async function onReactionPress(reaction: string) {
+    const lcaps = reaction.toLowerCase();
+    console.log(lcaps);
+    const d = {
+      begId: beg._id,
+      userId: state.id,
+      reactionType: lcaps
+    };
+    const res = await postReaction(d).finally(() => {});
+    if (res._id) {
+      getUserReactions();
+    }
+  }
+
+  useEffect(() => {
+    GetData();
+  }, []);
+
   const reactions = [
     {
       icon: ICONS.emojiInspiring,
@@ -39,13 +90,21 @@ export const ChipReact = () => {
     <View style={commonStyles.main}>
       <View style={{marginTop: 20}} />
       <BegHeadings style={{fontFamily: FONTS.P_SEMIBOLD, color: '#000000'}}>
-        React to this beg
+        React to this beg {loader && <ActivityIndicator />}
       </BegHeadings>
       <View style={{width: '90%'}}>
         <View style={styles.emojiRow}>
           {reactions.map((item: any) => {
             return (
-              <TouchableOpacity style={[styles.emojiView, item.customStyle]}>
+              <TouchableOpacity
+                onPress={() => onReactionPress(item.name)}
+                style={[
+                  styles.emojiView,
+                  item.customStyle,
+                  userReactions.reactionType === item.name.toLowerCase() && {
+                    backgroundColor: COLORS.lightPink
+                  }
+                ]}>
                 <Image source={item.icon} style={styles.emojiStyle} />
                 <MyTextMulish style={styles.emojiText}>
                   {item.name}
@@ -55,12 +114,18 @@ export const ChipReact = () => {
           })}
         </View>
         <View style={styles.userView}>
-          <Avatar customSize size={48} />
+          <Avatar
+            customSize
+            size={48}
+            source={user?.profileImage && {uri: user.profileImage}}
+          />
           <View style={{marginLeft: 14}}>
             <MyTextMontserrat style={styles.subtitle}>
               You are reacting as:
             </MyTextMontserrat>
-            <MyTextMontserrat style={styles.name}>Bob johnson</MyTextMontserrat>
+            <MyTextMontserrat style={styles.name}>
+              {user?.firstName} {user?.lastName}
+            </MyTextMontserrat>
           </View>
         </View>
         <View style={[styles.userView, {marginTop: 40}]}>
@@ -83,6 +148,8 @@ export const ChipReact = () => {
             fontWeight: '600',
             letterSpacing: 0
           }}
+          //onPress={() => console.log('bn-home')}
+          onPress={() => navigation.navigate('home')}
           style={{height: 48, borderRadius: 24}}
         />
         <MyTextPoppins onPress={() => {}} style={styles.skipText}>
@@ -99,7 +166,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     marginTop: 10,
-    borderColor: '#28383e'
+    borderColor: '#28383e',
+    paddingBottom: 5
   },
   emojiText: {
     fontSize: 12,

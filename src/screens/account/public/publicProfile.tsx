@@ -32,6 +32,7 @@ export const PublicProfile = ({navigation}: any) => {
       <HomeBeg
         data={item}
         onMorePress={() => navigation.navigate('begDashboard', {beg: item})}
+        onPress={() => navigation.navigate('begDashboard', {beg: item})}
       />
     );
   }

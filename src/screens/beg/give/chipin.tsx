@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Dimensions, ScrollView, StyleSheet, Switch, View} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  View
+} from 'react-native';
 import {commonStyles} from '../../../styles/styles';
 import {Avatar} from '../../../components/avatar';
 import {MyTextPoppins} from '../../../components/textPoppins';
@@ -12,13 +19,24 @@ import {InfoIcon} from '../../../components/icons/info';
 import {MyButton} from '../../../components/myButton';
 import {FONTS} from '../../../constants/fonts';
 import {Video, ResizeMode} from 'expo-av';
+import {BegAmountInput} from '../post/components/begAmountInput';
+import {createPaymentIntent} from '../../../api/stripe';
+import {RootStateOrAny, useSelector} from 'react-redux';
+import {
+  presentPaymentSheet,
+  useStripe,
+  PaymentSheetError
+} from '@stripe/stripe-react-native';
 
 export const Chipin = ({route, navigation}: any) => {
+  const stripe = useStripe();
   const beg = route.params.beg ?? [];
   const [amount, setAmount]: any = useState(5);
-  const [anonymous, setAnonymous]: any = useState(false);
+  const [coverFee, setCoverFee]: any = useState(false);
   const [privacy, setPrivacy]: any = useState(false);
-
+  const [isCustom, setIsCustom]: any = useState(false);
+  const [loader, setLoader]: any = useState(false);
+  const user = useSelector((state: RootStateOrAny) => state.currentUser);
   function onMinusPress() {
     if (amount > 5) {
       setAmount(amount - 5);
@@ -44,8 +62,49 @@ export const Chipin = ({route, navigation}: any) => {
   }
 
   async function onChipin() {
-    navigation.navigate('chipin-receipt');
+    await createPayment();
   }
+
+  async function createPayment() {
+    setLoader(true);
+    const intent = await createPaymentIntent({
+      begId: beg._id,
+      payorId: user.id,
+      payeeId: beg.author._id,
+      processorFees: 0,
+      amount: amount,
+      transaction: 'chipin',
+      anonymous: privacy,
+      customAmount: isCustom,
+      payorFees: 0
+    }).finally(() => setLoader(false));
+    if (intent.id) {
+      await stripe.initPaymentSheet({
+        paymentIntentClientSecret: intent.client_secret,
+        merchantDisplayName: 'Begerz'
+      });
+      const r = await presentPaymentSheet()
+        .then(r => {
+          console.log(r, 'Response');
+          navigation.replace('chipin-receipt', {beg: beg});
+        })
+        .catch(e => {
+          console.log(e, 'Error');
+        });
+      // if (!error) {
+      //   navigation.navigate('chipin-receipt');
+      // }
+    }
+    //return intent;
+  }
+
+  const onCustomInput = (text: string) => {
+    const amt = text.replace(/[^0-9]/g, '');
+    const intAmt = parseInt(amt);
+    if (intAmt < 5 || amt.length < 11) {
+      setAmount(5);
+    } else setAmount(intAmt);
+  };
 
   return (
     <View style={commonStyles.main}>
@@ -55,39 +114,58 @@ export const Chipin = ({route, navigation}: any) => {
             style={{
               width: '100%',
               marginBottom: 10,
-              aspectRatio: 1
+              height: 180,
+              borderRadius: 4
             }}
-            source={{uri: beg.videoLink}}
+            source={{uri: beg.videos[0].videoLink}}
             useNativeControls
-            // resizeMode={ResizeMode.COVER}
+            resizeMode={ResizeMode.COVER}
             onReadyForDisplay={response => {
               console.log(response, 'Video Respose');
             }}
           />
         </View>
         <View style={styles.userRow}>
-          <Avatar customSize size={32} />
+          <Avatar
+            customSize
+            size={32}
+            source={beg.author.profileImage ?? {uri: beg.author.profileImage}}
+          />
           <View style={{marginLeft: 8}}>
             <MyTextPoppins style={styles.subTitle}>
               Funds go directly to
             </MyTextPoppins>
-            <MyTextPoppins style={styles.username}>Britanny</MyTextPoppins>
+            <MyTextPoppins style={styles.username}>
+              {beg.author.username}
+            </MyTextPoppins>
           </View>
         </View>
         <MyTextPoppins style={[styles.heading, {marginTop: 24}]}>
           I want to chip in:{' '}
         </MyTextPoppins>
-        {ChipInput()}
+
+        {!isCustom ? (
+          ChipInput()
+        ) : (
+          <BegAmountInput
+            value={amount.toString()}
+            viewStyle={{marginTop: 12}}
+            onChangeText={onCustomInput}
+            keyboardType="numeric"
+          />
+        )}
         <MyTextPoppins style={styles.minText}>
           Minimim amount is $5.00
         </MyTextPoppins>
-        <MyTextMontserrat onPress={() => {}} style={styles.custom}>
-          Enter Custom Amount
+        <MyTextMontserrat
+          onPress={() => setIsCustom(!isCustom)}
+          style={styles.custom}>
+          {!isCustom ? 'Enter Custom Amount' : 'Disable custom amount'}
         </MyTextMontserrat>
         <View style={styles.anon}>
           <Radio
-            active={anonymous}
-            onPress={() => setAnonymous(!anonymous)}
+            active={coverFee}
+            onPress={() => setCoverFee(!coverFee)}
             mainStyle={{height: 16, width: 16}}
             innerStyle={{height: 8, width: 8}}
           />
@@ -112,6 +190,8 @@ export const Chipin = ({route, navigation}: any) => {
           textStyles={{fontFamily: FONTS.P_SEMIBOLD}}
           style={{height: 48, borderRadius: 24}}
           onPress={onChipin}
+          loading={loader}
+          disabled={loader}
         />
         <MyTextMontserrat
           style={[styles.policyTxt, {marginTop: 24, marginBottom: 16}]}>
