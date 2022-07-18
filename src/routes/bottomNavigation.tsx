@@ -83,7 +83,8 @@ export const MainBottomNavigation = () => {
         options={{
           tabBarIcon: ({color, focused}) => (
             <PersonSVG color={color} focused={focused} />
-          )
+          ),
+          unmountOnBlur: true
         }}
       />
     </BottomTabs.Navigator>

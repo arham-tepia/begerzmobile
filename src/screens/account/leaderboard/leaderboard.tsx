@@ -15,7 +15,6 @@ export const LeaderBoard = () => {
     setLoader(true);
     const res = await getKarmaPoints().finally(() => setLoader(false));
     setKarma(res.results);
-    console.log(res, 'karma');
   }
 
   useEffect(() => {
@@ -44,8 +43,6 @@ export const LeaderBoard = () => {
     const today: any = new Date();
     const kDate: any = new Date(karmaDate);
     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-    const firstDate = new Date(2008, 1, 12);
-    const secondDate = new Date(2008, 1, 22);
 
     const diffDays = Math.round(Math.abs((kDate - today) / oneDay));
     return diffDays;

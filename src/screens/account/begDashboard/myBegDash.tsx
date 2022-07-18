@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import {FlatList, Image, ScrollView, StyleSheet, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 import {Margin} from '../../../components/margin';
 import {MyButton} from '../../../components/myButton';
 import {MyTextInput} from '../../../components/myTextinput';
@@ -7,66 +6,153 @@ import {MyTextMulish} from '../../../components/textMulish';
 import {COLORS} from '../../../constants/colors';
 import {FONTS} from '../../../constants/fonts';
 import {ICONS} from '../../../constants/icons';
-import {
-  removeItemOnceFromArray,
-  searchInArrayOfObjectsWithID
-} from '../../../helpers/searchInArrayOfObjects';
-import {FollowerComponent} from '../../beg/post/components/follwerComponent';
-import {HomeBeg} from '../../home/components/homeBeg';
-import {BegInformationView} from './components/begInformationView';
-import {CollapseableView} from './components/collapsableView';
-import {Dropdown} from './components/dropdown';
-import {EndAndWithdraw} from './components/withdraw';
-//@ts-ignore
-import MentionHashtagTextView from 'react-native-mention-hashtag-text';
 import {BottomCard} from '../../../components/bottomCard';
-import {Video, ResizeMode} from 'expo-av';
+import {Video} from 'expo-av';
 import ImagePicker from 'react-native-image-crop-picker';
 import {putFile} from '../../../api/uploadFIle';
 import {getSignedURL} from '../../../api/signedUrl';
 import Toast from 'react-native-toast-message';
 import {MEDIA_URL} from '../../../api/url';
 import {deleteVideo, postVideo} from '../../../api/video';
+import {createSuccessStory} from '../../../api/success';
+import {RootStateOrAny, useSelector} from 'react-redux';
+import {FollowerComponent} from '../../beg/post/components/follwerComponent';
+import {HomeBeg} from '../../home/components/homeBeg';
+import {BegInformationView} from './components/begInformationView';
+import {CollapseableView} from './components/collapsableView';
+import {Dropdown} from './components/dropdown';
+import {EndAndWithdraw} from './components/withdraw';
+import {FlatList, Image, ScrollView, StyleSheet, View} from 'react-native';
+//@ts-ignore
+import MentionHashtagTextView from 'react-native-mention-hashtag-text';
+import {ConvertDateStringToObject} from '../../../helpers/formatDateObject';
+import {getListOfFollowersForUser} from '../../../api/user';
+import {sendInvitation} from '../../../api/invitations';
 
 export const MyBegDashboard = ({route}: any) => {
-  const beg = route.params.beg;
-  console.log(beg, 'Beg data');
   const [videos, setVideos]: any = useState([]);
-  useEffect(() => {
-    const beg = route.params.beg;
-
-    setVideos(beg.videos);
-  }, []);
-  // const [signedUrl, setSignedUrl]: any = useState([]);
   const [loader, setLoader]: any = useState(false);
   const [showOpenOptions, setShowOpenOptions]: any = useState(false);
   const [fileObj, setFileObj]: any = useState(false);
-
+  const [storyFileObj, setStoryFileObj]: any = useState(false);
+  const [story, setStory]: any = useState('');
+  const [emails, setEmails]: any = useState('');
+  const [selectedFollowers, setSelectedFollowers]: any = useState([]);
+  const [followers, setFollowers]: any = useState([]);
   const [storyCard, setStoryCard] = useState(false);
   const [withdrawModal, setWithdrawModal]: any = useState(false);
-  const [selectedFollowers, setSelectedFollowers]: any = useState([]);
-  const followers = [
-    {name: 'john_doe', id: '1'},
-    {name: 'jone_doe', id: '2'},
-    {name: 'jake_doe', id: '3'}
-  ];
-  function renderFollowers(item: any) {
+
+  const beg = route.params.beg;
+  const scrollRef: any = useRef();
+  const begCreated = ConvertDateStringToObject(beg.createdAt);
+  const begGoalDate = ConvertDateStringToObject(beg.goalDate);
+  const user = useSelector((state: RootStateOrAny) => state.currentUser);
+
+  useEffect(() => {
+    const beg = route.params.beg;
+    setVideos(beg.videos);
+    GetFollowers();
+  }, []);
+
+  // ----------------
+
+  async function GetFollowers() {
+    setLoader(true);
+    const res = await getListOfFollowersForUser(user.id).finally(() =>
+      setLoader(false)
+    );
+    console.log(res, 'Followerres');
+
+    setFollowers(res.results);
+  }
+
+  function renderFollowers({item}: any) {
     return (
       <FollowerComponent
         onPress={() => onFollowerSelect(item)}
-        name={item.name}
-        active={searchInArrayOfObjectsWithID(item.id, selectedFollowers)}
+        data={item}
+        active={searchInArrayOfObjectsWithID(
+          item.followerId,
+          selectedFollowers
+        )}
       />
     );
   }
+
   function onFollowerSelect(item: any) {
-    if (searchInArrayOfObjectsWithID(item.id, selectedFollowers)) {
+    if (searchInArrayOfObjectsWithID(item.followerId, selectedFollowers)) {
       var res = removeItemOnceFromArray(item, selectedFollowers);
       setSelectedFollowers(res);
     } else {
       setSelectedFollowers([...selectedFollowers, item]);
     }
   }
+
+  function searchInArrayOfObjectsWithID(id: string, myArray: any) {
+    for (var i = 0; i < myArray.length; i++) {
+      if (myArray[i].followerId === id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function removeItemOnceFromArray(value: any, arr: any) {
+    var newArr = arr.filter((item: any) => item.followerId != value.followerId);
+    return newArr;
+  }
+
+  async function sendInvitations(item: any) {
+    await sendInvitation({
+      email: item.user.email,
+      userId: user.id,
+      inviteeId: item.followerId,
+      begId: beg._id
+    });
+  }
+
+  async function sendEmailInvitations(email: any) {
+    const res = await sendInvitation({
+      email: email.trim(),
+      userId: user.id,
+      begId: beg._id
+    });
+    if (res.errors) {
+      Toast.show({
+        type: 'error',
+        text1: res.errors[0].msg,
+        text2: 'Invalid Email address: ' + email
+      });
+    }
+    if (res._id) {
+      Toast.show({
+        type: 'success',
+        text1: 'Successfully Sent!'
+      });
+    }
+  }
+
+  async function onSharePress() {
+    if (selectedFollowers.length >= 1) {
+      setLoader(true);
+      const data = selectedFollowers.map((el: any) => sendInvitations(el));
+      const output = await Promise.all(data).finally(() => setLoader(false));
+      Toast.show({
+        type: 'success',
+        text1: 'Invitations sent successfully'
+      });
+    }
+    if (emails.length > 1) {
+      const allEmails = emails.split(',');
+      setLoader(true);
+      const data = allEmails.map((el: any) => sendEmailInvitations(el));
+      const output = await Promise.all(data).finally(() => setLoader(false));
+      setEmails('');
+    }
+  }
+
+  // ----------------
+
   async function onVideoPick() {
     ImagePicker.openPicker({
       mediaType: 'video',
@@ -75,6 +161,16 @@ export const MyBegDashboard = ({route}: any) => {
       setShowOpenOptions(false);
       setFileObj(video);
       processVideo(video);
+    });
+  }
+
+  async function onStoryVideoPick() {
+    ImagePicker.openPicker({
+      mediaType: 'video',
+      compressVideoPreset: 'MediumQuality'
+    }).then(video => {
+      setShowOpenOptions(false);
+      setStoryFileObj(video);
     });
   }
 
@@ -91,8 +187,7 @@ export const MyBegDashboard = ({route}: any) => {
 
   async function processVideo(fileObj: any) {
     setLoader(true);
-    const res = await getSignedURL();
-    // setSignedUrl(res);
+    const res = await getSignedURL('');
     await putFile(res, fileObj).finally(() => {
       setLoader(false);
       Toast.show({
@@ -101,14 +196,6 @@ export const MyBegDashboard = ({route}: any) => {
         text2: 'Your video has been uploaded successfully'
       });
     });
-
-    // const video = {
-    //   videoLink: res.uuid ? MEDIA_URL + res.uuid + '.mp4' : '',
-    //   thumbLink: res.uuid ? MEDIA_URL + res.uuid + '-00001.png' : '',
-    //   videoType:'beg',
-    //   fileId:res.uuid,
-    //   begId:beg._id
-    // };
 
     const link = await postVideo({
       videoLink: res.uuid ? MEDIA_URL + res.uuid + '.mp4' : '',
@@ -119,17 +206,9 @@ export const MyBegDashboard = ({route}: any) => {
       fileId: res.uuid,
       begId: beg._id
     });
-    console.log(link, 'Video Linked response');
-  }
-
-  function onMediaRemove() {
-    setFileObj(false);
-    // setSignedUrl([]);
   }
 
   async function onBegRemove(item: any) {
-    console.log(item);
-
     const res = await deleteVideo(item._id);
     console.log(res, 'Video Deleted');
     Toast.show({
@@ -138,15 +217,52 @@ export const MyBegDashboard = ({route}: any) => {
     });
     deleteItemById(item._id);
   }
+
   const deleteItemById = (id: any) => {
     const filteredData = videos.filter((item: any) => item._id !== id);
     setVideos(filteredData);
   };
 
+  async function onShareSuccessStory() {
+    if (storyFileObj.path && story.length > 1) {
+      setLoader(true);
+      const res = await getSignedURL('');
+      await putFile(res, storyFileObj).finally(() => {
+        setLoader(false);
+        Toast.show({
+          type: 'success',
+          text1: 'Upload successful',
+          text2: 'Your video has been uploaded successfully'
+        });
+      });
+
+      const link = await createSuccessStory({
+        videoLink: res.uuid ? MEDIA_URL + res.uuid + '.mp4' : '',
+        thumbLink: res.uuid
+          ? MEDIA_URL + 'thumbs/' + res.uuid + '-00001.png'
+          : '',
+        fileId: res.uuid,
+        begId: beg._id,
+        textDescription: story,
+        htmlDescription: story,
+        localFileName: fileObj.fileName,
+        userId: user.id
+      });
+      if (link._id) {
+        Toast.show({
+          type: 'success',
+          text1: 'Success story posted'
+        });
+        setStoryFileObj([]);
+        setStory('');
+      }
+    }
+  }
+
   return (
     <>
       <View style={styles.main}>
-        <ScrollView style={{width: '100%'}}>
+        <ScrollView ref={scrollRef} style={{width: '100%'}}>
           <View style={{alignItems: 'center', width: '100%'}}>
             <Margin top margin={0} />
             <HomeBeg noGradient data={beg} hideUser transparent />
@@ -163,7 +279,8 @@ export const MyBegDashboard = ({route}: any) => {
                   </MyTextMulish>
                   <Margin top margin={10} />
                   <MyTextMulish style={[styles.desc, {fontSize: 16}]}>
-                    Oct 17 - Oct 29
+                    {begCreated.month} {begCreated.date} - {begGoalDate.month}{' '}
+                    {begGoalDate.date}
                   </MyTextMulish>
                   <Margin top margin={20} />
 
@@ -218,23 +335,24 @@ export const MyBegDashboard = ({route}: any) => {
                   <Margin top margin={10} />
 
                   <MyTextMulish
-                    numberOfLines={3}
+                    numberOfLines={5}
                     onPress={() => setStoryCard(true)}
                     style={[
                       styles.desc,
-                      {textAlign: 'center', width: '60%', height: 87}
+                      {
+                        textAlign: 'center',
+                        width: '60%'
+                      }
                     ]}>
-                    <MentionHashtagTextView
-                      mentionHashtagColor={COLORS.primary}>
-                      {beg.textDescription}
-                    </MentionHashtagTextView>
+                    Submit a Success Story to be featured in Begerz Community!
                   </MyTextMulish>
-                  <Margin top margin={13} />
+                  {/* <Margin top margin={13} /> */}
 
                   <MyButton
-                    style={{width: '90%'}}
+                    style={{width: '90%', position: 'absolute', bottom: 11}}
                     title="Share My Story"
                     inverse
+                    onPress={() => scrollRef.current.scrollToEnd()}
                     textStyles={{
                       fontFamily: FONTS.M_REGULAR,
                       fontWeight: '700',
@@ -297,13 +415,14 @@ export const MyBegDashboard = ({route}: any) => {
                       styles.storySubText,
                       {marginTop: 11, marginBottom: 8}
                     ]}>
-                    {'Explain who you are and why are you creating thig beg.'}
+                    {'Explain who you are and why are you creating this beg.'}
                   </MyTextMulish>
                   <MyTextInput
                     containerStyle={styles.tiContainer}
                     style={styles.ti}
                     multiline
                     blurOnSubmit
+                    defaultValue={beg.textDescription}
                   />
                   <View style={{marginBottom: 35}} />
                 </View>
@@ -314,7 +433,7 @@ export const MyBegDashboard = ({route}: any) => {
                     {'Share with'}
                   </MyTextMulish>
                   <View style={{marginLeft: 10}}>
-                    {followers.map(renderFollowers)}
+                    <FlatList data={followers} renderItem={renderFollowers} />
                   </View>
                   <MyTextMulish style={[styles.storyText, {marginTop: 18}]}>
                     {'Invite Users'}
@@ -322,6 +441,8 @@ export const MyBegDashboard = ({route}: any) => {
                   <MyTextInput
                     placeholder="Email Address"
                     containerStyle={{borderRadius: 8}}
+                    value={emails}
+                    onChangeText={setEmails}
                   />
                   <MyTextMulish style={[styles.storySubText, {marginLeft: 10}]}>
                     {'Enter each email with a comma separation'}
@@ -329,6 +450,7 @@ export const MyBegDashboard = ({route}: any) => {
                   <Margin top margin={29} />
                   <MyButton
                     title="Send Invitations"
+                    onPress={onSharePress}
                     style={{width: '70%', alignSelf: 'center'}}
                     textStyles={{
                       fontWeight: '600',
@@ -339,7 +461,7 @@ export const MyBegDashboard = ({route}: any) => {
                   <Margin top margin={35} />
                 </View>
               </CollapseableView>
-              <CollapseableView title="Success Story" bell>
+              <CollapseableView title="Success Story" edit>
                 <View style={{width: '95%', marginTop: 25}}>
                   <MyTextMulish style={styles.storyText}>
                     {'Share your success!'}
@@ -353,28 +475,75 @@ export const MyBegDashboard = ({route}: any) => {
                       'Explain how you would like to thanks others for this success.'
                     }
                   </MyTextMulish>
-                  <Image
-                    source={ICONS.noimage}
-                    style={{height: 285, width: '100%'}}
+                  <MyTextInput
+                    containerStyle={styles.tiContainer}
+                    style={styles.ti}
+                    multiline
+                    blurOnSubmit
+                    onChangeText={setStory}
+                    value={story}
                   />
-                  <MyTextMulish
-                    onPress={() => {}}
-                    style={{
-                      color: COLORS.primary,
-                      alignSelf: 'flex-end',
-                      fontWeight: '700',
-                      marginTop: 4,
-                      marginBottom: 25
-                    }}>
-                    Remove
-                  </MyTextMulish>
+                  <View style={{marginBottom: 35}} />
+                  {!storyFileObj.path && (
+                    <Image
+                      source={ICONS.noimage}
+                      style={{height: 285, width: '100%'}}
+                    />
+                  )}
+                  {storyFileObj.path && (
+                    <Video
+                      style={{
+                        width: '100%',
+                        marginBottom: 10,
+                        // aspectRatio: 1,
+                        borderRadius: 5,
+                        height: 285
+                      }}
+                      source={{
+                        uri: storyFileObj.path
+                      }}
+                      useNativeControls
+                      // resizeMode={ResizeMode.COVER}
+                      onReadyForDisplay={response => {
+                        console.log(response, 'Video Respose');
+                      }}
+                    />
+                  )}
+                  {storyFileObj.path && (
+                    <MyTextMulish
+                      onPress={() => setStoryFileObj([])}
+                      style={{
+                        color: COLORS.primary,
+                        alignSelf: 'flex-end',
+                        fontWeight: '700',
+                        marginTop: 4,
+                        marginBottom: 25
+                      }}>
+                      Remove
+                    </MyTextMulish>
+                  )}
                   <MyButton
                     title="+ Add Video"
                     inverse
-                    style={{height: 44, borderRadius: 100}}
+                    loading={loader}
+                    onPress={onStoryVideoPick}
+                    disabled={loader}
+                    style={{height: 44, borderRadius: 100, marginTop: 35}}
                     textStyles={{fontWeight: '700', fontSize: 13}}
                   />
-                  <Margin top margin={35} />
+                  <Margin top margin={25} />
+
+                  <MyButton
+                    style={{width: '100%', height: 44, borderRadius: 100}}
+                    onPress={onShareSuccessStory}
+                    title="SHARE"
+                    textStyles={{
+                      fontFamily: FONTS.M_REGULAR,
+                      fontWeight: '700',
+                      fontSize: 13
+                    }}
+                  />
+                  <View style={{marginBottom: 35}} />
                 </View>
               </CollapseableView>
               <CollapseableView title="Donors" bell></CollapseableView>
@@ -422,7 +591,7 @@ const styles = StyleSheet.create({
   },
   cardTop: {
     width: '100%',
-    minHeight: 203,
+    height: 203,
 
     flexDirection: 'row',
     alignItems: 'center',
@@ -469,34 +638,3 @@ const styles = StyleSheet.create({
     fontSize: 12
   }
 });
-
-// const styles = StyleSheet.create({
-//   subheading: {
-//     color: '#28383ECC',
-//     fontSize: 12,
-//     lineHeight: 18,
-//     width: '90%'
-//   },
-//   tiContainer: {
-//     height: 180,
-//     borderRadius: 4,
-//     borderWidth: 1.25,
-//     borderColor: '#28383ECC'
-//   },
-//   ti: {
-//     fontFamily: FONTS.M_REGULAR,
-//     fontSize: 10,
-//     height: 170
-//   },
-//   cardHeading: {
-//     fontSize: 14,
-//     color: '#FFFFFF',
-//     fontWeight: '500',
-//     lineHeight: 22
-//   },
-//   noteText: {
-//     color: 'rgba(40, 56, 62, 0.8)',
-//     fontSize: 12,
-//     lineHeight: 18
-//   }
-// });

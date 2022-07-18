@@ -1,5 +1,13 @@
 import React, {useState} from 'react';
-import {FlatList, ScrollView, StyleSheet, TextInput, View} from 'react-native';
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+  Keyboard
+} from 'react-native';
 import {textSearchForBegs} from '../../api/beg';
 import {MyTextMontserrat} from '../../components/textMontserrat';
 import {COLORS} from '../../constants/colors';
@@ -41,7 +49,10 @@ export const Discover = ({navigation}: any) => {
     );
   }
   return (
-    <View style={commonStyles.main}>
+    <TouchableWithoutFeedback
+      onPress={Keyboard.dismiss}
+      accessible={false}
+      style={commonStyles.main}>
       <DiscoverHeader
         leftComponent={
           <TextInput style={styles.ti} onChangeText={onSearch} value={search} />
@@ -70,7 +81,7 @@ export const Discover = ({navigation}: any) => {
         <DiscoverTrend /> */}
         </ScrollView>
       )}
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 

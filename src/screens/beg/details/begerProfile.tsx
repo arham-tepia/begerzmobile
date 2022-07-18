@@ -28,8 +28,8 @@ export const BegerProfile = ({route}: any) => {
   async function onFollowPress() {
     setLoading(true);
     const data = {
-      followerId: user._id,
-      userId: thisUser.id
+      userId: user._id,
+      followerId: thisUser.id
     };
     const res = await followUser(data).finally(() => setLoading(false));
     console.log(res, 'follow repsponse');
