@@ -13,9 +13,6 @@ import {BegHeadings} from './components/begHeadings';
 import {GreyCard} from './components/greyCard';
 import Toast from 'react-native-toast-message';
 import {RootStateOrAny, useSelector} from 'react-redux';
-import {getSignedURL} from '../../../api/signedUrl';
-import {putFile} from '../../../api/uploadFIle';
-import {MEDIA_URL} from '../../../api/url';
 
 export const TellYourStory = ({navigation, route}: any) => {
   // const [saveMode, setSavemode]: any = useState(false);
@@ -101,8 +98,7 @@ export const TellYourStory = ({navigation, route}: any) => {
     console.log(res, 'Post beg response');
 
     if (res._id !== undefined) {
-      // uploadVideos(res);
-      navigation.replace('begIsReady');
+      navigation.replace('begIsReady', {beg: res});
     } else {
       if (res.errors) {
         Toast.show({

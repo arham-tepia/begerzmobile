@@ -8,9 +8,10 @@ import {FONTS} from '../../../constants/fonts';
 import {commonStyles} from '../../../styles/styles';
 import {BegHeadings} from './components/begHeadings';
 
-export const BegIsReady = ({navigation}: any) => {
+export const BegIsReady = ({navigation, route}: any) => {
+  const beg = route.params.beg;
   function onNextPress() {
-    navigation.navigate('shareWithFollowers');
+    navigation.navigate('shareWithFollowers', {beg: beg});
   }
   return (
     <SafeAreaView style={commonStyles.main}>
@@ -31,7 +32,7 @@ export const BegIsReady = ({navigation}: any) => {
           flexDirection: 'row',
           borderColor: '#7B7B7B',
           borderTopWidth: 1,
-          borderBottomWidth: 1,
+          borderBottomWidth: 1
         }}>
         <DollarBag />
         <MyTextPoppins
@@ -47,7 +48,7 @@ export const BegIsReady = ({navigation}: any) => {
           fontFamily: FONTS.P_MEDIUM,
           fontSize: 12,
           width: '80%',
-          textAlign: 'center',
+          textAlign: 'center'
         }}>
         Now that you setup the beg. let’s take a moment to make sure you get
         noticed!

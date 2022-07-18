@@ -208,7 +208,8 @@ export const CreateBeg = ({navigation}: any) => {
                   style={{
                     width: '100%',
                     marginBottom: 10,
-                    aspectRatio: 1
+                    aspectRatio: 1,
+                    borderRadius: 5
                   }}
                   source={{
                     uri: fileObj.path

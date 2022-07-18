@@ -49,22 +49,21 @@ export const MyProfile = () => {
   }, []);
 
   async function onSaveChanges() {
-    if (fileObj.path) {
-      processImage(fileObj);
-    }
+    setLoader(true);
+    const uploadRes = await processImage(fileObj);
 
     const obj = {
       username: username,
       email: email,
       firstName: fName,
       lastName: lName,
-      profileImage: fileObj.path
-        ? MEDIA_URL + signedUrl.uuid
-        : data.profileImage
+      profileImage: uploadRes ? MEDIA_URL + uploadRes.uuid : data.profileImage
     };
     console.log(obj, 'Updated values');
 
-    const res = await updateAccountInformationByID(user.id, obj);
+    const res = await updateAccountInformationByID(user.id, obj).finally(() =>
+      setLoader(false)
+    );
     console.log(res, 'update response');
     GetData();
   }
@@ -72,7 +71,7 @@ export const MyProfile = () => {
   async function onImagePick() {
     ImagePicker.openPicker({
       mediaType: 'photo',
-      compressImageQuality: 0.7
+      compressImageQuality: 0.5
     }).then(img => {
       setShowOpenOptions(false);
       setFileObj(img);
@@ -91,12 +90,15 @@ export const MyProfile = () => {
 
   async function processImage(fileObj: any) {
     const imageLink = user.id + '.png';
+    if (fileObj.path) {
+      const res = await getSignedURLForImage(imageLink);
+      console.log(res, 'Response');
 
-    const res = await getSignedURLForImage(imageLink);
-    console.log(res, 'Response');
-
-    setSignedUrl(res);
-    await putFile(res, fileObj).finally(() => {});
+      setSignedUrl(res);
+      await putFile(res, fileObj).finally(() => {});
+      return res;
+    }
+    return false;
   }
 
   return (
@@ -183,6 +185,8 @@ export const MyProfile = () => {
               <MyButton
                 title="Save Changes"
                 onPress={onSaveChanges}
+                loading={loader}
+                disabled={loader}
                 textStyles={{
                   fontFamily: FONTS.P_REGULAR,
                   fontWeight: '600',

@@ -16,3 +16,8 @@ export async function getUserReactionToABeg(userId: string, begId: string) {
   const res = await get(endpoint);
   return res;
 }
+export async function getListOfFollowersForUser(userId: string) {
+  const endpoint = BASE_URL + 'users/' + userId + '/followers';
+  const res = await get(endpoint);
+  return res;
+}

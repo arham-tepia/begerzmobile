@@ -10,6 +10,7 @@ interface Props {
   source?: any;
   active?: boolean;
   onPress?(): void;
+  data?: any;
 }
 
 export const FollowerComponent = (props: Props) => {
@@ -33,7 +34,7 @@ export const FollowerComponent = (props: Props) => {
         size={32}
       />
       <MyTextPoppins style={styles.name}>
-        {props.name ?? 'jane_smithsonian'}
+        {props.data.user.email ?? ''}
       </MyTextPoppins>
     </View>
   );

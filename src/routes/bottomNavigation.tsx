@@ -64,7 +64,8 @@ export const MainBottomNavigation = () => {
         name="bn-postBeg"
         component={PostBegStack}
         options={navigation => ({
-          tabBarButton: props => <TabbarButton navigation={navigation} />
+          tabBarButton: props => <TabbarButton navigation={navigation} />,
+          unmountOnBlur: true
         })}
       />
       <BottomTabs.Screen
