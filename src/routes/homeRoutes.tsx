@@ -4,6 +4,7 @@ import {Home} from '../screens/home/home';
 import {NavigationHeader} from '../components/navigationHeader';
 import {SearchHomePage} from '../screens/home/search';
 import {BegDetailsStack} from './begDetailsRoute';
+import {StoryDetails} from '../screens/beg/details/storyDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,13 @@ export const HomeStack = () => {
         component={Home}
         options={(navigation: any) => ({
           header: props => <NavigationHeader />
+        })}
+      />
+      <Stack.Screen
+        name="home-storyDetails"
+        component={StoryDetails}
+        options={(navigation: any) => ({
+          header: () => <NavigationHeader />
         })}
       />
       <Stack.Screen

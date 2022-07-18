@@ -146,7 +146,7 @@ export const MyChipInsAndKarma = () => {
               <Margin top margin={12} />
 
               <View style={styles.circle}>
-                <MyTextMulish style={{fontSize: 40, color: 'white'}}>
+                <MyTextMulish style={{fontSize: 21, color: 'white'}}>
                   {user.karma}
                 </MyTextMulish>
               </View>

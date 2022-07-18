@@ -25,7 +25,7 @@ export const Story = (props: Props) => {
   return (
     <TouchableOpacity
       onPress={() =>
-        props.navigation.navigate('home-begDetailsStack', {beg: props.data})
+        props.navigation.navigate('home-storyDetails', {beg: props.data})
       }
       style={{alignSelf: 'center'}}>
       <LinearGradient
@@ -49,9 +49,7 @@ export const Story = (props: Props) => {
           borderRadius={16}
           //defaultSource={ICONS.noimage}
           source={
-            props.data?.videos[0]?.thumbLink
-              ? {uri: props.data?.videos[0]?.thumbLink}
-              : ICONS.noimage
+            props.data?.thumbLink ? {uri: props.data?.thumbLink} : ICONS.noimage
           }>
           <View style={styles.bottom}>
             <View

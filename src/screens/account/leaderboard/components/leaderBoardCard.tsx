@@ -21,6 +21,7 @@ interface Props {
   name?: string;
   titleStyle?: StyleProp<TextStyle>;
   position?: string;
+  data?: any;
 }
 
 export const LeaderBoardCard = (props: Props) => {
@@ -40,13 +41,18 @@ export const LeaderBoardCard = (props: Props) => {
       <TouchableOpacity style={[styles.main, {width: '99%'}]}>
         <GradientBox value={props.position} />
         <Margin right margin={18} />
-        <Avatar style={{height: 34, width: 34, borderRadius: 10}} />
+        <Avatar
+          style={{height: 34, width: 34, borderRadius: 10}}
+          source={props.data.profileImage && {uri: props.data.profileImage}}
+        />
         <Margin right margin={8} />
-        <MyTextMulish style={styles.name}>{props.name}</MyTextMulish>
+        <MyTextMulish style={styles.name}>{props.data.username}</MyTextMulish>
         <Margin right margin={20} />
         <KarmaBlueIcon style={{height: 50, width: 50}} />
         <Margin right margin={6} />
-        <MyTextMulish style={styles.stat}>12,123</MyTextMulish>
+        <MyTextMulish style={styles.stat}>
+          {props.data.karma ?? '0'}
+        </MyTextMulish>
       </TouchableOpacity>
     </LinearGradient>
   );
@@ -72,7 +78,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 18,
     color: '#000000',
-    maxWidth: '25%'
+    width: '26%'
   },
   stat: {
     color: COLORS.primary

@@ -29,14 +29,14 @@ import Toast from 'react-native-toast-message';
 import {postReaction} from '../../../api/reactions';
 import {getUserReactionToABeg} from '../../../api/user';
 
-export const BegDetails = ({route, navigation}: any) => {
-  const begDetails = route.params.params.beg;
+export const StoryDetails = ({route, navigation}: any) => {
+  const begDetails = route.params.beg;
   const user = useSelector((state: RootStateOrAny) => state.currentUser);
   const [status, setStatus]: any = useState([]);
   const [userReaction, setUserReactions]: any = useState([]);
 
   async function getUserReactions() {
-    const res = await getUserReactionToABeg(user.id, begDetails._id);
+    const res = await getUserReactionToABeg(user.id, begDetails.beg._id);
     console.log(res, 'user Reactions');
     if (res.results) {
       if (res.results[0]._id) {
@@ -56,8 +56,8 @@ export const BegDetails = ({route, navigation}: any) => {
     hilarious?: string;
     brilliant?: string;
     admirable?: string;
-  } = begDetails?.achievements;
-  const date = ConvertDateToObject(begDetails.goalDate);
+  } = begDetails?.beg?.achievements;
+  const date = ConvertDateToObject(begDetails.beg.goalDate);
   const reactions = [
     {
       icon: ICONS.emojiInspiring,
@@ -95,8 +95,8 @@ export const BegDetails = ({route, navigation}: any) => {
 
     try {
       const result = await Share.share({
-        message: 'https://app.begerz.net/beg/details/' + begDetails._id,
-        url: 'https://app.begerz.net/beg/details/' + begDetails._id
+        message: 'https://app.begerz.net/beg/details/' + begDetails.beg._id,
+        url: 'https://app.begerz.net/beg/details/' + begDetails.beg._id
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -118,7 +118,7 @@ export const BegDetails = ({route, navigation}: any) => {
   const twidth = Dimensions.get('window').width;
   const width = twidth - 2;
   var ref: any;
-  function renderVideos({item}: any) {
+  function renderVideos() {
     return (
       <>
         <Video
@@ -128,7 +128,7 @@ export const BegDetails = ({route, navigation}: any) => {
             alignSelf: 'center'
           }}
           source={{
-            uri: item.videoLink
+            uri: begDetails.videoLink
           }}
           onError={e => {
             console.log(e, 'Error');
@@ -138,9 +138,9 @@ export const BegDetails = ({route, navigation}: any) => {
           }}
           resizeMode={ResizeMode.COVER}
           useNativeControls
-          usePoster={!status.isLoaded}
+          //usePoster={!status.isLoaded}
           // usePoster={status.isLoaded === 'true' ? false : true}
-          posterSource={{uri: item.thumbLink}}
+          posterSource={{uri: begDetails.thumbLink}}
           posterStyle={{
             width: width - 4,
             height: '100%',
@@ -155,7 +155,7 @@ export const BegDetails = ({route, navigation}: any) => {
     const lcaps = reaction.toLowerCase();
     console.log(lcaps);
     const d = {
-      begId: begDetails._id,
+      begId: begDetails.beg._id,
       userId: user.id,
       reactionType: lcaps
     };
@@ -188,7 +188,7 @@ export const BegDetails = ({route, navigation}: any) => {
               <View style={styles.topRow}>
                 <View style={{width: '80%'}}>
                   <MyTextMulish style={styles.titleText}>
-                    {begDetails.title ?? 'No title provided'}
+                    {begDetails.beg.title ?? 'No title provided'}
                   </MyTextMulish>
                 </View>
                 <View style={{width: '15%', alignItems: 'flex-end'}}>
@@ -198,7 +198,7 @@ export const BegDetails = ({route, navigation}: any) => {
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate('details-begerProfile', {
-                    user: begDetails.author
+                    user: begDetails.user
                   })
                 }
                 style={[styles.avatarRow]}>
@@ -207,8 +207,8 @@ export const BegDetails = ({route, navigation}: any) => {
                   size={24}
                   pressable
                   source={
-                    begDetails.author.profileImage && {
-                      uri: begDetails.author.profileImage
+                    begDetails.user.profileImage && {
+                      uri: begDetails.user.profileImage
                     }
                   }
                   onPress={() =>
@@ -218,19 +218,20 @@ export const BegDetails = ({route, navigation}: any) => {
                   }
                 />
                 <MyTextMulish style={[styles.createdBytext, {marginLeft: 8}]}>
-                  {begDetails.author.username} Created this beg
+                  {begDetails.user.username} Created this beg
                 </MyTextMulish>
               </TouchableOpacity>
             </View>
             <View style={styles.videoView}>
-              <Carousel
+              {/* <Carousel
                 // ref={(c) => { this._carousel = c; }}
                 data={begDetails.videos}
                 renderItem={renderVideos}
                 sliderWidth={width}
                 itemWidth={width}
                 slideStyle={{borderColor: 'red'}}
-              />
+              /> */}
+              {renderVideos()}
             </View>
             <View style={styles.emojiRow}>
               {reactions.map((item: any) => {
@@ -259,21 +260,28 @@ export const BegDetails = ({route, navigation}: any) => {
               <View style={styles.statCardTopRow}>
                 <MoneyBagHd />
                 <MyTextMulish style={[styles.goalRaisedText, {marginLeft: 15}]}>
-                  ${begDetails.amountRaised ?? '0'}{' '}
+                  ${begDetails.beg.amountRaised ?? '0'}{' '}
                   <MyTextMulish style={styles.goalTotalText}>
-                    raised of a ${begDetails.goalAmount} goal
+                    raised of a ${begDetails.beg.goalAmount} goal
                   </MyTextMulish>
                 </MyTextMulish>
               </View>
               <View style={styles.contributionView}>
                 <MyTextMulish style={styles.daysLeftText}>
+                  The goal date has passed
+                </MyTextMulish>
+                {/* <MyTextMulish style={styles.daysLeftText}>
                   {daysRemaining < 1
                     ? 'The goal date has passed'
                     : daysRemaining + ' days left to contribute'}
                   <MyTextMulish style={styles.daysText}> </MyTextMulish>
-                </MyTextMulish>
+                </MyTextMulish> */}
               </View>
-              <View style={styles.buttonCont}>
+              <View
+                style={[
+                  styles.buttonCont,
+                  {alignItems: 'center', justifyContent: 'center'}
+                ]}>
                 <MyButton
                   title="Share"
                   style={styles.button}
@@ -281,7 +289,7 @@ export const BegDetails = ({route, navigation}: any) => {
                   textStyles={styles.buttonText}
                   onPress={onShare}
                 />
-                <MyButton
+                {/* <MyButton
                   title="Chip in"
                   style={styles.button}
                   onPress={() =>
@@ -289,7 +297,7 @@ export const BegDetails = ({route, navigation}: any) => {
                   }
                   inverse
                   textStyles={styles.buttonText}
-                />
+                /> */}
               </View>
               <View style={styles.statContainer}>
                 <View
@@ -298,27 +306,30 @@ export const BegDetails = ({route, navigation}: any) => {
                     {borderRightWidth: 0.5, borderColor: '#dedede'}
                   ]}>
                   <MyTextMulish style={styles.statValue}>
-                    {begDetails.donors}
+                    {begDetails.beg.views}
                   </MyTextMulish>
-                  <MyTextMulish style={styles.statName}>Donors</MyTextMulish>
+                  <MyTextMulish style={styles.statName}>Views</MyTextMulish>
                 </View>
                 <View style={styles.statBox}>
                   <MyTextMulish style={styles.statValue}>
-                    {begDetails.shares}
+                    {begDetails.beg.shares}
                   </MyTextMulish>
                   <MyTextMulish style={styles.statName}>Shares</MyTextMulish>
                 </View>
               </View>
               <View style={styles.cardBottomRow}>
                 <TouchableOpacity
+                  disabled
                   onPress={() =>
-                    navigation.navigate('begComments', {begId: begDetails._id})
+                    navigation.navigate('begComments', {
+                      begId: begDetails.beg._id
+                    })
                   }
                   style={styles.cardBottomItem}>
                   <ChatIcon />
                   <MyTextMulish
                     style={[styles.cardBottomItemText, {marginLeft: 13}]}>
-                    {begDetails.comments} Comments
+                    {begDetails.beg.comments} Comments
                   </MyTextMulish>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.cardBottomItem}>

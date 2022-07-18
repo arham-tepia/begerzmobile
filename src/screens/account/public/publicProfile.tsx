@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  FlatList,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View
+} from 'react-native';
 import {commonStyles} from '../../../styles/styles';
 import {NavigationHeader} from '../../../components/navigationHeader';
 import {ArrowBackBlack} from '../../../components/icons/arowBackBlack';
@@ -16,13 +22,17 @@ export const PublicProfile = ({navigation}: any) => {
   const user = useSelector((state: RootStateOrAny) => state.currentUser);
   const [data, setData]: any = useState([]);
   const [begs, setBegs]: any = useState([]);
+  const [loader, setLoader]: any = useState(false);
   async function GetData() {
-    const res = await getUserInformationById(user.id);
+    setLoader(true);
+    const res = await getUserInformationById(user.id).finally(() => {
+      setLoader(false);
+    });
     setData(res);
+
     const additional = '?sort=-createdAt';
     const b = await getAllBegsForUser(user.id, additional);
     setBegs(b);
-    console.log(b, 'Begs');
   }
   useEffect(() => {
     GetData();
@@ -72,7 +82,13 @@ export const PublicProfile = ({navigation}: any) => {
           />
           <View style={{marginBottom: 20}} />
         </View>
-        <FlatList data={begs.results} renderItem={renderBegs} />
+        <FlatList
+          refreshControl={
+            <RefreshControl refreshing={loader} onRefresh={GetData} />
+          }
+          data={begs.results}
+          renderItem={renderBegs}
+        />
         {/* <HomeBeg
           data={}
           transparent

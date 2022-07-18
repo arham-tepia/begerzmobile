@@ -29,8 +29,6 @@ export const Home = ({navigation}: any) => {
       setBegs(res.results);
       setPagination(res.pagination);
     }
-    console.log(res.pagination, 'response');
-    // console.log(res.results, 'response obj');
   }
 
   async function getStories() {
@@ -48,8 +46,6 @@ export const Home = ({navigation}: any) => {
     if (res !== undefined) {
       setPagination(res.pagination);
       setBegs([...begs, ...res.results]);
-      // setBegs(begs.concat(res.results));
-      //setBegs(res.results);
     }
     return res;
   }
@@ -97,7 +93,6 @@ export const Home = ({navigation}: any) => {
       <FlatList
         refreshing={loader}
         data={begs}
-        // onRefresh={onRefresh}
         keyExtractor={(item, index) => item._id}
         ListHeaderComponent={() => (
           <>
@@ -115,7 +110,6 @@ export const Home = ({navigation}: any) => {
         onEndReached={onEndReached}
         getItemLayout={getItemLayout}
         //maxToRenderPerBatch={9}
-        //updateCellsBatchingPeriod={10}
         windowSize={Dimensions.get('window').height * 2}
         //windowSize={3}
         disableVirtualization

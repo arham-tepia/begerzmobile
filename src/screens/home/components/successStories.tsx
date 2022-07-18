@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import {getSuccessStories} from '../../../api/success';
 import {MyTextMulish} from '../../../components/textMulish';
 import {Story} from './story';
 
@@ -22,7 +21,6 @@ const SuccessText = () => {
 };
 
 export const SuccessStories = ({navigation, stories}: any) => {
-  // const [stories, setStories]: any = useState([]);
   const [loading, setLoading]: any = useState(false);
 
   const renderStories = ({item}: any) => {
@@ -47,7 +45,7 @@ export const SuccessStories = ({navigation, stories}: any) => {
 const styles = StyleSheet.create({
   main: {
     width: '100%',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
     height: 110,
     backgroundColor: '#FBFAFA'
