@@ -14,15 +14,25 @@ import {commonStyles} from '../../styles/styles';
 import {SearchHeader} from './components/header';
 import {HomeBeg} from './components/homeBeg';
 
-export const SearchHomePage = ({navigation}: any) => {
+export const SearchHomePage = ({navigation, route}: any) => {
   var searchInput: any;
   const [search, setSearch]: any = useState('');
   const [results, setResults]: any = useState([]);
   const [loader, setLoader]: any = useState(false);
 
   useEffect(() => {
-    searchInput.focus();
+    checkRoute();
   }, []);
+
+  async function checkRoute() {
+    if (route.params) {
+      if (route.params.search) {
+        onSearch(route.params.search);
+      }
+    } else {
+      searchInput.focus();
+    }
+  }
 
   async function onSearch(text: string) {
     setSearch(text);

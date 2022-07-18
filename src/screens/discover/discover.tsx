@@ -49,10 +49,9 @@ export const Discover = ({navigation}: any) => {
     );
   }
   return (
-    <TouchableWithoutFeedback
-      onPress={Keyboard.dismiss}
-      accessible={false}
-      style={commonStyles.main}>
+    // <TouchableWithoutFeedback
+    // onPress={Keyboard.dismiss} accessible={false}>
+    <View style={commonStyles.main}>
       <DiscoverHeader
         leftComponent={
           <TextInput style={styles.ti} onChangeText={onSearch} value={search} />
@@ -81,7 +80,8 @@ export const Discover = ({navigation}: any) => {
         <DiscoverTrend /> */}
         </ScrollView>
       )}
-    </TouchableWithoutFeedback>
+    </View>
+    // </TouchableWithoutFeedback>
   );
 };
 

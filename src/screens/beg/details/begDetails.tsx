@@ -49,7 +49,6 @@ export const BegDetails = ({route, navigation}: any) => {
     getUserReactions();
   }, []);
 
-  console.log(begDetails, 'Beg Details');
   const acheivements: {
     inspiring?: string;
     informative?: string;
@@ -114,6 +113,7 @@ export const BegDetails = ({route, navigation}: any) => {
 
   function onTagPress(word: any) {
     console.log(word, 'word pressed');
+    navigation.navigate('home-search', {search: word});
   }
   const twidth = Dimensions.get('window').width;
   const width = twidth - 2;
@@ -321,7 +321,11 @@ export const BegDetails = ({route, navigation}: any) => {
                     {begDetails.comments} Comments
                   </MyTextMulish>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.cardBottomItem}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('details-donators', {beg: begDetails})
+                  }
+                  style={styles.cardBottomItem}>
                   <PaymentIcon />
                   <MyTextMulish
                     style={[styles.cardBottomItemText, {marginLeft: 13}]}>

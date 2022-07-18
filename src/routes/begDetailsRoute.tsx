@@ -9,6 +9,8 @@ import {MyTextMulish} from '../components/textMulish';
 import {ChipinStack} from './chipinRoutes';
 import {BegerProfile} from '../screens/beg/details/begerProfile';
 import {StoryDetails} from '../screens/beg/details/storyDetails';
+import {Donators} from '../screens/beg/details/donators';
+import {View} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -56,6 +58,23 @@ export const BegDetailsStack = ({route}: any) => {
         component={ChipinStack}
         options={(navigation: any) => ({
           headerShown: false
+        })}
+      />
+      <Stack.Screen
+        name="details-donators"
+        component={Donators}
+        options={(navigation: any) => ({
+          header: () => (
+            <NavigationHeader
+              leftComponent={<ArrowBackBlack />}
+              rightComponent={<View style={{marginRight: 40}} />}
+              centerComponent={
+                <MyTextMulish style={{fontSize: 20, fontWeight: '700'}}>
+                  Donators
+                </MyTextMulish>
+              }
+            />
+          )
         })}
       />
     </Stack.Navigator>

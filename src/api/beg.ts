@@ -69,3 +69,8 @@ export async function getCommentsForBeg(id: string) {
   const res = await get(endpoint);
   return res;
 }
+export async function getChipinsMadeToABeg(id: string) {
+  const endpoint = BASE_URL + 'begs/' + id + '/chipins';
+  const res = await get(endpoint);
+  return res;
+}
