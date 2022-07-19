@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {LogBox} from 'react-native';
 import {Begerz} from './src/screens/begerz';
 import {allReducers} from './src/redux/reducer';

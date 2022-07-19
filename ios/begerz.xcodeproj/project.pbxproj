@@ -125,6 +125,7 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-begerz.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-begerz.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6468D5B8373A4499A1DFDED2 /* Mulish-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Mulish-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Mulish/Mulish-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		7125566326ED45C28C3A0E4C /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ThinItalic.ttf"; path = "../src/assets/fonts/Poppins/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
+		7273962D288633DB00840B22 /* begerz.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = begerz.entitlements; path = begerz/begerz.entitlements; sourceTree = "<group>"; };
 		788F205EA8034037AE69F96A /* Mulish-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Mulish-LightItalic.ttf"; path = "../src/assets/fonts/Mulish/Mulish-LightItalic.ttf"; sourceTree = "<group>"; };
 		81817E2B32BE45D0916162B3 /* Montserrat-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Black.ttf"; path = "../src/assets/fonts/Montserrat/Montserrat-Black.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = begerz/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -202,6 +203,7 @@
 		13B07FAE1A68108700A75B9A /* begerz */ = {
 			isa = PBXGroup;
 			children = (
+				7273962D288633DB00840B22 /* begerz.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -749,7 +751,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2022071802;
+				CODE_SIGN_ENTITLEMENTS = begerz/begerz.entitlements;
+				CURRENT_PROJECT_VERSION = 2022071803;
 				DEVELOPMENT_TEAM = 5J36559NJW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = begerz/Info.plist;
@@ -778,7 +781,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2022071802;
+				CODE_SIGN_ENTITLEMENTS = begerz/begerz.entitlements;
+				CURRENT_PROJECT_VERSION = 2022071803;
 				DEVELOPMENT_TEAM = 5J36559NJW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = begerz/Info.plist;

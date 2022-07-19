@@ -12,7 +12,9 @@ import {commonStyles} from '../../../styles/styles';
 import {BegHeadings} from './components/begHeadings';
 import {GreyCard} from './components/greyCard';
 import Toast from 'react-native-toast-message';
-import {RootStateOrAny, useSelector} from 'react-redux';
+import {RootStateOrAny, useSelector, useStore} from 'react-redux';
+import draftedBegAction from '../../../redux/action/draftedBegAction';
+import PushNotification from 'react-native-push-notification';
 
 export const TellYourStory = ({navigation, route}: any) => {
   // const [saveMode, setSavemode]: any = useState(false);
@@ -21,6 +23,7 @@ export const TellYourStory = ({navigation, route}: any) => {
   const [loader, setLoader]: any = useState(false);
   const [instant, setInstant]: any = useState(false);
   const user = useSelector((state: RootStateOrAny) => state.currentUser);
+  const draft = useSelector((state: RootStateOrAny) => state.draftedBeg);
 
   var subtext = 'Explain who you are and why you are creating this beg.';
 
@@ -98,6 +101,9 @@ export const TellYourStory = ({navigation, route}: any) => {
     console.log(res, 'Post beg response');
 
     if (res._id !== undefined) {
+      store.dispatch(draftedBegAction({inDraft: false, beg: {}}));
+      PushNotification.cancelAllLocalNotifications();
+
       navigation.replace('begIsReady', {beg: res});
     } else {
       if (res.errors) {
@@ -124,6 +130,8 @@ export const TellYourStory = ({navigation, route}: any) => {
     return story.length < 8 || saveType.length < 2;
   }
 
+  const store = useStore();
+
   return (
     <>
       <View style={commonStyles.main}>
@@ -138,7 +146,20 @@ export const TellYourStory = ({navigation, route}: any) => {
               style={styles.ti}
               multiline
               blurOnSubmit
-              onChangeText={setStory}
+              onChangeText={s => {
+                setStory(s);
+                store.dispatch(
+                  draftedBegAction({
+                    inDraft: draft.inDraft,
+                    beg: {
+                      title: draft.beg.title,
+                      amount: draft.beg.amount,
+                      endDate: draft.beg.endDate,
+                      story: s
+                    }
+                  })
+                );
+              }}
               value={story}
             />
             <GreyCard>
@@ -215,6 +236,7 @@ export const TellYourStory = ({navigation, route}: any) => {
             />
             <View style={{marginBottom: 10}} />
             <MyButton
+              onPress={() => console.log(draft)}
               title="Preview"
               textStyles={{fontFamily: FONTS.P_BOLD, letterSpacing: 0}}
               inverse

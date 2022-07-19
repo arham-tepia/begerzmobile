@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {CalendarIcon} from '../../../components/icons/calendar';
 import {InfoIcon} from '../../../components/icons/info';
 import {LinkIcon} from '../../../components/icons/linkIcon';
@@ -21,13 +21,18 @@ import {MyTextMulish} from '../../../components/textMulish';
 import {COLORS} from '../../../constants/colors';
 import {AddVideoOptions} from './components/addVideoOptions';
 import {Video, ResizeMode} from 'expo-av';
+import {RootStateOrAny, useSelector, useStore} from 'react-redux';
+import draftedBegAction from '../../../redux/action/draftedBegAction';
+import notifications from '../../../services/notifications';
+import PushNotification from 'react-native-push-notification';
 
 export const CreateBeg = ({navigation}: any) => {
   const [title, setTitle]: any = useState('');
   const [signedUrl, setSignedUrl]: any = useState([]);
   const [loader, setLoader]: any = useState(false);
   const [showOpenOptions, setShowOpenOptions]: any = useState(false);
-
+  const store = useStore();
+  const draft = useSelector((state: RootStateOrAny) => state.draftedBeg);
   //---Beg States start
 
   const [begAmount, setBegAmount]: any = useState(0);
@@ -35,6 +40,21 @@ export const CreateBeg = ({navigation}: any) => {
   const [fileObj, setFileObj]: any = useState(false);
   const [date, setDate] = useState(new Date());
   const dateObj = ConvertDateToObject(date);
+
+  useEffect(() => {
+    checkActiveDraft();
+  }, []);
+
+  function checkActiveDraft() {
+    if (draft.inDraft) {
+      setTitle(draft.beg.title);
+      setBegAmount(draft.beg.amount);
+    }
+  }
+
+  const setNotification = () => {
+    notifications.scheduleDraftNotification(new Date(Date.now() + 1800 * 1000));
+  };
 
   var minGoal = 'Minimum goal is $50.00';
   var addSubtext = 'A great video helps convince people to chip in!';
@@ -45,6 +65,8 @@ export const CreateBeg = ({navigation}: any) => {
 
   async function onContinuePress() {
     const bAmount = parseInt(begAmount);
+    checkDraft();
+    setNotification();
     if (bAmount < 50) {
       Toast.show({
         type: 'error',
@@ -53,7 +75,7 @@ export const CreateBeg = ({navigation}: any) => {
       });
       return;
     }
-    if (fileObj.length < 1) {
+    if (!fileObj.path) {
       Toast.show({
         type: 'error',
         text1: 'Video',
@@ -107,6 +129,8 @@ export const CreateBeg = ({navigation}: any) => {
 
   async function processVideo(fileObj: any) {
     setLoader(true);
+    store.dispatch(draftedBegAction({beg: {fileObj: fileObj}}));
+
     const res = await getSignedURL('');
     setSignedUrl(res);
     console.log(res, 'upload reposnse');
@@ -135,6 +159,17 @@ export const CreateBeg = ({navigation}: any) => {
     setSignedUrl([]);
   }
 
+  function checkDraft() {
+    if (title.length > 2 && parseInt(begAmount) >= 5) {
+      store.dispatch(
+        draftedBegAction({
+          inDraft: true,
+          beg: {title: title, amount: begAmount, endDate: date}
+        })
+      );
+    }
+  }
+
   return (
     <>
       <View style={[commonStyles.main]}>
@@ -146,6 +181,7 @@ export const CreateBeg = ({navigation}: any) => {
               viewStyle={{marginTop: 12}}
               onChangeText={(text: string) => {
                 setBegAmount(text.replace(/[^0-9]/g, ''));
+                checkDraft();
               }}
               keyboardType="numeric"
             />
@@ -154,9 +190,13 @@ export const CreateBeg = ({navigation}: any) => {
             <MyTextInput
               placeholder="Title of Beg"
               style={{fontFamily: FONTS.P_REGULAR}}
+              value={title}
               containerStyle={styles.titleTi}
               maxLength={48}
-              onChangeText={setTitle}
+              onChangeText={t => {
+                setTitle(t);
+                checkDraft();
+              }}
               rightComponent={
                 <Text
                   style={{
