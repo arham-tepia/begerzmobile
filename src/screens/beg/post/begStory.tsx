@@ -198,7 +198,7 @@ export const TellYourStory = ({navigation, route}: any) => {
                   {allStoryTypes.map((item: any) => {
                     return <StoryType item={item} />;
                   })}
-                  <View
+                  {/* <View
                     style={{
                       flexDirection: 'row',
                       alignItems: 'center',
@@ -221,7 +221,7 @@ export const TellYourStory = ({navigation, route}: any) => {
                         Set as instant premiere?
                       </MyTextPoppins>
                     </View>
-                  </View>
+                  </View> */}
                 </View>
               </View>
             </GreyCard>

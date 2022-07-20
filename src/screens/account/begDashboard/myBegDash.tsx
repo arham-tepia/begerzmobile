@@ -26,8 +26,9 @@ import {FlatList, Image, ScrollView, StyleSheet, View} from 'react-native';
 //@ts-ignore
 import MentionHashtagTextView from 'react-native-mention-hashtag-text';
 import {ConvertDateStringToObject} from '../../../helpers/formatDateObject';
-import {getListOfFollowersForUser} from '../../../api/user';
+import {getListOfFollowersForUser, getUserPaymethods} from '../../../api/user';
 import {sendInvitation} from '../../../api/invitations';
+import {withdrawMoney} from '../../../api/withdraw';
 
 export const MyBegDashboard = ({route}: any) => {
   const [videos, setVideos]: any = useState([]);
@@ -39,6 +40,7 @@ export const MyBegDashboard = ({route}: any) => {
   const [emails, setEmails]: any = useState('');
   const [selectedFollowers, setSelectedFollowers]: any = useState([]);
   const [followers, setFollowers]: any = useState([]);
+  const [paymethod, setPaymethod]: any = useState([]);
   const [storyCard, setStoryCard] = useState(false);
   const [withdrawModal, setWithdrawModal]: any = useState(false);
 
@@ -50,19 +52,51 @@ export const MyBegDashboard = ({route}: any) => {
 
   useEffect(() => {
     const beg = route.params.beg;
+    console.log(beg, 'Opened Beg');
+
     setVideos(beg.videos);
     GetFollowers();
+    GetPayMethod();
   }, []);
 
   // ----------------
+
+  async function onWithDrawPress(data: any) {
+    setLoader(true);
+    const res = await withdrawMoney(data).finally(() => setLoader(false));
+    setWithdrawModal(false);
+    if (res._id) {
+      Toast.show({
+        type: 'success',
+        text1: 'Your funds are on your way!'
+      });
+    }
+    if (res.message) {
+      Toast.show({
+        type: 'error',
+        text1: res.message
+      });
+    }
+  }
+
+  async function GetPayMethod() {
+    setLoader(true);
+    const res = await getUserPaymethods(user.id).finally(() =>
+      setLoader(false)
+    );
+    console.log(res, 'response paymethod');
+    if (res.results) {
+      if (res.results.length >= 1) {
+        setPaymethod(res.results[0]);
+      }
+    }
+  }
 
   async function GetFollowers() {
     setLoader(true);
     const res = await getListOfFollowersForUser(user.id).finally(() =>
       setLoader(false)
     );
-    console.log(res, 'Followerres');
-
     setFollowers(res.results);
   }
 
@@ -210,7 +244,7 @@ export const MyBegDashboard = ({route}: any) => {
 
   async function onBegRemove(item: any) {
     const res = await deleteVideo(item._id);
-    console.log(res, 'Video Deleted');
+    // console.log(res, 'Video Deleted');
     Toast.show({
       type: 'success',
       text1: 'Video removed successfully'
@@ -368,8 +402,6 @@ export const MyBegDashboard = ({route}: any) => {
                   data={videos}
                   style={{width: '95%'}}
                   renderItem={({item}: any) => {
-                    console.log(item.thumbLink, 'Thumblinks');
-
                     return (
                       <View style={{width: '95%', alignSelf: 'center'}}>
                         <Image
@@ -504,9 +536,7 @@ export const MyBegDashboard = ({route}: any) => {
                       }}
                       useNativeControls
                       // resizeMode={ResizeMode.COVER}
-                      onReadyForDisplay={response => {
-                        console.log(response, 'Video Respose');
-                      }}
+                      onReadyForDisplay={response => {}}
                     />
                   )}
                   {storyFileObj.path && (
@@ -553,6 +583,11 @@ export const MyBegDashboard = ({route}: any) => {
       </View>
       <EndAndWithdraw
         visible={withdrawModal}
+        userId={user.id}
+        beg={beg}
+        paymethod={paymethod}
+        loader={loader}
+        onWithDrawPress={onWithDrawPress}
         onCancelPress={() => setWithdrawModal(false)}
       />
       <BottomCard

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -16,13 +16,25 @@ import {Radio} from '../../../../components/radio';
 import {MyTextMulish} from '../../../../components/textMulish';
 import {COLORS} from '../../../../constants/colors';
 import {FONTS} from '../../../../constants/fonts';
+import Toast from 'react-native-toast-message';
 
 interface Props {
   onCancelPress?(): void;
   visible: boolean;
+  beg?: any;
+  paymethod?: any;
+  loader?: boolean;
+  userId?: any;
+  onWithDrawPress(data: any): void;
 }
 
 export const EndAndWithdraw = (props: Props) => {
+  const {beg, paymethod, loader, userId, onWithDrawPress} = props;
+  const [donation, setDonation]: any = useState('0');
+  const [charity, setCharity]: any = useState('0');
+  const [earned, setEarned]: any = useState(0);
+  const [validation, setValidation]: any = useState(false);
+
   function Divider() {
     return (
       <View
@@ -34,6 +46,69 @@ export const EndAndWithdraw = (props: Props) => {
         }}
       />
     );
+  }
+
+  const amountRaised = beg.amountRaised ? parseInt(beg.amountRaised) : 0;
+  const begerzFee = (4 / 100) * amountRaised;
+  const processingFee = (2.9 / 100) * amountRaised + 0.3;
+  const d = donation.length >= 1 ? parseInt(donation) : 0;
+  const c = charity.length >= 1 ? parseInt(charity) : 0;
+  const withdrawal = amountRaised - (d + c + begerzFee + processingFee);
+  const [chipInType, setChipInType]: any = useState('random');
+  const [link, setLink]: any = useState('');
+
+  async function calculateKarmaEarned() {
+    const d = donation.length >= 1 ? parseInt(donation) : 0;
+    const c = charity.length >= 1 ? parseInt(charity) : 0;
+    const karma = d * 20 + c * 20;
+    setEarned(karma.toString());
+    return karma;
+  }
+
+  function onWithdraw() {
+    if (paymethod.accountNumber) {
+      if (withdrawal <= 0) {
+        setValidation(true);
+        return;
+      } else {
+        setValidation(false);
+      }
+      const d = donation.length >= 1 ? parseInt(donation) : 0;
+      const c = charity.length >= 1 ? parseInt(charity) : 0;
+      const karma = d * 20 + c * 20;
+      if (chipInType === 'random') {
+        const data = {
+          userId: userId,
+          begId: beg._id,
+          amountRaised: amountRaised,
+          begerzFees: begerzFee,
+          processorFees: processingFee,
+          withdrawalAmount: withdrawal.toString(),
+          chipInAmount: charity ?? 0,
+          donationAmount: donation ?? 0,
+          paymethodId: paymethod._id,
+          chipInType: chipInType,
+          karma: karma
+        };
+        onWithDrawPress(data);
+      } else {
+        const data = {
+          userId: userId,
+          begId: beg._id,
+          amountRaised: amountRaised,
+          begerzFees: begerzFee,
+          processorFees: processingFee,
+          withdrawalAmount: withdrawal.toString(),
+          chipInAmount: charity ?? 0,
+          donationAmount: donation ?? 0,
+          paymethodId: paymethod._id,
+          chipInType: chipInType,
+          chipInLink: link,
+          karma: karma
+        };
+        onWithDrawPress(data);
+      }
+    }
   }
 
   return (
@@ -48,14 +123,22 @@ export const EndAndWithdraw = (props: Props) => {
               <MyTextMulish style={[styles.h1, {maxWidth: '70%'}]}>
                 Total Raised
               </MyTextMulish>
-              <MyTextMulish style={[styles.h]}>$1000.00</MyTextMulish>
+              <MyTextMulish style={[styles.h]}>${amountRaised}</MyTextMulish>
             </View>
             <View style={[styles.row, {marginTop: 13}]}>
               <MyTextMulish style={[{fontWeight: '500'}]}>
                 Begerz fee (4%)
               </MyTextMulish>
               <MyTextMulish style={[{fontWeight: '500'}]}>
-                ($40.00)
+                (${begerzFee.toFixed(2)})
+              </MyTextMulish>
+            </View>
+            <View style={[styles.row, {marginTop: 13}]}>
+              <MyTextMulish style={[{fontWeight: '500'}]}>
+                Processing Fee (2.9% + .30)
+              </MyTextMulish>
+              <MyTextMulish style={[{fontWeight: '500'}]}>
+                (${processingFee.toFixed(2)})
               </MyTextMulish>
             </View>
             <View
@@ -100,7 +183,14 @@ export const EndAndWithdraw = (props: Props) => {
                 </View>
               </TouchableOpacity>
               <View style={[styles.dropdown, {width: '25%'}]}>
-                <TextInput value="$5.00" style={styles.ti} />
+                <TextInput
+                  value={donation}
+                  onBlur={() => calculateKarmaEarned()}
+                  style={styles.ti}
+                  onChangeText={(text: string) => {
+                    setDonation(text.replace(/[^0-9]/g, ''));
+                  }}
+                />
               </View>
             </View>
           </View>
@@ -124,7 +214,14 @@ export const EndAndWithdraw = (props: Props) => {
                 </View>
               </TouchableOpacity>
               <View style={[styles.dropdown, {width: '25%'}]}>
-                <TextInput value="$5.00" style={styles.ti} />
+                <TextInput
+                  onBlur={() => calculateKarmaEarned()}
+                  value={charity}
+                  style={styles.ti}
+                  onChangeText={(text: string) => {
+                    setCharity(text.replace(/[^0-9]/g, ''));
+                  }}
+                />
               </View>
             </View>
             <Margin top margin={6} />
@@ -137,7 +234,8 @@ export const EndAndWithdraw = (props: Props) => {
                   borderRadius: 21
                 }}
                 innerStyle={{backgroundColor: '#000000'}}
-                active
+                active={chipInType === 'random'}
+                onPress={() => setChipInType('random')}
               />
               <Margin right margin={10} />
               <MyTextMulish style={{fontWeight: '500'}}>
@@ -153,6 +251,8 @@ export const EndAndWithdraw = (props: Props) => {
                   width: 21,
                   borderRadius: 21
                 }}
+                active={chipInType === 'link'}
+                onPress={() => setChipInType('link')}
                 innerStyle={{backgroundColor: '#000000'}}
               />
               <Margin right margin={10} />
@@ -172,6 +272,9 @@ export const EndAndWithdraw = (props: Props) => {
                 <LinkStraight />
                 <Margin right margin={14} />
                 <TextInput
+                  editable={chipInType === 'link'}
+                  onChangeText={setLink}
+                  value={link}
                   style={styles.ti}
                   placeholder="Enter URL of another beg"
                 />
@@ -193,7 +296,7 @@ export const EndAndWithdraw = (props: Props) => {
                 Your Karma Points
               </MyTextMulish>
               <MyTextMulish style={{fontWeight: '500'}}>
-                115 Points
+                {beg?.author?.karma} Points
               </MyTextMulish>
             </View>
             <Margin top margin={11} />
@@ -201,7 +304,9 @@ export const EndAndWithdraw = (props: Props) => {
               <MyTextMulish style={{fontWeight: '500', maxWidth: '70%'}}>
                 Karma Points Earned
               </MyTextMulish>
-              <MyTextMulish style={{fontWeight: '500'}}>45 Points</MyTextMulish>
+              <MyTextMulish style={{fontWeight: '500'}}>
+                {earned} Points
+              </MyTextMulish>
             </View>
           </View>
           <Divider />
@@ -211,13 +316,36 @@ export const EndAndWithdraw = (props: Props) => {
               <MyTextMulish style={[styles.h1, {maxWidth: '70%'}]}>
                 Total Withdrawl
               </MyTextMulish>
-              <MyTextMulish style={[styles.h]}>$986.00</MyTextMulish>
+              <MyTextMulish style={[styles.h]}>${withdrawal}</MyTextMulish>
             </View>
             <Margin top margin={18} />
-            <MyTextMulish style={{fontWeight: '500', maxWidth: '70%'}}>
-              ACH Withdrawal | My Bank .....4567
+            <MyTextMulish
+              numberOfLines={1}
+              style={{fontWeight: '500', maxWidth: '70%'}}>
+              ACH Withdrawal |{' '}
+              {paymethod.accountNumber ? paymethod.accountNumber : 'None'}
             </MyTextMulish>
           </View>
+          {!paymethod.accountNumber && (
+            <MyTextMulish
+              style={{
+                alignSelf: 'center',
+                marginVertical: 15,
+                color: COLORS.primary
+              }}>
+              You don't have a withdrawal method setup
+            </MyTextMulish>
+          )}
+          {validation && (
+            <MyTextMulish
+              style={{
+                alignSelf: 'center',
+                marginVertical: 15,
+                color: COLORS.primary
+              }}>
+              You don't have enough funds to withdraw
+            </MyTextMulish>
+          )}
           <Divider />
           <Margin top margin={26} />
           <View
@@ -242,6 +370,8 @@ export const EndAndWithdraw = (props: Props) => {
             />
             <MyButton
               title="End & Withdraw"
+              loading={loader}
+              onPress={onWithdraw}
               style={{width: '48%', borderRadius: 100, height: 44}}
               textStyles={{
                 fontFamily: FONTS.M_REGULAR,
@@ -253,6 +383,7 @@ export const EndAndWithdraw = (props: Props) => {
           <Margin bottom margin={26} />
         </ScrollView>
       </BottomCard>
+      <Toast position="top" />
     </>
   );
 };
@@ -308,6 +439,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontFamily: FONTS.M_REGULAR,
     fontSize: 14,
-    color: '#565656'
+    color: '#565656',
+    width: '90%',
+    textAlign: 'center'
   }
 });

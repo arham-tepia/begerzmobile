@@ -21,3 +21,8 @@ export async function getListOfFollowersForUser(userId: string) {
   const res = await get(endpoint);
   return res;
 }
+export async function getUserPaymethods(userId: string) {
+  const endpoint = BASE_URL + 'users/' + userId + '/paymethods';
+  const res = await get(endpoint);
+  return res;
+}

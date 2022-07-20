@@ -1,22 +1,38 @@
-import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
+import {RootStateOrAny, useSelector} from 'react-redux';
+import {getUserPaymethods} from '../../../api/user';
 import {Margin} from '../../../components/margin';
 import {MyTextMulish} from '../../../components/textMulish';
 import {COLORS} from '../../../constants/colors';
 import {commonStyles} from '../../../styles/styles';
-import {GradientButton} from '../profile/components/gradientButton';
-import {ICONS} from '../../../constants/icons';
-import {FONTS} from '../../../constants/fonts';
 import {Divider} from '../../beg/post/components/divider';
-import {MyButton} from '../../../components/myButton';
-export const PaymentAndWithdrawl = () => {
+export const PaymentAndWithdrawl = ({navigation}: any) => {
+  const user = useSelector((state: RootStateOrAny) => state.currentUser);
+  const [payMethod, setPaymethod]: any = useState([]);
+  const [loader, setLoader]: any = useState(false);
+  async function GetData() {
+    setLoader(true);
+    const res = await getUserPaymethods(user.id).finally(() =>
+      setLoader(false)
+    );
+    console.log(res, 'response paymethod');
+    if (res.results) {
+      if (res.results.length >= 1) {
+        setPaymethod(res.results[0]);
+      }
+    }
+  }
+  useEffect(() => {
+    GetData();
+  }, []);
   var note =
     'You can modify these settings at any time when you withdraw funds.';
   return (
     <View style={[commonStyles.main, {backgroundColor: 'transparent'}]}>
       <ScrollView style={{width: '100%'}}>
         <View style={{width: '90%', alignSelf: 'center'}}>
-          <Margin top margin={22} />
+          {/* <Margin top margin={22} />
           <MyTextMulish style={styles.title}>Payment Settings</MyTextMulish>
           <Margin top margin={9} />
           <View style={styles.card}>
@@ -35,18 +51,28 @@ export const PaymentAndWithdrawl = () => {
           <Margin top margin={22} />
           <GradientButton icon={ICONS.wallet} title="Add Payment Method" />
           <Margin top margin={31} />
-          <Divider />
+          <Divider /> */}
           <Margin top margin={22} />
-          <MyTextMulish style={styles.title}>Withdrawl Settings</MyTextMulish>
+          <MyTextMulish style={styles.title}>
+            Withdrawl Settings {loader && <ActivityIndicator />}
+          </MyTextMulish>
           <Margin top margin={9} />
           <View style={styles.card}>
             <View style={{width: '90%', justifyContent: 'center'}}>
               <Margin top margin={18} />
-              <MyTextMulish style={styles.cardTextMain}>
-                ACH Withdrawal | My Bank....1234
+              <MyTextMulish numberOfLines={1} style={[styles.cardTextMain]}>
+                {payMethod.accountNumber
+                  ? 'ACH Withdrawal | ' + payMethod.accountNumber
+                  : 'ACH Withdrawal | None'}
               </MyTextMulish>
               <Margin top margin={19} />
-              <MyTextMulish onPress={() => {}} style={styles.cardTexthighlight}>
+              <MyTextMulish
+                onPress={() =>
+                  navigation.navigate('payments-withdrawalSettings', {
+                    method: payMethod ?? []
+                  })
+                }
+                style={styles.cardTexthighlight}>
                 Edit Deposite Settings
               </MyTextMulish>
               <Margin top margin={18} />
@@ -54,7 +80,7 @@ export const PaymentAndWithdrawl = () => {
           </View>
           <Margin top margin={31} />
           <Divider />
-          <Margin top margin={31} />
+          {/* <Margin top margin={31} />
           <MyButton
             title="Save Changes"
             style={{height: 48, borderRadius: 24}}
@@ -63,7 +89,7 @@ export const PaymentAndWithdrawl = () => {
               fontFamily: FONTS.P_REGULAR,
               fontSize: 16
             }}
-          />
+          /> */}
           <Margin top margin={41} />
           <MyTextMulish style={[styles.note]}>
             Note:{' '}

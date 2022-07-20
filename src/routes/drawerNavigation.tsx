@@ -9,6 +9,7 @@ import {COLORS} from '../constants/colors';
 import {PaymentAndWithdrawl} from '../screens/account/begDashboard/payments';
 import {MyChipInsAndKarma} from '../screens/account/begDashboard/myChipins';
 import {LeaderBoard} from '../screens/account/leaderboard/leaderboard';
+import {WithdrawalRoutes} from './withdrawalStack';
 
 const DrawerTabs = createDrawerNavigator();
 
@@ -44,7 +45,7 @@ export const DrawerNavigation = () => {
       /> */}
       <DrawerTabs.Screen
         name="dr-payments"
-        component={PaymentAndWithdrawl}
+        component={WithdrawalRoutes}
         options={{
           headerLeft: () => <ArrowBackBlack style={{marginLeft: 10}} />,
           headerTitle: 'Payments & Withdrawl',
