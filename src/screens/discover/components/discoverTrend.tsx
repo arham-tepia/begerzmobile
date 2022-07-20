@@ -17,6 +17,7 @@ import {ICONS} from '../../../constants/icons';
 interface Props {
   tag: string;
   navigation?: any;
+  onViewAllPress?(): void;
 }
 
 export const DiscoverTrend = (props: Props) => {
@@ -59,7 +60,9 @@ export const DiscoverTrend = (props: Props) => {
               <MyTextMulish style={[styles.subtitle]}>Trending</MyTextMulish>
             </View>
           </View>
-          <TouchableOpacity style={styles.rowElement2}>
+          <TouchableOpacity
+            onPress={props.onViewAllPress}
+            style={styles.rowElement2}>
             {!loading && (
               <>
                 <MyTextMulish style={[styles.viewall, {marginRight: 10}]}>
@@ -71,7 +74,7 @@ export const DiscoverTrend = (props: Props) => {
           </TouchableOpacity>
         </View>
         {loading ? (
-          <ActivityIndicator size={'small'} />
+          <ActivityIndicator size={'small'} color={COLORS.primary} />
         ) : (
           <FlatList
             showsHorizontalScrollIndicator={false}

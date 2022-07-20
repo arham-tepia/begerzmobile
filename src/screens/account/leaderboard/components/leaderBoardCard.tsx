@@ -1,30 +1,43 @@
 import React from 'react';
-import {
-  Dimensions,
-  StyleProp,
-  StyleSheet,
-  TextStyle,
-  TouchableOpacity
-} from 'react-native';
+import {StyleProp, StyleSheet, TextStyle, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {Image} from 'react-native';
-import {ICONS} from '../../../../constants/icons';
 import {MyTextMulish} from '../../../../components/textMulish';
 import {GradientBox} from './gradientBox';
 import {Avatar} from '../../../../components/avatar';
 import {Margin} from '../../../../components/margin';
 import {COLORS} from '../../../../constants/colors';
-import {KarmaBlueIcon} from '../../../../components/icons/karmaBlue';
+import {
+  KarmaBlueIcon,
+  KarmaGreenIcon,
+  KarmaGreyIcon,
+  KarmaPurple,
+  KarmaYellowIcon
+} from '../../../../components/icons/karmaBlue';
 
 interface Props {
   icon?: string;
   name?: string;
   titleStyle?: StyleProp<TextStyle>;
-  position?: string;
+  position?: number;
   data?: any;
 }
 
 export const LeaderBoardCard = (props: Props) => {
+  const {position} = props;
+  function calculatePositionIcon() {
+    const s = {height: 50, width: 50};
+    if (position === 1) {
+      return <KarmaGreenIcon style={s} />;
+    }
+    if (position === 2) {
+      return <KarmaGreyIcon style={s} />;
+    }
+    if (position === 3) {
+      return <KarmaYellowIcon style={s} />;
+    }
+
+    return <KarmaPurple style={s} />;
+  }
   return (
     <LinearGradient
       colors={['#676DFF', '#ED6C79']}
@@ -39,7 +52,7 @@ export const LeaderBoardCard = (props: Props) => {
         marginBottom: 12
       }}>
       <TouchableOpacity style={[styles.main, {width: '99%'}]}>
-        <GradientBox value={props.position} />
+        <GradientBox value={props.position?.toString()} />
         <Margin right margin={18} />
         <Avatar
           style={{height: 34, width: 34, borderRadius: 10}}
@@ -48,7 +61,8 @@ export const LeaderBoardCard = (props: Props) => {
         <Margin right margin={8} />
         <MyTextMulish style={styles.name}>{props.data.username}</MyTextMulish>
         <Margin right margin={20} />
-        <KarmaBlueIcon style={{height: 50, width: 50}} />
+        {/* <KarmaYellowIcon style={{height: 50, width: 50}} /> */}
+        {calculatePositionIcon()}
         <Margin right margin={6} />
         <MyTextMulish style={styles.stat}>
           {props.data.karma ?? '0'}

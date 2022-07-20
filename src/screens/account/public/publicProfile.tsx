@@ -23,6 +23,7 @@ export const PublicProfile = ({navigation}: any) => {
   const [data, setData]: any = useState([]);
   const [begs, setBegs]: any = useState([]);
   const [loader, setLoader]: any = useState(false);
+  const [records, setrecords]: any = useState('0');
   async function GetData() {
     setLoader(true);
     const res = await getUserInformationById(user.id).finally(() => {
@@ -33,6 +34,9 @@ export const PublicProfile = ({navigation}: any) => {
     const additional = '?sort=-createdAt';
     const b = await getAllBegsForUser(user.id, additional);
     setBegs(b);
+    if (b.pagination.records) {
+      setrecords(b.pagination.records);
+    }
   }
   useEffect(() => {
     GetData();
@@ -68,7 +72,7 @@ export const PublicProfile = ({navigation}: any) => {
         showsVerticalScrollIndicator={false}
         style={{marginTop: 10, width: '100%'}}>
         <View style={{width: '90%', alignSelf: 'center'}}>
-          <BegerProfileCard user={data} />
+          <BegerProfileCard user={data} begCount={records} />
           <MyButton
             inverse
             title="Edit Profile"

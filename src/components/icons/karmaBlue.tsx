@@ -14,3 +14,35 @@ export const KarmaBlueIcon = (props: Props) => {
     />
   );
 };
+export const KarmaGreenIcon = (props: Props) => {
+  return (
+    <Image
+      source={ICONS.karmaGreen}
+      style={[{height: 83.87, width: 84}, props.style]}
+    />
+  );
+};
+export const KarmaYellowIcon = (props: Props) => {
+  return (
+    <Image
+      source={ICONS.karmaYellow}
+      style={[{height: 83.87, width: 84}, props.style]}
+    />
+  );
+};
+export const KarmaGreyIcon = (props: Props) => {
+  return (
+    <Image
+      source={ICONS.karmaGrey}
+      style={[{height: 83.87, width: 84}, props.style]}
+    />
+  );
+};
+export const KarmaPurple = (props: Props) => {
+  return (
+    <Image
+      source={ICONS.karmaPurple}
+      style={[{height: 83.87, width: 84}, props.style]}
+    />
+  );
+};

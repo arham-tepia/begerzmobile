@@ -5,34 +5,26 @@ import {MyTextMulish} from '../../../../components/textMulish';
 
 interface Props {
   user?: any;
-  // user?: {
-  //   _id: string;
-  //   profileImage: string;
-  //   username: string;
-  //   email: string;
-  //   karma: string;
-  // };
+  begCount?: any;
 }
 
 export const BegerProfileCard = (props: Props) => {
   const {user} = props;
-  console.log(user, 'userrr');
-
   const data = [
-    {name: 'Begz', value: '10', borderRight: true},
+    {name: 'Begz', value: props.begCount ?? 0, borderRight: true},
     {
       name: 'Raised',
-      value: '$' + user.totalRaised,
+      value: '$' + user.totalRaised ?? 0,
       borderRight: true
     },
     {
       name: 'Chip-Ins',
-      value: '$' + user.totalChippedIn,
+      value: '$' + user.totalChippedIn ?? 0,
       borderRight: true
     },
     {
       name: 'Donated',
-      value: '$' + user.totalDonated,
+      value: '$' + user.totalDonated ?? 0,
       borderRight: false
     }
   ];

@@ -43,8 +43,6 @@ interface Props {
 }
 
 export const HomeBegNew = React.memo((props: Props) => {
-  //   const twidth = Dimensions.get('window').width;
-  //   const width = twidth - 2;
   const {data} = props;
 
   useEffect(() => {

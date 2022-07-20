@@ -24,7 +24,13 @@ export const Discover = ({navigation}: any) => {
   const [results, setResults]: any = useState([]);
   const [loader, setLoader]: any = useState(false);
   function mapTags(item: any) {
-    return <DiscoverTrend tag={item} navigation={navigation} />;
+    return (
+      <DiscoverTrend
+        tag={item}
+        navigation={navigation}
+        onViewAllPress={() => onViewAllPress(item)}
+      />
+    );
   }
   async function onSearch(text: string) {
     setSearch(text);
@@ -48,6 +54,12 @@ export const Discover = ({navigation}: any) => {
       />
     );
   }
+
+  function onViewAllPress(tag: string) {
+    console.log(tag);
+    onSearch(tag);
+  }
+
   return (
     // <TouchableWithoutFeedback
     // onPress={Keyboard.dismiss} accessible={false}>

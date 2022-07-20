@@ -55,11 +55,19 @@ const linkStraight = require('../assets/images/icons/linkStraight.png');
 const menu = require('../assets/images/icons/menu.png');
 const wallet = require('../assets/images/icons/wallet.png');
 const karmaBlue = require('../assets/images/icons/karmaBlue.png');
+const karmaGreen = require('../assets/images/icons/karmaGreen.png');
+const karmaYellow = require('../assets/images/icons/karmaYellow.png');
+const karmaGrey = require('../assets/images/icons/karmaGrey.png');
+const karmaPurple = require('../assets/images/icons/karmaPurple.png');
 const infoPink = require('../assets/images/icons/infoPink.png');
 const share = require('../assets/images/icons/share.png');
 
 const ICONS = {
   fullLogo,
+  karmaPurple,
+  karmaGrey,
+  karmaYellow,
+  karmaGreen,
   user1,
   share,
   infoPink,

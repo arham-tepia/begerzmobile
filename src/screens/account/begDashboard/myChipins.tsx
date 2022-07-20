@@ -11,6 +11,7 @@ import {Margin} from '../../../components/margin';
 import {MyButton} from '../../../components/myButton';
 import {MyTextMulish} from '../../../components/textMulish';
 import {COLORS} from '../../../constants/colors';
+import {KARMA_LEVELS} from '../../../constants/karma';
 import {ConvertDateStringToObject} from '../../../helpers/formatDateObject';
 import {commonStyles} from '../../../styles/styles';
 import {Divider} from '../../beg/post/components/divider';
@@ -31,6 +32,18 @@ export const MyChipInsAndKarma = () => {
   useEffect(() => {
     GetData();
   }, []);
+
+  function calculateKarmaLevel() {
+    const points = user.karma ? parseInt(user.karma) : 0;
+    if (points >= 0 && points <= 200) return KARMA_LEVELS.flowerPetal1;
+    if (points >= 201 && points <= 500) return KARMA_LEVELS.flowerPetal2;
+    if (points >= 501 && points <= 1500) return KARMA_LEVELS.flowerPetal3;
+    if (points >= 1501 && points <= 3000) return KARMA_LEVELS.flowerPetal4;
+    if (points >= 3001 && points <= 6000) return KARMA_LEVELS.flowerPetal5;
+    if (points >= 6001 && points <= 12000) return KARMA_LEVELS.gold;
+    if (points >= 12001 && points <= 24000) return KARMA_LEVELS.platnum;
+    if (points >= 24001 && points <= 48000) return KARMA_LEVELS.fullFLower;
+  }
 
   function CardElementRowHead() {
     return (
@@ -164,7 +177,7 @@ export const MyChipInsAndKarma = () => {
               <KarmaBlueIcon />
               <Margin top margin={12} />
               <MyTextMulish style={styles.levelCardSubTitle}>
-                Total Conciousness
+                {calculateKarmaLevel()}
               </MyTextMulish>
             </View>
           </View>
