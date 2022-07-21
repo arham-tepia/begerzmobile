@@ -4,7 +4,7 @@ import {RootStateOrAny, useSelector, useStore} from 'react-redux';
 import {loginUser} from '../../api/authentication';
 import {COLORS} from '../../constants/colors';
 import {ICONS} from '../../constants/icons';
-import {storeToken} from '../../helpers/tokenManagement';
+import {storeRefreshToken, storeToken} from '../../helpers/tokenManagement';
 import {wait} from '../../helpers/wait';
 import updateCurrentUserAction from '../../redux/action/currectUserAction';
 import {commonStyles} from '../../styles/styles';
@@ -28,7 +28,8 @@ export const Splash = ({navigation}: any) => {
         navigation.navigate('accessStack');
       }
       if (res._id !== undefined) {
-        storeToken(res.accessToken);
+        await storeToken(res.accessToken);
+        await storeRefreshToken(res.refreshToken);
         store.dispatch(
           updateCurrentUserAction({
             id: res._id,

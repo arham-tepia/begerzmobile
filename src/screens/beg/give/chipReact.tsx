@@ -152,7 +152,9 @@ export const ChipReact = ({route, navigation}: any) => {
           onPress={() => navigation.navigate('home')}
           style={{height: 48, borderRadius: 24}}
         />
-        <MyTextPoppins onPress={() => {}} style={styles.skipText}>
+        <MyTextPoppins
+          onPress={() => navigation.navigate('bn-accounts')}
+          style={styles.skipText}>
           Skip, View Beg Dashboard
         </MyTextPoppins>
       </View>

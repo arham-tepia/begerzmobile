@@ -119,7 +119,9 @@ export const ChipReceipt = ({navigation, route}: any) => {
             }}
           />
           <View style={{marginTop: 10}} />
-          <MyTextPoppins onPress={() => {}} style={styles.skipText}>
+          <MyTextPoppins
+            onPress={() => navigation.navigate('bn-accounts')}
+            style={styles.skipText}>
             Skip,View Beg Dashboard
           </MyTextPoppins>
         </View>

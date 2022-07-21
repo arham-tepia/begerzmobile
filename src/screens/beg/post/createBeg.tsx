@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import {CalendarIcon} from '../../../components/icons/calendar';
 import {InfoIcon} from '../../../components/icons/info';
 import {LinkIcon} from '../../../components/icons/linkIcon';
@@ -25,6 +31,7 @@ import {RootStateOrAny, useSelector, useStore} from 'react-redux';
 import draftedBegAction from '../../../redux/action/draftedBegAction';
 import notifications from '../../../services/notifications';
 import PushNotification from 'react-native-push-notification';
+import {MyTextPoppins} from '../../../components/textPoppins';
 
 export const CreateBeg = ({navigation}: any) => {
   const [title, setTitle]: any = useState('');
@@ -40,9 +47,11 @@ export const CreateBeg = ({navigation}: any) => {
   const [fileObj, setFileObj]: any = useState(false);
   const [date, setDate] = useState(new Date());
   const dateObj = ConvertDateToObject(date);
+  const maxDate = addDays(new Date(), 30);
 
   useEffect(() => {
     checkActiveDraft();
+    setDate(addDays(new Date(), 30));
   }, []);
 
   function checkActiveDraft() {
@@ -52,6 +61,12 @@ export const CreateBeg = ({navigation}: any) => {
     }
   }
 
+  function addDays(date: Date, days: number) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
   const setNotification = () => {
     notifications.scheduleDraftNotification(new Date(Date.now() + 1800 * 1000));
   };
@@ -59,9 +74,9 @@ export const CreateBeg = ({navigation}: any) => {
   var minGoal = 'Minimum goal is $50.00';
   var addSubtext = 'A great video helps convince people to chip in!';
   var n1 =
-    'A 4% processing fee is collected by Begerz.com for using their platform.';
+    'A 5.5% processing fee is collected by Begerz.com for using their platform.';
   var n2 =
-    '5% of the 4% transaction fee (what was collected) will be donated to 1 of 4 charities (pre-determined by Begerz.com).';
+    '.5% of the 5.5% transaction fee (what was collected) will be donated to 1 of 4 charities (pre-determined by Begerz.com).';
 
   async function onContinuePress() {
     const bAmount = parseInt(begAmount);
@@ -97,10 +112,10 @@ export const CreateBeg = ({navigation}: any) => {
         dateObj.year +
         '-' +
         (dateObj.monthNumber < 10
-          ? '0' + dateObj.monthNumber
-          : dateObj.monthNumber) +
+          ? '0' + (dateObj.monthNumber + 1)
+          : dateObj.monthNumber + 1) +
         '-' +
-        dateObj.date,
+        (dateObj.date < 10 ? '0' + dateObj.date : dateObj.date),
       begAmount: begAmount
     });
   }
@@ -170,6 +185,40 @@ export const CreateBeg = ({navigation}: any) => {
     }
   }
 
+  function renderDateInput() {
+    return (
+      <TouchableOpacity
+        onPress={() => setDatePicker(true)}
+        style={[
+          {
+            height: 54,
+            borderWidth: 1,
+            borderRadius: 3,
+            borderColor: '#00000061',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            flexDirection: 'row'
+          },
+          styles.titleTi
+        ]}>
+        <View
+          style={{
+            height: '90%',
+            width: '91%',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexDirection: 'row'
+          }}>
+          <MyTextPoppins>
+            {dateObj.month + ' ' + dateObj.date + ', ' + dateObj.year}
+          </MyTextPoppins>
+          <CalendarIcon />
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
   return (
     <>
       <View style={[commonStyles.main]}>
@@ -209,7 +258,7 @@ export const CreateBeg = ({navigation}: any) => {
               }
             />
             <View style={{marginBottom: 16}} />
-            <MyTextInput
+            {/* <MyTextInput
               placeholder="DD/MM/YY"
               style={{fontFamily: FONTS.P_REGULAR}}
               containerStyle={styles.titleTi}
@@ -218,7 +267,8 @@ export const CreateBeg = ({navigation}: any) => {
               rightComponent={
                 <CalendarIcon onPress={() => setDatePicker(true)} />
               }
-            />
+            /> */}
+            {renderDateInput()}
             <Text
               style={{
                 fontFamily: FONTS.P_REGULAR,
@@ -228,7 +278,7 @@ export const CreateBeg = ({navigation}: any) => {
               Set End Date <InfoIcon />
             </Text>
             <View style={{marginBottom: 16}} />
-            <BegHeadings>Add a video or photo</BegHeadings>
+            <BegHeadings>Add a video or photo.</BegHeadings>
             <Text style={styles.addSubtext}>{addSubtext}</Text>
             <View style={{marginBottom: 24}} />
 
@@ -292,6 +342,8 @@ export const CreateBeg = ({navigation}: any) => {
       <DateTimePickerModal
         isVisible={datePicker}
         mode="date"
+        maximumDate={maxDate}
+        minimumDate={addDays(new Date(), 1)}
         onConfirm={handleDate}
         onCancel={() => setDatePicker(false)}
       />

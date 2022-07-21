@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import {getAllBegs} from '../../api/beg';
 import {getSuccessStories} from '../../api/success';
+import {MyButton} from '../../components/myButton';
+import {isTokenExpired} from '../../helpers/tokenManagement';
 import {HomeBeg} from './components/homeBeg';
 import {HomeBegNew} from './components/homeBegNew';
 import {SuccessStories} from './components/successStories';
@@ -87,6 +89,11 @@ export const Home = ({navigation}: any) => {
     offset: 333 * index,
     index
   });
+
+  async function c() {
+    const x = await isTokenExpired();
+    console.log(x ? 'Expired' : 'not expired');
+  }
 
   return (
     <View style={styles.main}>

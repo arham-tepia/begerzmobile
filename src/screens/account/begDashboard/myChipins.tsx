@@ -103,7 +103,7 @@ export const MyChipInsAndKarma = () => {
   function renderChipinCard() {
     return (
       <View style={styles.chipinsCard}>
-        <View style={styles.cardTopRow}>
+        {/* <View style={styles.cardTopRow}>
           <StarColored style={{height: 18, width: 18}} />
           <Margin right margin={12} />
           <MyTextMulish style={styles.karmaPointsText}>
@@ -127,7 +127,7 @@ export const MyChipInsAndKarma = () => {
           />
         </View>
         <Margin top margin={19} />
-        <Divider style={{width: '100%'}} />
+        <Divider style={{width: '100%'}} /> */}
         <CardElementRowHead />
         <FlatList
           data={data}

@@ -11,6 +11,7 @@ import {ICONS} from '../../../constants/icons';
 import {BegReactions} from './begReactions';
 import Carousel from 'react-native-snap-carousel';
 import {ResizeMode, Video} from 'expo-av';
+import {MyVideo} from '../../../components/MyVideo';
 
 interface Props {
   data: {
@@ -108,10 +109,11 @@ export const HomeBegNew = React.memo((props: Props) => {
             console.log(e, 'Error');
           }}
           rate={1}
+          //usePoster
           useNativeControls
           posterSource={{uri: item.thumbLink}}
           posterStyle={{
-            width: width - 4,
+            width: '100%',
             height: '100%',
             backgroundColor: 'black'
           }}

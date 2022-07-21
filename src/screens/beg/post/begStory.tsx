@@ -227,20 +227,20 @@ export const TellYourStory = ({navigation, route}: any) => {
             </GreyCard>
             <View style={{marginBottom: 28}}></View>
             <MyButton
-              title="Complete your beg"
+              title="Complete your beg!"
               textStyles={{fontFamily: FONTS.P_REGULAR, letterSpacing: 0}}
               onPress={onCompleteBeg}
               //onPress={() => console.log(route.params, 'Route')}
               disabled={disabled() || loader}
               loading={loader}
             />
-            <View style={{marginBottom: 10}} />
+            {/* <View style={{marginBottom: 10}} />
             <MyButton
               onPress={() => console.log(draft)}
               title="Preview"
               textStyles={{fontFamily: FONTS.P_BOLD, letterSpacing: 0}}
               inverse
-            />
+            /> */}
             <View style={{marginBottom: 20}} />
             <MyTextMontserrat style={styles.noteText}>
               A 4% processing fee is collected by Begerz.com foe using their

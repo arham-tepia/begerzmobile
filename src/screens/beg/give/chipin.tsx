@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  Alert,
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  Switch,
-  View
-} from 'react-native';
+import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
 import {commonStyles} from '../../../styles/styles';
 import {Avatar} from '../../../components/avatar';
 import {MyTextPoppins} from '../../../components/textPoppins';
@@ -22,16 +15,12 @@ import {Video, ResizeMode} from 'expo-av';
 import {BegAmountInput} from '../post/components/begAmountInput';
 import {createPaymentIntent} from '../../../api/stripe';
 import {RootStateOrAny, useSelector} from 'react-redux';
-import {
-  presentPaymentSheet,
-  useStripe,
-  PaymentSheetError
-} from '@stripe/stripe-react-native';
+import {presentPaymentSheet, useStripe} from '@stripe/stripe-react-native';
 
 export const Chipin = ({route, navigation}: any) => {
   const stripe = useStripe();
   const beg = route.params.beg ?? [];
-  const [amount, setAmount]: any = useState(5);
+  const [amount, setAmount]: any = useState(15);
   const [coverFee, setCoverFee]: any = useState(false);
   const [privacy, setPrivacy]: any = useState(false);
   const [isCustom, setIsCustom]: any = useState(false);
@@ -86,7 +75,8 @@ export const Chipin = ({route, navigation}: any) => {
       const r = await presentPaymentSheet()
         .then(r => {
           console.log(r, 'Response');
-          navigation.replace('chipin-receipt', {beg: beg});
+          if (r.error?.code !== 'Canceled')
+            navigation.replace('chipin-receipt', {beg: beg});
         })
         .catch(e => {
           console.log(e, 'Error');
@@ -100,9 +90,9 @@ export const Chipin = ({route, navigation}: any) => {
 
   const onCustomInput = (text: string) => {
     const amt = text.replace(/[^0-9]/g, '');
-    const intAmt = parseInt(amt);
+    const intAmt = parseFloat(amt);
     if (intAmt < 5 || amt.length < 11) {
-      setAmount(5);
+      setAmount(5.0);
     } else setAmount(intAmt);
   };
 

@@ -26,7 +26,7 @@ export const DonatorCard = (props: Props) => {
 
         <View style={styles.nameCol}>
           <MyTextMulish numberOfLines={1} style={styles.name}>
-            {props.data.donor.email}
+            {props.data.donor.username}
           </MyTextMulish>
           <Margin bottom margin={5} />
 

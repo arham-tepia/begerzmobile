@@ -349,6 +349,22 @@ export const EndAndWithdraw = (props: Props) => {
           <Divider />
           <Margin top margin={26} />
           <View
+            style={{
+              alignSelf: 'center',
+              width: '90%',
+              backgroundColor: COLORS.infoBlue,
+              padding: 6,
+              borderRadius: 5
+            }}>
+            <MyTextMulish
+              style={{fontWeight: '600', fontSize: 12, textAlign: 'center'}}>
+              Withdrawing funds will mark the beg as complete and you won't be
+              able to receive any more donations or chipins.
+            </MyTextMulish>
+          </View>
+          <Margin top margin={26} />
+
+          <View
             style={[
               styles.w90,
               {

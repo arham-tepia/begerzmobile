@@ -20,6 +20,8 @@ import {ConvertDateToObject} from '../../helpers/simplifyDateObject';
 import {createNewAccount} from '../../api/accounts';
 import {ErrorText} from '../../components/errorText';
 import {ERRORS} from '../../helpers/errors';
+import Toast from 'react-native-toast-message';
+import {wait} from '../../helpers/wait';
 
 export const Signup = ({navigation}: any) => {
   const [datePicker, setDatePicker]: any = useState(false);
@@ -70,7 +72,15 @@ export const Signup = ({navigation}: any) => {
       setError(true);
     }
     if (res.userId) {
-      navigation.navigate('signin');
+      Toast.show({
+        type: 'success',
+        text1: 'Account created successfully',
+        text2: 'Sign in to continue.'
+      });
+
+      wait(3000).finally(() => {
+        navigation.navigate('signin');
+      });
     }
   }
   function disabled() {
@@ -177,6 +187,7 @@ export const Signup = ({navigation}: any) => {
         onConfirm={handleDate}
         onCancel={() => setDatePicker(false)}
       />
+      <Toast position="bottom" />
     </>
   );
 };

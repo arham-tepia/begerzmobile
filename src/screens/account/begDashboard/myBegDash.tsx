@@ -352,7 +352,7 @@ export const MyBegDashboard = ({route}: any) => {
                   <MyButton
                     style={{width: '90%'}}
                     onPress={() => setWithdrawModal(true)}
-                    title="Withdraw funds"
+                    title="End & Withdraw funds"
                     textStyles={{
                       fontFamily: FONTS.M_REGULAR,
                       fontWeight: '700',

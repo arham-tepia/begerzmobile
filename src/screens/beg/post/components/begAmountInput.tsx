@@ -6,7 +6,7 @@ import {
   TextInput,
   TextInputProps,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native';
 import {FONTS} from '../../../../constants/fonts';
 import {ICONS} from '../../../../constants/icons';
@@ -49,20 +49,20 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderBottomWidth: 1,
     marginVertical: 5,
-    borderColor: '#E5E5E5',
+    borderColor: '#E5E5E5'
   },
   ti: {
     width: '90%',
     textAlign: 'right',
     height: 44,
     fontFamily: FONTS.P_SEMIBOLD,
-    fontSize: 20,
+    fontSize: 20
   },
-  dollar: {width: 10.5, height: 21},
+  dollar: {width: 17, height: 28},
   iconContainer: {
     width: '10%',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
-    height: 44,
-  },
+    height: 44
+  }
 });

@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// ------------------------------- Token Start --------------------------------
+
 export const storeToken = async (idToken: any) => {
   const date = new Date();
   try {
@@ -24,19 +26,50 @@ export const getToken = async () => {
   }
 };
 
-// export const isTokenExpired = async () => {
-//   const expiryD: any = await AsyncStorage.getItem('token_expiry');
-//   const expiry = new Date(expiryD);
-//   const current = new Date();
-//   var diffMs: any = expiry.getTime() - current.getTime(); // milliseconds between now & Christmas
-//   var diffDays = Math.floor(diffMs / 86400000); // days
-//   var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
-//   var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-//   console.log(
-//     diffDays + ' days, ' + diffHrs + ' hours, ' + diffMins + ' minutes'
-//   );
-//   if (diffDays <= 0 && diffMins <= 15) {
-//     return true;
-//   }
-//   return false;
-// };
+// ------------------------------- Token End --------------------------------
+
+export const getExpiry = async () => {
+  try {
+    const token = await AsyncStorage.getItem('token_expiry');
+    return token;
+  } catch (e) {
+    console.log(e, 'error');
+  }
+};
+
+// ------------------------------- Refresh Token Start --------------------------------
+
+export const storeRefreshToken = async (idToken: any) => {
+  const date = new Date();
+  try {
+    await AsyncStorage.setItem('refresh_token', idToken);
+  } catch (e) {
+    console.log(e, 'error');
+
+    // saving error
+  }
+};
+export const getRefreshToken = async () => {
+  try {
+    const token = await AsyncStorage.getItem('refresh_token');
+    return token;
+  } catch (e) {
+    console.log(e, 'error');
+  }
+};
+
+// ------------------------------- Refresh Token End -------------------------------
+
+export const isTokenExpired = async () => {
+  const expiryDate: any = await AsyncStorage.getItem('token_expiry');
+  var exp = new Date(expiryDate);
+  const now = new Date();
+
+  var dif = (now.getTime() - exp.getTime()) / 1000;
+
+  if (dif / 60 >= 1) {
+    return true;
+  }
+
+  return false;
+};

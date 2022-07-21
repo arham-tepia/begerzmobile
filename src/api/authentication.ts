@@ -16,3 +16,12 @@ export async function loginUser(data: Login) {
 
   return res;
 }
+
+export async function resetToken(data: {refreshToken?: string}) {
+  const endpoint = authurl + 'refresh';
+
+  const res = await post(endpoint, data);
+  // console.log(res, 'responseeee');
+
+  return res;
+}
