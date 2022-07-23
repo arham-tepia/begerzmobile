@@ -1,5 +1,11 @@
 import React, {useEffect, memo} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {Avatar} from '../../../components/avatar';
 import {MoneyBagHd} from '../../../components/icons/moneybagHd';
@@ -17,6 +23,7 @@ interface Props {
   data: {
     title?: string;
     goalAmount?: string;
+    amountRaised?: string;
     author?: {
       username?: string;
       profileImage?: string;
@@ -94,8 +101,8 @@ export const HomeBegNew = React.memo((props: Props) => {
   function renderVideos({item}: any) {
     return (
       <>
-        <Video
-          // ref={video}
+        <MyVideo item={item} />
+        {/* <Video
           style={{
             width: '99%',
             height: '100%',
@@ -109,7 +116,6 @@ export const HomeBegNew = React.memo((props: Props) => {
             console.log(e, 'Error');
           }}
           rate={1}
-          //usePoster
           useNativeControls
           posterSource={{uri: item.thumbLink}}
           posterStyle={{
@@ -117,7 +123,7 @@ export const HomeBegNew = React.memo((props: Props) => {
             height: '100%',
             backgroundColor: 'black'
           }}
-        />
+        /> */}
       </>
     );
   }
@@ -181,7 +187,8 @@ export const HomeBegNew = React.memo((props: Props) => {
                 color: 'black',
                 marginLeft: 9
               }}>
-              ${data.goalAmount}
+              {data.amountRaised ? '$' + data.amountRaised + ' of ' : ''}$
+              {data.goalAmount}
             </MyTextMulish>
           </View>
           <View

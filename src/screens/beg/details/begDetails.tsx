@@ -27,7 +27,7 @@ import {ResizeMode, Video} from 'expo-av';
 import {RootStateOrAny, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {postReaction} from '../../../api/reactions';
-import {getUserReactionToABeg} from '../../../api/user';
+import {getUserChipinToABeg, getUserReactionToABeg} from '../../../api/user';
 
 export const BegDetails = ({route, navigation}: any) => {
   const begDetails = route.params.params.beg;
@@ -35,9 +35,13 @@ export const BegDetails = ({route, navigation}: any) => {
   const [status, setStatus]: any = useState([]);
   const [userReaction, setUserReactions]: any = useState([]);
 
+  async function getUserChipin() {
+    const res = await getUserChipinToABeg(user.id, begDetails._id);
+    console.log(res, 'User CHipin');
+  }
+
   async function getUserReactions() {
     const res = await getUserReactionToABeg(user.id, begDetails._id);
-    console.log(res, 'user Reactions');
     if (res.results) {
       if (res.results[0]._id) {
         setUserReactions(res.results[0]);
@@ -47,6 +51,7 @@ export const BegDetails = ({route, navigation}: any) => {
 
   useEffect(() => {
     getUserReactions();
+    getUserChipin();
   }, []);
 
   const acheivements: {

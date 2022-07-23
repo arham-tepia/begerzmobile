@@ -32,7 +32,7 @@ export const DrawerNavigation = () => {
       <DrawerTabs.Screen
         name="dr-profile"
         component={AccountRoutes}
-        options={{title: 'Profile', headerShown: false}}
+        options={{title: 'Profile', headerShown: false, unmountOnBlur: true}}
       />
       {/* <DrawerTabs.Screen
         name="dr-begDashboard"

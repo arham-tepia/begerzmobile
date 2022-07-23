@@ -26,3 +26,8 @@ export async function getUserPaymethods(userId: string) {
   const res = await get(endpoint);
   return res;
 }
+export async function getUserChipinToABeg(userId: string, begId: string) {
+  const endpoint = BASE_URL + 'users/' + userId + '/chipins/begs/' + begId;
+  const res = await get(endpoint);
+  return res;
+}

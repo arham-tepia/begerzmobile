@@ -69,6 +69,9 @@ export const PublicProfile = ({navigation}: any) => {
         />
       </View>
       <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={loader} onRefresh={GetData} />
+        }
         showsVerticalScrollIndicator={false}
         style={{marginTop: 10, width: '100%'}}>
         <View style={{width: '90%', alignSelf: 'center'}}>
@@ -87,9 +90,9 @@ export const PublicProfile = ({navigation}: any) => {
           <View style={{marginBottom: 20}} />
         </View>
         <FlatList
-          refreshControl={
-            <RefreshControl refreshing={loader} onRefresh={GetData} />
-          }
+          // refreshControl={
+          //   <RefreshControl refreshing={loader} onRefresh={GetData} />
+          // }
           data={begs.results}
           renderItem={renderBegs}
         />

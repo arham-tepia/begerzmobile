@@ -42,7 +42,7 @@ export const Chipin = ({route, navigation}: any) => {
         <View style={[styles.chipInputBox, {width: z}]}>
           <MyTextPoppins
             style={{fontWeight: '600', fontSize: 20, textAlign: 'center'}}>
-            ${amount}
+            ${parseFloat(amount).toFixed(2).toString()}
           </MyTextPoppins>
         </View>
         <BugButton right title="+" onPress={() => setAmount(amount + 5)} />
@@ -91,7 +91,7 @@ export const Chipin = ({route, navigation}: any) => {
   const onCustomInput = (text: string) => {
     const amt = text.replace(/[^0-9]/g, '');
     const intAmt = parseFloat(amt);
-    if (intAmt < 5 || amt.length < 11) {
+    if (intAmt < 5 || amt.length < 1) {
       setAmount(5.0);
     } else setAmount(intAmt);
   };
@@ -111,7 +111,7 @@ export const Chipin = ({route, navigation}: any) => {
             useNativeControls
             resizeMode={ResizeMode.COVER}
             onReadyForDisplay={response => {
-              console.log(response, 'Video Respose');
+              //console.log(response, 'Video Respose');
             }}
           />
         </View>
@@ -161,7 +161,7 @@ export const Chipin = ({route, navigation}: any) => {
           />
           <MyTextMontserrat style={{fontSize: 9, marginLeft: 14}}>
             I’d like to cover the fees so this Beger gets more of my
-            contribution
+            contribution.
           </MyTextMontserrat>
         </View>
         <MyTextPoppins style={{fontSize: 12, marginBottom: 7}}>
