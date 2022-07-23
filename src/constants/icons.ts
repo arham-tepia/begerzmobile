@@ -61,9 +61,15 @@ const karmaGrey = require('../assets/images/icons/karmaGrey.png');
 const karmaPurple = require('../assets/images/icons/karmaPurple.png');
 const infoPink = require('../assets/images/icons/infoPink.png');
 const share = require('../assets/images/icons/share.png');
+const play = require('../assets/images/icons/play.png');
+const pause = require('../assets/images/icons/pause.png');
+const replay = require('../assets/images/icons/replay.png');
 
 const ICONS = {
   fullLogo,
+  replay,
+  pause,
+  play,
   karmaPurple,
   karmaGrey,
   karmaYellow,

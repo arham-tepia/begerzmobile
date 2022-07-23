@@ -5,6 +5,7 @@ import {FONTS} from '../constants/fonts';
 import {Chipin} from '../screens/beg/give/chipin';
 import {ChipReceipt} from '../screens/beg/give/chipReceipt';
 import {ChipReact} from '../screens/beg/give/chipReact';
+import {ChipinComment} from '../screens/beg/give/chipinComment';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,14 @@ export const ChipinStack = ({route}: any) => {
       <Stack.Screen
         name="chipin-react"
         component={ChipReact}
+        options={{
+          headerLeft: () => <ArrowBackBlack />,
+          headerTitle: 'Chip In'
+        }}
+      />
+      <Stack.Screen
+        name="chipin-comment"
+        component={ChipinComment}
         options={{
           headerLeft: () => <ArrowBackBlack />,
           headerTitle: 'Chip In'

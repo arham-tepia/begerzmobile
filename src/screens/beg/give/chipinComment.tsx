@@ -1,118 +1,112 @@
 import React, {useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Image,
-  ActivityIndicator
-} from 'react-native';
+import {StyleSheet, View, ActivityIndicator} from 'react-native';
 import {RootStateOrAny, useSelector} from 'react-redux';
-import {postReaction} from '../../../api/reactions';
-import {getUserInformationById, getUserReactionToABeg} from '../../../api/user';
+import {postComment} from '../../../api/comments';
+import {getUserInformationById} from '../../../api/user';
 import {Avatar} from '../../../components/avatar';
 import {StarColored} from '../../../components/icons/starColored';
 import {MyButton} from '../../../components/myButton';
+import {MyTextInput} from '../../../components/myTextinput';
 import {MyTextMontserrat} from '../../../components/textMontserrat';
 import {MyTextMulish} from '../../../components/textMulish';
 import {MyTextPoppins} from '../../../components/textPoppins';
 import {COLORS} from '../../../constants/colors';
 import {FONTS} from '../../../constants/fonts';
-import {ICONS} from '../../../constants/icons';
 import {commonStyles} from '../../../styles/styles';
 import {BegHeadings} from '../post/components/begHeadings';
 
-export const ChipReact = ({route, navigation}: any) => {
+export const ChipinComment = ({route, navigation}: any) => {
   const [user, setUser]: any = useState([]);
-  const [userReactions, setUserReactions]: any = useState([]);
   const [loader, setLoader]: any = useState(false);
   const state = useSelector((state: RootStateOrAny) => state.currentUser);
+  const [comment, setComment]: any = useState('');
+  const [commentResponse, setCommentResponse]: any = useState([]);
   const beg = route.params.beg;
 
   async function GetData() {
     const u = await getUserInformationById(state.id);
     setUser(u);
-    getUserReactions();
-  }
-
-  async function getUserReactions() {
-    setLoader(true);
-    const res = await getUserReactionToABeg(state.id, beg._id).finally(() =>
-      setLoader(false)
-    );
-    if (res.results) {
-      if (res.results[0]._id) {
-        setUserReactions(res.results[0]);
-      }
-    }
-  }
-
-  async function onReactionPress(reaction: string) {
-    const lcaps = reaction.toLowerCase();
-    console.log(lcaps);
-    const d = {
-      begId: beg._id,
-      userId: state.id,
-      reactionType: lcaps
-    };
-    const res = await postReaction(d).finally(() => {});
-    if (res._id) {
-      getUserReactions();
-    }
   }
 
   useEffect(() => {
     GetData();
   }, []);
 
-  const reactions = [
-    {
-      icon: ICONS.emojiInspiring,
-      name: 'Inspiring'
-    },
-    {
-      icon: ICONS.emojiInformative,
-      name: 'Informative'
-    },
-    {
-      icon: ICONS.emojiHilarious,
-      name: 'Funny'
-    },
-    {
-      icon: ICONS.emojiBrilliant,
-      name: 'Brilliant'
-    },
-    {
-      icon: ICONS.emojiAdmirable,
-      name: 'Admirable'
+  async function onPostPress() {
+    if (comment.length >= 1) {
+      setLoader(true);
+      const data = {
+        textDescription: comment,
+        htmlDescription: comment,
+        begId: beg._id,
+        userId: state.id
+      };
+      const res = await postComment(data).finally(() => setLoader(false));
+      console.log(res, 'Comment response');
+      setCommentResponse(res);
+      setComment('');
     }
-  ];
+  }
+
+  function renderComment() {
+    return (
+      <View
+        style={{
+          width: '100%',
+          minHeight: 50,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          backgroundColor: COLORS.lightPink,
+          padding: 10,
+          borderRadius: 8
+        }}>
+        <View style={{alignSelf: 'flex-start'}}>
+          <Avatar
+            customSize
+            size={48}
+            source={user?.profileImage && {uri: user.profileImage}}
+          />
+        </View>
+        <MyTextMulish style={{width: '80%'}}>
+          {commentResponse.textDescription}
+        </MyTextMulish>
+      </View>
+    );
+  }
+
   return (
     <View style={commonStyles.main}>
       <View style={{marginTop: 20}} />
       <BegHeadings style={{fontFamily: FONTS.P_SEMIBOLD, color: '#000000'}}>
-        React to this beg {loader && <ActivityIndicator />}
+        Comment on this beg {loader && <ActivityIndicator />}
       </BegHeadings>
-      <View style={{width: '90%'}}>
-        <View style={styles.emojiRow}>
-          {reactions.map((item: any) => {
-            return (
-              <TouchableOpacity
-                onPress={() => onReactionPress(item.name)}
-                style={[
-                  styles.emojiView,
-                  item.customStyle,
-                  userReactions.reactionType === item.name.toLowerCase() && {
-                    backgroundColor: COLORS.lightPink
-                  }
-                ]}>
-                <Image source={item.icon} style={styles.emojiStyle} />
-                <MyTextMulish style={styles.emojiText}>
-                  {item.name}
-                </MyTextMulish>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+      <View style={{width: '90%', marginTop: 16}}>
+        {commentResponse._id ? (
+          renderComment()
+        ) : (
+          <>
+            <MyTextInput
+              style={styles.ti}
+              containerStyle={{borderRadius: 8, height: 48}}
+              placeholder="Enter Comment here"
+              onChangeText={setComment}
+              value={comment}
+            />
+            <View style={{width: '40%', alignSelf: 'center', marginTop: 16}}>
+              <MyButton
+                title="POST"
+                textStyles={{
+                  fontFamily: FONTS.M_REGULAR,
+                  fontWeight: '700',
+                  fontSize: 13
+                }}
+                loading={loader}
+                onPress={onPostPress}
+              />
+            </View>
+          </>
+        )}
         <View style={styles.userView}>
           <Avatar
             customSize
@@ -121,7 +115,7 @@ export const ChipReact = ({route, navigation}: any) => {
           />
           <View style={{marginLeft: 14}}>
             <MyTextMontserrat style={styles.subtitle}>
-              You are reacting as:
+              You are commenting as:
             </MyTextMontserrat>
             <MyTextMontserrat style={styles.name}>
               {user?.firstName} {user?.lastName}
@@ -148,8 +142,7 @@ export const ChipReact = ({route, navigation}: any) => {
             fontWeight: '600',
             letterSpacing: 0
           }}
-          //onPress={() => console.log('bn-home')}
-          onPress={() => navigation.navigate('chipin-comment', {beg: beg})}
+          onPress={() => navigation.navigate('home')}
           style={{height: 48, borderRadius: 24}}
         />
         <MyTextPoppins
@@ -163,31 +156,6 @@ export const ChipReact = ({route, navigation}: any) => {
 };
 
 const styles = StyleSheet.create({
-  emojiRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    marginTop: 10,
-    borderColor: '#28383e',
-    paddingBottom: 5
-  },
-  emojiText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#111111',
-    marginTop: 9
-  },
-  emojiView: {
-    width: '20%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 102
-  },
-  emojiStyle: {
-    height: 34,
-    width: 34,
-    borderRadius: 34
-  },
   userView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -211,5 +179,8 @@ const styles = StyleSheet.create({
     textDecorationColor: COLORS.primary,
     textDecorationLine: 'underline',
     marginTop: 16
+  },
+  ti: {
+    height: 48
   }
 });

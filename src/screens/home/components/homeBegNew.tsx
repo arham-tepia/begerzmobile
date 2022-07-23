@@ -1,6 +1,7 @@
 import React, {useEffect, memo} from 'react';
 import {
   Dimensions,
+  Pressable,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -129,8 +130,8 @@ export const HomeBegNew = React.memo((props: Props) => {
   }
 
   return (
-    <View key={props.index} style={styles.main}>
-      <TouchableOpacity onPress={props.onPress} style={styles.topbar}>
+    <Pressable onPress={props.onPress} key={props.index} style={styles.main}>
+      <View style={styles.topbar}>
         <View style={styles.topBarCol1}>
           {!props.hideUser && (
             <>
@@ -161,7 +162,7 @@ export const HomeBegNew = React.memo((props: Props) => {
         <View style={styles.topBarCol2}>
           <MoreIcon />
         </View>
-      </TouchableOpacity>
+      </View>
       <OuterLayer>
         <Carousel
           data={data.videos}
@@ -219,7 +220,7 @@ export const HomeBegNew = React.memo((props: Props) => {
           </View>
         </View>
       </OuterLayer>
-    </View>
+    </Pressable>
   );
 });
 
