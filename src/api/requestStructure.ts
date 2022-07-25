@@ -81,7 +81,8 @@ export const del = async (endpoint: string, data?: any) => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token
-    }
+    },
+    body: JSON.stringify(data)
   })
     .then(response => response.json())
     .then(json => {

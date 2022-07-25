@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {RootStateOrAny, useSelector} from 'react-redux';
 import {getChipinsMadeByAUser} from '../../../api/user';
+import {ErrorText} from '../../../components/errorText';
 import {InfoIcon} from '../../../components/icons/info';
 import {InfoPinkIcon} from '../../../components/icons/infoPink';
 import {KarmaBlueIcon} from '../../../components/icons/karmaBlue';
@@ -33,7 +34,7 @@ export const MyChipInsAndKarma = () => {
     const res = await getChipinsMadeByAUser(user.id).finally(() =>
       setLoader(false)
     );
-    setData(res.results);
+    res.results && setData(res.results);
     console.log(res, 'Results');
   }
 
@@ -161,6 +162,8 @@ export const MyChipInsAndKarma = () => {
         <Margin top margin={19} />
         <Divider style={{width: '100%'}} /> */}
         <CardElementRowHead />
+
+        {data.length < 1 && <ErrorText>No Chip-Ins to see!</ErrorText>}
         <FlatList
           data={data}
           renderItem={ChipInDataRow}

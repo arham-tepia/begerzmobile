@@ -11,6 +11,8 @@ import {
 import {RootStateOrAny, useSelector} from 'react-redux';
 import {getCommentsForBeg} from '../../../api/beg';
 import {postComment} from '../../../api/comments';
+import {ErrorText} from '../../../components/errorText';
+import {MyTextMulish} from '../../../components/textMulish';
 import {commonStyles} from '../../../styles/styles';
 import {Comment} from './components/comment';
 import {CommentInput} from './components/commentInput';
@@ -85,6 +87,11 @@ export const BegComments = ({navigation, route}: any) => {
         keyboardVerticalOffset={keyboardVerticalOffset}
         behavior="padding"
         style={{width: '100%'}}>
+        {allComments.length < 1 && (
+          <ErrorText style={{textAlign: 'center', marginTop: 20}}>
+            No comments on this beg.
+          </ErrorText>
+        )}
         <FlatList
           data={allComments}
           renderItem={renderComments}

@@ -38,7 +38,7 @@ export const DiscoverTrend = (props: Props) => {
     return (
       <TouchableOpacity
         onPress={() =>
-          props.navigation.navigate('home-begDetailsStack', {beg: item})
+          props.navigation.navigate('discover-begDetailsStack', {beg: item})
         }
         style={styles.imgContainer}>
         <Image source={{uri: item.videos[0].thumbLink}} style={styles.img} />

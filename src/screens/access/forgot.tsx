@@ -46,8 +46,8 @@ export const ForgotPassword = ({navigation}: any) => {
     }
     if (res.resetLink) {
       setSuccess(true);
+      wait(3000).finally(() => navigation.goBack());
     }
-    wait(3000).finally(() => navigation.goBack());
   }
 
   return (

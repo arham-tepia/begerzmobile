@@ -1,7 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import {RootStateOrAny, useSelector} from 'react-redux';
-import {followUser} from '../../../api/followers';
+import {
+  followUser,
+  isFollowingABegger,
+  unfollowUser
+} from '../../../api/followers';
 import {getUserInformationById} from '../../../api/user';
 import {ArrowBackBlack} from '../../../components/icons/arowBackBlack';
 import {MoreIcon} from '../../../components/icons/moreIcon';
@@ -15,14 +19,27 @@ import {BegerProfileCard} from './components/begerProfileCard';
 export const BegerProfile = ({route}: any) => {
   const [user, setUser]: any = useState([]);
   const [loading, setLoading]: any = useState(false);
+  const [follow, setFollow]: any = useState([]);
+  const iam = useSelector((state: RootStateOrAny) => state.currentUser);
   useEffect(() => {
     getData();
+    getFollow();
   }, []);
+
+  async function getFollow() {
+    const res = await isFollowingABegger({
+      begerId: route.params.user._id,
+      userId: iam.id
+    });
+    if (res.pagination.records !== 0) {
+      setFollow(res.results[0]);
+    }
+  }
 
   async function getData() {
     const res = await getUserInformationById(route.params.user._id);
     setUser(res);
-    console.log(res, 'real user');
+    return;
   }
   const thisUser = useSelector((state: RootStateOrAny) => state.currentUser);
   async function onFollowPress() {
@@ -31,8 +48,18 @@ export const BegerProfile = ({route}: any) => {
       userId: user._id,
       followerId: thisUser.id
     };
-    const res = await followUser(data).finally(() => setLoading(false));
-    console.log(res, 'follow repsponse');
+
+    if (follow._id) {
+      const res = await unfollowUser({id: follow._id}).finally(() =>
+        setLoading(false)
+      );
+      setFollow([]);
+    } else {
+      const res = await followUser(data).finally(() => setLoading(false));
+    }
+
+    getData();
+    getFollow();
   }
   return (
     <View style={[commonStyles.main, {backgroundColor: 'transparent'}]}>
@@ -54,7 +81,7 @@ export const BegerProfile = ({route}: any) => {
           <BegerProfileCard user={user} />
           <MyButton
             inverse
-            title="Follow"
+            title={follow._id ? 'Unfollow' : 'Follow'}
             onPress={onFollowPress}
             loading={loading}
             disabled={loading}

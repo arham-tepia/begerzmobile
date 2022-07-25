@@ -41,7 +41,7 @@ export const SearchHomePage = ({navigation, route}: any) => {
       setLoader(false)
     );
     console.log(res, 'Response Search');
-    setResults(res.results);
+    res.results.length >= 1 && setResults(res.results);
   }
 
   function renderResults({item}: any) {

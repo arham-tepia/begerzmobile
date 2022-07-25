@@ -48,8 +48,14 @@ export const DrawerNavigation = () => {
         component={WithdrawalRoutes}
         options={{
           headerLeft: () => <ArrowBackBlack style={{marginLeft: 10}} />,
-          headerTitle: 'Payments & Withdrawl',
-          title: 'Payments & Withdrawl'
+          headerTitle: 'Payments & Withdrawls',
+          title: 'Payments & Withdrawls',
+          headerTitleStyle: {
+            fontFamily: FONTS.M_REGULAR,
+            fontSize: 19.5,
+            fontWeight: '700',
+            width: 300
+          }
         }}
       />
       <DrawerTabs.Screen
@@ -58,7 +64,13 @@ export const DrawerNavigation = () => {
         options={{
           headerLeft: () => <ArrowBackBlack style={{marginLeft: 10}} />,
           headerTitle: 'My Chip-Ins & Karma Points',
-          title: 'My Chip-Ins & Karma Points'
+          title: 'My Chip-Ins & Karma Points',
+          headerTitleStyle: {
+            fontFamily: FONTS.M_REGULAR,
+            fontSize: 19.5,
+            fontWeight: '700',
+            width: 300
+          }
         }}
       />
       <DrawerTabs.Screen

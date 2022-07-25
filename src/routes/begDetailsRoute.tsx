@@ -8,7 +8,6 @@ import {SendIcon} from '../components/icons/sendIcon';
 import {MyTextMulish} from '../components/textMulish';
 import {ChipinStack} from './chipinRoutes';
 import {BegerProfile} from '../screens/beg/details/begerProfile';
-import {StoryDetails} from '../screens/beg/details/storyDetails';
 import {Donators} from '../screens/beg/details/donators';
 import {View} from 'react-native';
 

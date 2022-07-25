@@ -55,6 +55,8 @@ export const ChipReact = ({route, navigation}: any) => {
       reactionType: lcaps
     };
     const res = await postReaction(d).finally(() => {});
+    console.log(res, 'response');
+
     if (res._id) {
       getUserReactions();
     }

@@ -50,7 +50,9 @@ export const Discover = ({navigation}: any) => {
     return (
       <HomeBeg
         data={item}
-        onPress={() => navigation.navigate('home-begDetailsStack', {beg: item})}
+        onPress={() =>
+          navigation.navigate('discover-begDetailsStack', {beg: item})
+        }
       />
     );
   }

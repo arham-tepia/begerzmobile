@@ -11,7 +11,7 @@ interface Props {
 export const BegerProfileCard = (props: Props) => {
   const {user} = props;
   const data = [
-    {name: 'Begz', value: props.begCount ?? 0, borderRight: true},
+    {name: 'Begz', value: user.begCount, borderRight: true},
     {
       name: 'Raised',
       value: '$' + user.totalRaised ?? 0,
@@ -55,7 +55,9 @@ export const BegerProfileCard = (props: Props) => {
         </View>
       </View>
       <View style={{marginTop: 28}} />
-      <MyTextMulish style={styles.statSmall}>{user.karma}</MyTextMulish>
+      <MyTextMulish style={styles.statSmall}>
+        {user.karma ? user.karma.toLocaleString() : user.karma}
+      </MyTextMulish>
       <MyTextMulish style={styles.titleBig}>Karma earned</MyTextMulish>
       <View style={{width: '100%', marginTop: 18}}>
         <FlatList

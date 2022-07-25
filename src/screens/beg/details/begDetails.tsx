@@ -28,6 +28,7 @@ import {RootStateOrAny, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {postReaction} from '../../../api/reactions';
 import {getUserChipinToABeg, getUserReactionToABeg} from '../../../api/user';
+import {useFocusEffect} from '@react-navigation/native';
 
 export const BegDetails = ({route, navigation}: any) => {
   const begDetails = route.params.params.beg;
@@ -53,6 +54,10 @@ export const BegDetails = ({route, navigation}: any) => {
     getUserReactions();
     getUserChipin();
   }, []);
+
+  useFocusEffect(() => {
+    return () => {};
+  });
 
   const acheivements: {
     inspiring?: string;

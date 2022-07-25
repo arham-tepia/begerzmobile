@@ -1,4 +1,4 @@
-import React, {useEffect, memo} from 'react';
+import React, {useEffect, memo, useState} from 'react';
 import {
   Dimensions,
   Pressable,
@@ -16,7 +16,7 @@ import {Margin} from '../../../components/margin';
 import {MyTextMulish} from '../../../components/textMulish';
 import {ICONS} from '../../../constants/icons';
 import {BegReactions} from './begReactions';
-import Carousel from 'react-native-snap-carousel';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {ResizeMode, Video} from 'expo-av';
 import {MyVideo} from '../../../components/MyVideo';
 
@@ -53,7 +53,7 @@ interface Props {
 
 export const HomeBegNew = React.memo((props: Props) => {
   const {data} = props;
-
+  const [activeSlide, setActiveSlide]: any = useState(0);
   useEffect(() => {
     return () => {};
   }, [props.index]);
@@ -129,6 +129,37 @@ export const HomeBegNew = React.memo((props: Props) => {
     );
   }
 
+  function pagination() {
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 20
+        }}>
+        <Pagination
+          dotsLength={data.videos.length}
+          activeDotIndex={activeSlide}
+          dotContainerStyle={{
+            width: '100%',
+            height: 20
+          }}
+          dotStyle={{
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+            marginHorizontal: 8,
+            backgroundColor: 'white'
+          }}
+          inactiveDotStyle={{
+            backgroundColor: 'grey'
+          }}
+          inactiveDotOpacity={0.4}
+          inactiveDotScale={0.6}
+        />
+      </View>
+    );
+  }
+
   return (
     <Pressable onPress={props.onPress} key={props.index} style={styles.main}>
       <View style={styles.topbar}>
@@ -170,7 +201,10 @@ export const HomeBegNew = React.memo((props: Props) => {
           renderItem={renderVideos}
           sliderWidth={width}
           itemWidth={width}
+          layout="stack"
+          onSnapToItem={index => setActiveSlide(index)}
         />
+        {pagination()}
         <View style={styles.bottom}>
           <View
             style={{
