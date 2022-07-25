@@ -1,4 +1,3 @@
-import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
 import {
   View,
@@ -91,11 +90,11 @@ export const BegComments = ({navigation, route}: any) => {
           renderItem={renderComments}
           style={{height: '90%'}}
         />
-        <CommentInput
+        {/* <CommentInput
           onChangeText={setComment}
           onPostPress={onPostPress}
           value={comment}
-        />
+        /> */}
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

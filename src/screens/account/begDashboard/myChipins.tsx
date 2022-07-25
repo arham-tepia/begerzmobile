@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  View,
+  Share,
+  Alert
+} from 'react-native';
 import {RootStateOrAny, useSelector} from 'react-redux';
 import {getChipinsMadeByAUser} from '../../../api/user';
 import {InfoIcon} from '../../../components/icons/info';
@@ -23,10 +30,11 @@ export const MyChipInsAndKarma = () => {
   const [loader, setLoader]: any = useState(false);
   async function GetData() {
     setLoader(true);
-    const res = await getChipinsMadeByAUser('627e487fc32baa9e18b4fa58').finally(
-      () => setLoader(false)
+    const res = await getChipinsMadeByAUser(user.id).finally(() =>
+      setLoader(false)
     );
     setData(res.results);
+    console.log(res, 'Results');
   }
 
   useEffect(() => {
@@ -44,6 +52,28 @@ export const MyChipInsAndKarma = () => {
     if (points >= 12001 && points <= 24000) return KARMA_LEVELS.platnum;
     if (points >= 24001 && points <= 48000) return KARMA_LEVELS.fullFLower;
   }
+
+  const onShare = async (begDetails: any) => {
+    console.log(begDetails);
+
+    try {
+      const result = await Share.share({
+        message: 'https://app.begerz.net/beg/details/' + begDetails._id,
+        url: 'https://app.begerz.net/beg/details/' + begDetails._id
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error: any) {
+      Alert.alert(error.message);
+    }
+  };
 
   function CardElementRowHead() {
     return (
@@ -65,6 +95,8 @@ export const MyChipInsAndKarma = () => {
   }
   function ChipInDataRow({item, index}: any) {
     const date = ConvertDateStringToObject(item.createdAt);
+    console.log(item, 'Item');
+
     return (
       <View
         style={[
@@ -90,11 +122,11 @@ export const MyChipInsAndKarma = () => {
             }
           ]}>
           <MyTextMulish style={[styles.cardElement]}>
-            {item.beg.title}
+            {item.beg?.title ?? 'No Title'}
           </MyTextMulish>
         </View>
         <View style={[styles.elementBox, {width: '14%'}]}>
-          <ShareIcon />
+          <ShareIcon onPress={() => onShare(item)} />
         </View>
       </View>
     );
