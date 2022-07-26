@@ -1,8 +1,6 @@
-import React, {useState} from 'react';
-import {ResizeMode, Video} from 'expo-av';
+import React from 'react';
+import {ResizeMode} from 'expo-av';
 import VideoPlayer from 'expo-video-player';
-import {View} from 'react-native';
-import {MyTextMulish} from './textMulish';
 import {PauseIcon, PlayIcon, ReplayIcon} from './icons/mediaControls';
 
 interface Props {
@@ -10,6 +8,7 @@ interface Props {
     videoLink: string;
     thumbLink: string;
   };
+  onPress?(): void;
 }
 
 export const MyVideo = (props: Props) => {

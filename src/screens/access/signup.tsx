@@ -67,7 +67,7 @@ export const Signup = ({navigation}: any) => {
       status: 'active'
     };
     const res = await createNewAccount(data).finally(() => setLoader(false));
-    console.log(res, 'response');
+    console.log(res, 'signup response');
     if (res.message === 'username and email must be unique') {
       setError(true);
     }

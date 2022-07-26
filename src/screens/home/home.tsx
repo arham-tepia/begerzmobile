@@ -9,9 +9,7 @@ import {
 } from 'react-native';
 import {getAllBegs} from '../../api/beg';
 import {getSuccessStories} from '../../api/success';
-import {MyButton} from '../../components/myButton';
 import {isTokenExpired} from '../../helpers/tokenManagement';
-import {HomeBeg} from './components/homeBeg';
 import {HomeBegNew} from './components/homeBegNew';
 import {SuccessStories} from './components/successStories';
 
@@ -76,14 +74,6 @@ export const Home = ({navigation}: any) => {
       />
     );
   };
-  // function renderBegs({item}: any) {
-  //   return (
-  //     <HomeBeg
-  //       onPress={() => navigation.navigate('home-begDetailsStack', {beg: item})}
-  //       data={item}
-  //     />
-  //   );
-  // }
   const getItemLayout = (data: any, index: number) => ({
     length: 333,
     offset: 333 * index,
