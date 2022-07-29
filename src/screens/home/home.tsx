@@ -1,3 +1,4 @@
+import {useFocusEffect} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
@@ -7,9 +8,11 @@ import {
   FlatList,
   Dimensions
 } from 'react-native';
+import {RootStateOrAny, useSelector, useStore} from 'react-redux';
 import {getAllBegs} from '../../api/beg';
 import {getSuccessStories} from '../../api/success';
 import {isTokenExpired} from '../../helpers/tokenManagement';
+import addNewBegToListAction from '../../redux/action/newBegAction';
 import {HomeBegNew} from './components/homeBegNew';
 import {SuccessStories} from './components/successStories';
 
@@ -19,7 +22,7 @@ export const Home = ({navigation}: any) => {
   const [storyLoader, setStoryLoader]: any = useState(false);
   const [footerLoader, seFootertLoader]: any = useState(false);
   const [stories, setStories]: any = useState([]);
-
+  const store = useStore();
   const [pagination, setPagination]: any = useState([]);
   async function GetData() {
     const additional = '?page=1' + '&sort=-createdAt';
@@ -29,6 +32,12 @@ export const Home = ({navigation}: any) => {
       setBegs(res.results);
       setPagination(res.pagination);
     }
+    store.dispatch(
+      addNewBegToListAction({
+        status: false,
+        beg: {}
+      })
+    );
   }
 
   async function getStories() {
@@ -65,6 +74,12 @@ export const Home = ({navigation}: any) => {
     GetData();
     getStories();
   }, []);
+
+  // useFocusEffect(() => {
+  //   GetData();
+  //   getStories();
+  // });
+
   const renderBegs = ({item}: any) => {
     return (
       <HomeBegNew
@@ -85,15 +100,40 @@ export const Home = ({navigation}: any) => {
     console.log(x ? 'Expired' : 'not expired');
   }
 
+  useFocusEffect(() => {
+    checkNewBeg();
+  });
+  const newbeg = useSelector((state: RootStateOrAny) => state.newBeg);
+  function checkNewBeg() {
+    if (newbeg.status) {
+      setBegs([newbeg.beg, ...begs]);
+      store.dispatch(
+        addNewBegToListAction({
+          status: false,
+          beg: {}
+        })
+      );
+    }
+  }
+
   return (
     <View style={styles.main}>
+      {/* <MyButton
+        onPress={async () => {
+          const res = await isTokenExpired();
+          if (res) {
+            await resetMyToken();
+          }
+          console.log(res, 'is expired response');
+        }}
+      /> */}
       <FlatList
         refreshing={loader}
         data={begs}
         keyExtractor={(item, index) => item._id}
         ListHeaderComponent={() => (
           <>
-            {!storyLoader && (
+            {!storyLoader && stories.length >= 1 && (
               <SuccessStories navigation={navigation} stories={stories} />
             )}
           </>

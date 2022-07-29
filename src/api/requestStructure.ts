@@ -1,34 +1,14 @@
 import {
-  getRefreshToken,
   getToken,
   isTokenExpired,
-  storeToken
+  resetMyToken
 } from '../helpers/tokenManagement';
-import {resetToken} from './authentication';
-
-async function getMyToken() {
-  const isExpired = await isTokenExpired();
-  const token: any = await getToken();
-
-  if (!isExpired) {
-    return token;
-  } else {
-    const r = await resetMyToken();
-    await storeToken(r);
-    return r;
-  }
-  return;
-}
-
-async function resetMyToken() {
-  const refreshToken: any = await getRefreshToken();
-  const r = await resetToken({refreshToken: refreshToken});
-  console.log(r, 'Reset response');
-
-  return r.accessToken;
-}
 
 export const post = async (endpoint: string, data: object) => {
+  // const res = await isTokenExpired();
+  // if (res) {
+  //   await resetMyToken();
+  // }
   const token: any = await getToken();
   return (
     fetch(endpoint, {
@@ -51,6 +31,10 @@ export const post = async (endpoint: string, data: object) => {
   );
 };
 export const get = async (endpoint: string) => {
+  // const res = await isTokenExpired();
+  // if (res) {
+  //   await resetMyToken();
+  // }
   const token: any = await getToken();
 
   return (
@@ -73,6 +57,10 @@ export const get = async (endpoint: string) => {
   );
 };
 export const del = async (endpoint: string, data?: any) => {
+  // const res = await isTokenExpired();
+  // if (res) {
+  //   await resetMyToken();
+  // }
   const token: any = await getToken();
 
   return fetch(endpoint, {
@@ -93,6 +81,10 @@ export const del = async (endpoint: string, data?: any) => {
     });
 };
 export const patch = async (endpoint: string, data: any) => {
+  // const res = await isTokenExpired();
+  // if (res) {
+  //   await resetMyToken();
+  // }
   const token: any = await getToken();
 
   return fetch(endpoint, {

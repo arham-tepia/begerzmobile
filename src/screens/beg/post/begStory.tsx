@@ -15,13 +15,13 @@ import Toast from 'react-native-toast-message';
 import {RootStateOrAny, useSelector, useStore} from 'react-redux';
 import draftedBegAction from '../../../redux/action/draftedBegAction';
 import PushNotification from 'react-native-push-notification';
+import addNewBegToListAction from '../../../redux/action/newBegAction';
 
 export const TellYourStory = ({navigation, route}: any) => {
   // const [saveMode, setSavemode]: any = useState(false);
   const [saveType, setSaveType]: any = useState('');
   const [story, setStory]: any = useState('');
   const [loader, setLoader]: any = useState(false);
-  const [instant, setInstant]: any = useState(false);
   const user = useSelector((state: RootStateOrAny) => state.currentUser);
   const draft = useSelector((state: RootStateOrAny) => state.draftedBeg);
 
@@ -103,6 +103,13 @@ export const TellYourStory = ({navigation, route}: any) => {
     if (res._id !== undefined) {
       store.dispatch(draftedBegAction({inDraft: false, beg: {}}));
       PushNotification.cancelAllLocalNotifications();
+
+      store.dispatch(
+        addNewBegToListAction({
+          status: true,
+          beg: res
+        })
+      );
 
       navigation.replace('begIsReady', {beg: res});
     } else {

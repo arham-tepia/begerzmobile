@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {resetToken} from '../api/authentication';
 
 // ------------------------------- Token Start --------------------------------
 
@@ -68,8 +69,23 @@ export const isTokenExpired = async () => {
   var dif = (now.getTime() - exp.getTime()) / 1000;
 
   if (dif / 60 >= 1) {
+    //await resetMyToken();
     return true;
   }
 
   return false;
 };
+
+export async function resetMyToken() {
+  const refreshToken: any = await getRefreshToken();
+  const r = await resetToken({refreshToken: refreshToken});
+  console.log(r, 'Reset response');
+  await storeToken(r.accessToken);
+  return;
+}
+
+async function getFreshToken() {
+  const res = await isTokenExpired();
+  const token = await getToken();
+  return token;
+}

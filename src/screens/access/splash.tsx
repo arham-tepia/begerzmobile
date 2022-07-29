@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {Image, View} from 'react-native';
 import {RootStateOrAny, useSelector, useStore} from 'react-redux';
 import {loginUser} from '../../api/authentication';
+import {MyTextMulish} from '../../components/textMulish';
 import {COLORS} from '../../constants/colors';
 import {ICONS} from '../../constants/icons';
 import {storeRefreshToken, storeToken} from '../../helpers/tokenManagement';
@@ -20,9 +21,7 @@ export const Splash = ({navigation}: any) => {
         password: state.password.trim(),
         role: 'customer'
       };
-      const res = await loginUser(data).catch(e => {
-        console.log(e, 'This is error');
-      });
+      const res = await loginUser(data);
       console.log(res, 'response');
       if (res === undefined || res.message === 'invalid username or password') {
         navigation.navigate('accessStack');
@@ -49,12 +48,27 @@ export const Splash = ({navigation}: any) => {
     check();
   }, []);
   return (
-    <View
-      style={[
-        commonStyles.main,
-        {justifyContent: 'center', backgroundColor: COLORS.primary}
-      ]}>
-      <Image source={ICONS.logoWhite} style={{width: 254.9, height: 78.95}} />
-    </View>
+    <>
+      <View
+        style={[
+          commonStyles.main,
+          {justifyContent: 'center', backgroundColor: COLORS.primary}
+        ]}>
+        <Image source={ICONS.logoWhite} style={{width: 254.9, height: 78.95}} />
+      </View>
+      <View
+        style={{
+          position: 'absolute',
+          alignItems: 'center',
+          justifyContent: 'center',
+          bottom: 20,
+          width: '90%',
+          alignSelf: 'center'
+        }}>
+        <MyTextMulish style={{color: 'white', fontWeight: '800', fontSize: 12}}>
+          STAGING
+        </MyTextMulish>
+      </View>
+    </>
   );
 };

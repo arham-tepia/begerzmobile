@@ -1,12 +1,5 @@
-import React, {useEffect, memo, useState} from 'react';
-import {
-  Dimensions,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Dimensions, Pressable, StyleSheet, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {Avatar} from '../../../components/avatar';
 import {MoneyBagHd} from '../../../components/icons/moneybagHd';
@@ -16,9 +9,9 @@ import {Margin} from '../../../components/margin';
 import {MyTextMulish} from '../../../components/textMulish';
 import {ICONS} from '../../../constants/icons';
 import {BegReactions} from './begReactions';
-import Carousel, {Pagination} from 'react-native-snap-carousel';
-import {ResizeMode, Video} from 'expo-av';
+import Carousel from 'react-native-snap-carousel';
 import {MyVideo} from '../../../components/MyVideo';
+import {Pagination} from '../../../components/pagination';
 
 interface Props {
   data: {
@@ -131,32 +124,11 @@ export const HomeBegNew = React.memo((props: Props) => {
 
   function pagination() {
     return (
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 20
-        }}>
-        <Pagination
-          dotsLength={data.videos.length}
-          activeDotIndex={activeSlide}
-          dotContainerStyle={{
-            width: '100%',
-            height: 20
-          }}
-          dotStyle={{
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-            marginHorizontal: 8,
-            backgroundColor: 'white'
-          }}
-          inactiveDotStyle={{
-            backgroundColor: 'grey'
-          }}
-          inactiveDotOpacity={0.4}
-          inactiveDotScale={0.6}
-        />
-      </View>
+      <Pagination
+        style={{position: 'absolute', bottom: 60}}
+        activeIndex={activeSlide}
+        data={data.videos}
+      />
     );
   }
 
