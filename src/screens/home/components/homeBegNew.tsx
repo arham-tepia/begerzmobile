@@ -125,7 +125,7 @@ export const HomeBegNew = React.memo((props: Props) => {
   function pagination() {
     return (
       <Pagination
-        style={{position: 'absolute', bottom: 60}}
+        style={{position: 'absolute', bottom: 70}}
         activeIndex={activeSlide}
         data={data.videos}
       />

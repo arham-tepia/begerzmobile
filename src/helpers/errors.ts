@@ -1,6 +1,6 @@
 export const ERRORS = {
   signin: {
-    emailnotvalid: '*Please enter a valid email',
+    emailnotvalid: '*Please enter a valid username',
     passwordnotvalid: '*Please enter a valid password'
   },
   signup: {

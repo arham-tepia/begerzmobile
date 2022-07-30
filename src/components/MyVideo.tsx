@@ -54,7 +54,9 @@ export const MyVideo = (props: Props) => {
         pause: <PauseIcon />,
         replay: <ReplayIcon />
       }}
-      slider={{visible: false}}
+      slider={{
+        visible: true
+      }}
       style={{height: 230, controlsBackgroundColor: 'transparent'}}
     />
   );
