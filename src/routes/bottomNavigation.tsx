@@ -16,10 +16,19 @@ import {AccountRoutes} from './accountRoutes';
 import {DrawerNavigation} from './drawerNavigation';
 import {BellSvg} from '../components/svgs/bell';
 import {BellOutlineSvg} from '../components/svgs/bellOutline';
+import {MyButton} from '../components/myButton';
+import {isTokenExpired} from '../helpers/tokenManagement';
 
 const BottomTabs = createBottomTabNavigator();
 
 const Test = () => {
+  async function test() {
+    const date = Date.now();
+    console.log(date, 'This is now date');
+    console.log(new Date(date), 'This is now date date');
+    await isTokenExpired();
+  }
+
   return (
     <SafeAreaView
       style={{
@@ -29,6 +38,7 @@ const Test = () => {
         backgroundColor: 'white'
       }}>
       <Image source={ICONS.noData} style={{height: '90%', width: '90%'}} />
+      {/* <MyButton title="Test btn" onPress={test} /> */}
     </SafeAreaView>
   );
 };

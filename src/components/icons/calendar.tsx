@@ -4,11 +4,15 @@ import {ICONS} from '../../constants/icons';
 
 interface Props {
   onPress?(): void;
+  disabled?: boolean;
 }
 
 export const CalendarIcon = (props: Props) => {
   return (
-    <TouchableOpacity onPress={props.onPress} style={styles.main}>
+    <TouchableOpacity
+      disabled={props.disabled}
+      onPress={props.onPress}
+      style={styles.main}>
       <Image source={ICONS.calendar} style={{height: 24, width: 24}} />
     </TouchableOpacity>
   );
@@ -19,6 +23,6 @@ const styles = StyleSheet.create({
     height: 24,
     width: 24,
     alignItems: 'center',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center'
+  }
 });

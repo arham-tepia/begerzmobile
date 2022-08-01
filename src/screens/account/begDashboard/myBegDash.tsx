@@ -29,6 +29,7 @@ import {ConvertDateStringToObject} from '../../../helpers/formatDateObject';
 import {getListOfFollowersForUser, getUserPaymethods} from '../../../api/user';
 import {sendInvitation} from '../../../api/invitations';
 import {withdrawMoney} from '../../../api/withdraw';
+import {MyTextPoppins} from '../../../components/textPoppins';
 
 export const MyBegDashboard = ({route}: any) => {
   const [videos, setVideos]: any = useState([]);
@@ -43,6 +44,7 @@ export const MyBegDashboard = ({route}: any) => {
   const [paymethod, setPaymethod]: any = useState([]);
   const [storyCard, setStoryCard] = useState(false);
   const [withdrawModal, setWithdrawModal]: any = useState(false);
+  const [withdrawnSuccess, setWithdrawnSuccess]: any = useState(false);
 
   const beg = route.params.beg;
   const scrollRef: any = useRef();
@@ -66,6 +68,7 @@ export const MyBegDashboard = ({route}: any) => {
     const res = await withdrawMoney(data).finally(() => setLoader(false));
     setWithdrawModal(false);
     if (res._id) {
+      setWithdrawnSuccess(true);
       Toast.show({
         type: 'success',
         text1: 'Your funds are on your way!'
@@ -351,10 +354,12 @@ export const MyBegDashboard = ({route}: any) => {
 
                   <MyButton
                     style={{width: '90%'}}
-                    disabled={beg.fundsWithdrawn ? true : false}
+                    disabled={
+                      beg.fundsWithdrawn || withdrawnSuccess ? true : false
+                    }
                     onPress={() => setWithdrawModal(true)}
                     title={
-                      beg.fundsWithdrawn
+                      beg.fundsWithdrawn || withdrawnSuccess
                         ? 'Funds Withdrawn'
                         : 'End & Withdraw funds'
                     }
@@ -400,6 +405,20 @@ export const MyBegDashboard = ({route}: any) => {
                   />
                   <Margin top margin={11} />
                 </View>
+              </View>
+              <View
+                style={{
+                  height: 59,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderBottomWidth: 1,
+                  width: '100%',
+                  borderColor: 'rgba(222, 222, 222, 1)'
+                }}>
+                <MyTextPoppins
+                  style={[{color: 'grey', fontSize: 12, fontWeight: '500'}]}>
+                  Funds may take 5-7 business days to process
+                </MyTextPoppins>
               </View>
               <CollapseableView title="General" hand>
                 <BegInformationView beg={beg} />

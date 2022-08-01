@@ -213,7 +213,7 @@ export const CreateBeg = ({navigation}: any) => {
           <MyTextPoppins>
             {dateObj.month + ' ' + dateObj.date + ', ' + dateObj.year}
           </MyTextPoppins>
-          <CalendarIcon />
+          <CalendarIcon disabled />
         </View>
       </TouchableOpacity>
     );

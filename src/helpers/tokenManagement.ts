@@ -4,7 +4,7 @@ import {resetToken} from '../api/authentication';
 // ------------------------------- Token Start --------------------------------
 
 export const storeToken = async (idToken: any) => {
-  const date = new Date();
+  const date = new Date(Date.now());
   try {
     await AsyncStorage.setItem('token', idToken);
   } catch (e) {
@@ -17,6 +17,8 @@ export const storeToken = async (idToken: any) => {
   } catch (e) {
     console.log(e, 'error');
   }
+
+  return;
 };
 export const getToken = async () => {
   try {
@@ -36,6 +38,7 @@ export const getExpiry = async () => {
   } catch (e) {
     console.log(e, 'error');
   }
+  return;
 };
 
 // ------------------------------- Refresh Token Start --------------------------------
@@ -64,12 +67,14 @@ export const getRefreshToken = async () => {
 export const isTokenExpired = async () => {
   const expiryDate: any = await AsyncStorage.getItem('token_expiry');
   var exp = new Date(expiryDate);
-  const now = new Date();
+  const now = new Date(Date.now());
 
   var dif = (now.getTime() - exp.getTime()) / 1000;
 
   if (dif / 60 >= 1) {
-    //await resetMyToken();
+    // console.log('token regenrate');
+
+    const res = await resetMyToken();
     return true;
   }
 
@@ -77,15 +82,31 @@ export const isTokenExpired = async () => {
 };
 
 export async function resetMyToken() {
+  console.log('in reset token');
   const refreshToken: any = await getRefreshToken();
-  const r = await resetToken({refreshToken: refreshToken});
-  console.log(r, 'Reset response');
+  const r = await resetToken({refreshToken: refreshToken}).finally(() => {});
   await storeToken(r.accessToken);
   return;
 }
 
-async function getFreshToken() {
-  const res = await isTokenExpired();
-  const token = await getToken();
-  return token;
+export async function getMyToken() {
+  const expiryDate: any = await getExpiry();
+  var exp = new Date(expiryDate);
+  const now = new Date(Date.now());
+
+  var dif = (now.getTime() - exp.getTime()) / 10000;
+
+  if (dif / 60 >= 1) {
+    console.log('resetting token');
+
+    const refreshToken: any = await getRefreshToken();
+    const r = await resetToken({refreshToken: refreshToken});
+    await storeToken(r.accessToken);
+    return r.accessToken;
+  } else {
+    console.log('not resetting token');
+
+    const res = await getToken();
+    return res;
+  }
 }

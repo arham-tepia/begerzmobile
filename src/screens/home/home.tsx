@@ -6,7 +6,9 @@ import {
   StyleSheet,
   View,
   FlatList,
-  Dimensions
+  Dimensions,
+  NativeSyntheticEvent,
+  NativeScrollEvent
 } from 'react-native';
 import {RootStateOrAny, useSelector, useStore} from 'react-redux';
 import {getAllBegs} from '../../api/beg';
@@ -24,6 +26,21 @@ export const Home = ({navigation}: any) => {
   const [stories, setStories]: any = useState([]);
   const store = useStore();
   const [pagination, setPagination]: any = useState([]);
+  const [focusedIndex, setFocusedIndex] = useState(0);
+
+  const handleScroll = React.useCallback(
+    ({
+      nativeEvent: {
+        contentOffset: {y}
+      }
+    }: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const offset = Math.round(y / 333);
+
+      //setFocusedIndex(offset);
+    },
+    [setFocusedIndex]
+  );
+
   async function GetData() {
     const additional = '?page=1' + '&sort=-createdAt';
     setLoader(true);
@@ -80,12 +97,14 @@ export const Home = ({navigation}: any) => {
   //   getStories();
   // });
 
-  const renderBegs = ({item}: any) => {
+  const renderBegs = ({item, index}: any) => {
     return (
       <HomeBegNew
         //noGradient
         onPress={() => navigation.navigate('home-begDetailsStack', {beg: item})}
         data={item}
+        index={index}
+        focusedIndex={focusedIndex}
       />
     );
   };
@@ -141,6 +160,7 @@ export const Home = ({navigation}: any) => {
         ListFooterComponent={() => (
           <>{footerLoader && <ActivityIndicator size={'small'} />}</>
         )}
+        onScroll={handleScroll}
         style={{width: '100%'}}
         initialNumToRender={5}
         renderItem={renderBegs}

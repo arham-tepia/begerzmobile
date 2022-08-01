@@ -9,10 +9,12 @@ interface Props {
     thumbLink: string;
   };
   onPress?(): void;
+  focusedIndex?: number;
+  index?: number;
 }
 
 export const MyVideo = (props: Props) => {
-  const {item} = props;
+  const {item, focusedIndex, index} = props;
   return (
     // <Video
     //   style={{
@@ -47,7 +49,8 @@ export const MyVideo = (props: Props) => {
           // height: '100%',
           alignSelf: 'center',
           aspectRatio: 1
-        }
+        },
+        shouldPlay: focusedIndex === index ? true : false
       }}
       icon={{
         play: <PlayIcon />,

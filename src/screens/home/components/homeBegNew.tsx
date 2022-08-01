@@ -42,6 +42,7 @@ interface Props {
   hideUser?: boolean;
   onMorePress?(): void;
   index?: number;
+  focusedIndex?: number;
 }
 
 export const HomeBegNew = React.memo((props: Props) => {
@@ -49,7 +50,7 @@ export const HomeBegNew = React.memo((props: Props) => {
   const [activeSlide, setActiveSlide]: any = useState(0);
   useEffect(() => {
     return () => {};
-  }, [props.index]);
+  }, [props.data._id]);
 
   function OuterLayer({children}: any) {
     if (!props.noGradient) {
@@ -95,7 +96,11 @@ export const HomeBegNew = React.memo((props: Props) => {
   function renderVideos({item}: any) {
     return (
       <>
-        <MyVideo item={item} />
+        <MyVideo
+          item={item}
+          focusedIndex={props.focusedIndex}
+          index={props.index}
+        />
         {/* <Video
           style={{
             width: '99%',
@@ -173,7 +178,6 @@ export const HomeBegNew = React.memo((props: Props) => {
           renderItem={renderVideos}
           sliderWidth={width}
           itemWidth={width}
-          layout="stack"
           onSnapToItem={index => setActiveSlide(index)}
         />
         {pagination()}

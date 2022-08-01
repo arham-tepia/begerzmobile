@@ -89,20 +89,7 @@ export const PublicProfile = ({navigation}: any) => {
           />
           <View style={{marginBottom: 20}} />
         </View>
-        <FlatList
-          // refreshControl={
-          //   <RefreshControl refreshing={loader} onRefresh={GetData} />
-          // }
-          data={begs.results}
-          renderItem={renderBegs}
-        />
-        {/* <HomeBeg
-          data={}
-          transparent
-          hideUser
-          onMorePress={() => navigation.navigate('begDashboard')}
-        />
-        <HomeBeg data={{}} transparent hideUser /> */}
+        <FlatList data={begs.results} renderItem={renderBegs} />
       </ScrollView>
     </View>
   );
