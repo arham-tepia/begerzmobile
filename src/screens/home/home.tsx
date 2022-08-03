@@ -28,19 +28,15 @@ export const Home = ({navigation}: any) => {
   const [pagination, setPagination]: any = useState([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
 
-  const handleScroll = React.useCallback(
-    ({
-      nativeEvent: {
-        contentOffset: {y}
-      }
-    }: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const offset = Math.round(y / 333);
+  const handleScroll = ({
+    nativeEvent: {
+      contentOffset: {y}
+    }
+  }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offset = Math.round(y / 333);
 
-      //setFocusedIndex(offset);
-    },
-    [setFocusedIndex]
-  );
-
+    //setFocusedIndex(offset);
+  };
   async function GetData() {
     const additional = '?page=1' + '&sort=-createdAt';
     setLoader(true);

@@ -50,7 +50,7 @@ export const HomeBegNew = React.memo((props: Props) => {
   const [activeSlide, setActiveSlide]: any = useState(0);
   useEffect(() => {
     return () => {};
-  }, [props.data._id]);
+  }, [props.data._id, props.index]);
 
   function OuterLayer({children}: any) {
     if (!props.noGradient) {

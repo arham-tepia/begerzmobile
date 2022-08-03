@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   ScrollView,
   View,
@@ -29,16 +29,21 @@ import Toast from 'react-native-toast-message';
 import {postReaction} from '../../../api/reactions';
 import {getUserChipinToABeg, getUserReactionToABeg} from '../../../api/user';
 import {useFocusEffect} from '@react-navigation/native';
+import {ReplayIconPressable} from '../../../components/icons/mediaControls';
+import {getBegById} from '../../../api/beg';
 
 export const BegDetails = ({route, navigation}: any) => {
   const begDetails = route.params.params.beg;
+  const [beg, setBeg]: any = useState([]);
   const user = useSelector((state: RootStateOrAny) => state.currentUser);
   const [status, setStatus]: any = useState([]);
+  const [replay, setReplay]: any = useState(false);
   const [userReaction, setUserReactions]: any = useState([]);
+  const [newReaction, setNewReaction]: any = useState('');
+  const [oldReaction, setOldReaction]: any = useState('');
 
   async function getUserChipin() {
     const res = await getUserChipinToABeg(user.id, begDetails._id);
-    console.log(res, 'User CHipin');
   }
 
   async function getUserReactions() {
@@ -50,7 +55,13 @@ export const BegDetails = ({route, navigation}: any) => {
     }
   }
 
+  async function getBegDetails() {
+    const b = await getBegById(begDetails._id);
+    setBeg(b);
+  }
+
   useEffect(() => {
+    getBegDetails();
     getUserReactions();
     getUserChipin();
   }, []);
@@ -65,7 +76,7 @@ export const BegDetails = ({route, navigation}: any) => {
     hilarious?: string;
     brilliant?: string;
     admirable?: string;
-  } = begDetails?.achievements;
+  } = beg?.achievements;
   const date = ConvertDateToObject(begDetails.goalDate);
   const reactions = [
     {
@@ -127,11 +138,14 @@ export const BegDetails = ({route, navigation}: any) => {
   }
   const twidth = Dimensions.get('window').width;
   const width = twidth - 2;
-  var ref: any;
+  var videoRef: any;
   function renderVideos({item}: any) {
     return (
       <>
         <Video
+          ref={r => {
+            videoRef = r;
+          }}
           style={{
             width: width - 4,
             height: '100%',
@@ -143,41 +157,53 @@ export const BegDetails = ({route, navigation}: any) => {
           onError={e => {
             console.log(e, 'Error');
           }}
-          onPlaybackStatusUpdate={status => {
+          onPlaybackStatusUpdate={(status: any) => {
             setStatus(() => status);
+            if (status.didJustFinish && !status.isLooping) {
+              console.log('video ended');
+              setReplay(true);
+            }
+            if (status.isPlaying) {
+              setReplay(false);
+            }
           }}
           resizeMode={ResizeMode.COVER}
           useNativeControls
           usePoster={!status.isLoaded}
           // usePoster={status.isLoaded === 'true' ? false : true}
+
           posterSource={{uri: item.thumbLink}}
           posterStyle={{
             width: width - 4,
             height: '100%',
             backgroundColor: 'black'
-          }}
-        />
+          }}>
+          {replay && (
+            <View
+              style={{
+                left: '45%',
+                bottom: '15%',
+                position: 'absolute'
+              }}>
+              <ReplayIconPressable onPress={() => videoRef.replayAsync()} />
+            </View>
+          )}
+        </Video>
       </>
     );
   }
 
   async function onReactionPress(reaction: string) {
     const lcaps = reaction.toLowerCase();
-    console.log(lcaps);
     const d = {
       begId: begDetails._id,
       userId: user.id,
       reactionType: lcaps
     };
-    console.log(d, 'data');
     const res = await postReaction(d).finally(() => {});
     if (res._id) {
-      // Toast.show({
-      //   type: 'success',
-      //   text1: lcaps,
-      //   text2: 'Your reaction has been saved'
-      // });
       getUserReactions();
+      getBegDetails();
     }
   }
 
@@ -260,6 +286,9 @@ export const BegDetails = ({route, navigation}: any) => {
                     </MyTextMulish>
                     <MyTextMulish style={styles.emojiCount}>
                       {item.count}
+                      {/* {newReaction.toLowerCase() === item.name.toLowerCase()
+                        ? item.count + 1
+                        : item.count} */}
                     </MyTextMulish>
                   </TouchableOpacity>
                 );
@@ -321,9 +350,10 @@ export const BegDetails = ({route, navigation}: any) => {
               </View>
               <View style={styles.cardBottomRow}>
                 <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('begComments', {begId: begDetails._id})
-                  }
+                  onPress={() => console.log(reactions)}
+                  // onPress={() =>
+                  //   navigation.navigate('begComments', {begId: begDetails._id})
+                  // }
                   style={styles.cardBottomItem}>
                   <ChatIcon />
                   <MyTextMulish

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {Avatar} from '../../../components/avatar';
@@ -10,6 +10,7 @@ import Carousel from 'react-native-snap-carousel';
 import {ResizeMode, Video} from 'expo-av';
 import {BegReactions} from './begReactions';
 import {VideoCam} from '../../../components/icons/videoCam';
+import {Pagination} from '../../../components/pagination';
 
 interface Props {
   data: {
@@ -44,6 +45,7 @@ export const HomeBeg = (props: Props) => {
   const twidth = Dimensions.get('window').width;
   const width = twidth - 2;
   const {data} = props;
+  const [activeSlide, setActiveSlide] = useState(0);
 
   useEffect(() => {
     return () => {};
@@ -107,6 +109,16 @@ export const HomeBeg = (props: Props) => {
           }}
         />
       </>
+    );
+  }
+
+  function pagination() {
+    return (
+      <Pagination
+        style={{position: 'absolute', bottom: 70}}
+        activeIndex={activeSlide}
+        data={data.videos}
+      />
     );
   }
 
@@ -175,7 +187,10 @@ export const HomeBeg = (props: Props) => {
             renderItem={renderVideos}
             sliderWidth={width}
             itemWidth={width}
+            onSnapToItem={index => setActiveSlide(index)}
           />
+          {pagination()}
+
           <View style={styles.bottom}>
             <View
               style={{

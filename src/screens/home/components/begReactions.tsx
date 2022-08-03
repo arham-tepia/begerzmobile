@@ -56,9 +56,7 @@ export const BegReactions = (props: {reactions: any}) => {
     <View style={styles.main}>
       {allReactions.map((item: any, index: number) => {
         return (
-          <View key={index}>
-            <MyEmoji item={item} />
-          </View>
+          <View key={index}>{item.count !== 0 && <MyEmoji item={item} />}</View>
         );
       })}
       <MyTextMulish

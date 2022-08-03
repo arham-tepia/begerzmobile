@@ -77,7 +77,7 @@ export const ChipReact = ({route, navigation}: any) => {
     },
     {
       icon: ICONS.emojiHilarious,
-      name: 'Funny'
+      name: 'Hilarious'
     },
     {
       icon: ICONS.emojiBrilliant,

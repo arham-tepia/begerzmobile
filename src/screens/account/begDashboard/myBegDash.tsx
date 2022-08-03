@@ -54,7 +54,7 @@ export const MyBegDashboard = ({route}: any) => {
 
   useEffect(() => {
     const beg = route.params.beg;
-    console.log(beg, 'Opened Beg');
+    console.log(beg.videos, 'Opened Beg');
 
     setVideos(beg.videos);
     GetFollowers();
@@ -66,6 +66,7 @@ export const MyBegDashboard = ({route}: any) => {
   async function onWithDrawPress(data: any) {
     setLoader(true);
     const res = await withdrawMoney(data).finally(() => setLoader(false));
+    console.log(res, 'withdraw response');
     setWithdrawModal(false);
     if (res._id) {
       setWithdrawnSuccess(true);
@@ -243,6 +244,8 @@ export const MyBegDashboard = ({route}: any) => {
       fileId: res.uuid,
       begId: beg._id
     });
+    console.log('new video', link);
+    setVideos([...videos, link]);
   }
 
   async function onBegRemove(item: any) {
@@ -425,12 +428,16 @@ export const MyBegDashboard = ({route}: any) => {
                 <FlatList
                   data={videos}
                   style={{width: '95%'}}
+                  extraData={loader}
                   renderItem={({item}: any) => {
                     return (
-                      <View style={{width: '95%', alignSelf: 'center'}}>
+                      <View
+                        key={item._id}
+                        style={{width: '95%', alignSelf: 'center'}}>
                         <Image
                           source={{uri: item.thumbLink}}
                           style={{height: 285, width: '100%'}}
+                          loadingIndicatorSource={ICONS.noimage}
                         />
                         <MyTextMulish
                           onPress={() => onBegRemove(item)}
@@ -456,7 +463,10 @@ export const MyBegDashboard = ({route}: any) => {
                   onPress={onVideoPick}
                   disabled={loader}
                   inverse
-                  style={{height: 44, borderRadius: 100, width: '95%'}}
+                  style={[
+                    {height: 44, borderRadius: 100, width: '95%'},
+                    loader && {borderWidth: 0}
+                  ]}
                   textStyles={{fontWeight: '700', fontSize: 13}}
                 />
                 <Margin top margin={10} />

@@ -74,3 +74,13 @@ export async function getChipinsMadeToABeg(id: string) {
   const res = await get(endpoint);
   return res;
 }
+export async function getAllReactionsForBeg(id: string) {
+  const endpoint = BASE_URL + 'reactions/begs/' + id;
+  const res = await get(endpoint);
+  return res;
+}
+export async function getBegById(id: string) {
+  const endpoint = BASE_URL + 'begs/' + id;
+  const res = await get(endpoint);
+  return res;
+}

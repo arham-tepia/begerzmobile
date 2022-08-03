@@ -22,6 +22,7 @@ export const ChipinComment = ({route, navigation}: any) => {
   const [comment, setComment]: any = useState('');
   const [commentResponse, setCommentResponse]: any = useState([]);
   const beg = route.params.beg;
+  console.log(beg);
 
   async function GetData() {
     const u = await getUserInformationById(state.id);
@@ -142,7 +143,7 @@ export const ChipinComment = ({route, navigation}: any) => {
             fontWeight: '600',
             letterSpacing: 0
           }}
-          onPress={() => navigation.navigate('home')}
+          onPress={() => navigation.navigate('begDetails', {beg: beg})}
           style={{height: 48, borderRadius: 24}}
         />
         <MyTextPoppins
